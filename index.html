@@ -3,301 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Ready Dashboard - Aviva Plaza North</title>
+    <title>Aviva Plaza North - Make Ready Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Custom Scrollbar for Table */
-        .table-container::-webkit-scrollbar { width: 8px; }
-        .table-container::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .card { background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); padding: 1.5rem; }
+        
+        /* Custom Scrollbar para la tabla */
+        .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="bg-white text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="text-gray-800">
 
-    <!-- Header -->
-    <header class="bg-white border-b border-slate-200 px-8 py-5 sticky top-0 z-50 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Aviva Plaza North</h1>
-            <p class="text-sm text-slate-500 font-medium">Panel de Control BI & Make Ready Operations • Actualizado: 11 May 2026</p>
+    <!-- Navbar -->
+    <nav class="bg-blue-900 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold"><i class="fa-solid fa-building-circle-check mr-2"></i> Make Ready Analytics Dashboard</h1>
+            <span class="text-sm bg-blue-800 px-3 py-1 rounded-full">Actualizado: 14 de Mayo, 2026</span>
         </div>
-        <div class="flex items-center space-x-4">
-            <span class="px-3 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-full border border-red-100 flex items-center">
-                <i class="fas fa-exclamation-triangle mr-2"></i> 11 Unidades > 20 Días
-            </span>
-            <button class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm">
-                <i class="fas fa-download mr-2"></i> Exportar CSV
-            </button>
-        </div>
-    </header>
+    </nav>
 
-    <main class="flex-grow p-8 max-w-[1600px] mx-auto w-full">
+    <div class="container mx-auto p-4 sm:p-6 mt-4">
         
-        <!-- KPI Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Card 1 -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Make Readys Pendientes</p>
-                        <h3 class="text-3xl font-bold text-slate-900 mt-2">26</h3>
-                    </div>
-                    <div class="bg-blue-50 p-3 rounded-lg text-blue-600">
-                        <i class="fas fa-tools text-xl"></i>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-500 mt-4 flex items-center">
-                    <i class="fas fa-arrow-up text-red-500 mr-1"></i> 16% vs mes anterior
-                </p>
+        <!-- KPIs Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="card flex items-center border-l-4 border-red-500">
+                <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4"><i class="fa-solid fa-clock fa-2x"></i></div>
+                <div><p class="text-gray-500 text-sm">Make Readys Pendientes</p><p class="text-2xl font-bold">28</p></div>
             </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Alta Vacancia (>20 Días)</p>
-                        <h3 class="text-3xl font-bold text-red-600 mt-2">11</h3>
-                    </div>
-                    <div class="bg-red-50 p-3 rounded-lg text-red-600">
-                        <i class="fas fa-calendar-times text-xl"></i>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-500 mt-4 flex items-center">
-                    Pico máximo: 182 días (Unidades 1605, 3115)
-                </p>
+            <div class="card flex items-center border-l-4 border-yellow-500">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4"><i class="fa-solid fa-clipboard-list fa-2x"></i></div>
+                <div><p class="text-gray-500 text-sm">Prewalks Realizados</p><p class="text-2xl font-bold">88</p></div>
             </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Future Board (Hold)</p>
-                        <h3 class="text-3xl font-bold text-orange-500 mt-2">5</h3>
-                    </div>
-                    <div class="bg-orange-50 p-3 rounded-lg text-orange-500">
-                        <i class="fas fa-biohazard text-xl"></i>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-500 mt-4 flex items-center">
-                    Hazmat / Estructural / Fondos CapEx
-                </p>
+            <div class="card flex items-center border-l-4 border-blue-500">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4"><i class="fa-solid fa-hammer fa-2x"></i></div>
+                <div><p class="text-gray-500 text-sm">Future Units (Down/Renov)</p><p class="text-2xl font-bold">5</p></div>
             </div>
-
-            <!-- Card 4 -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Cuello de Botella (Vendor)</p>
-                        <h3 class="text-3xl font-bold text-slate-900 mt-2">68%</h3>
-                    </div>
-                    <div class="bg-slate-100 p-3 rounded-lg text-slate-600">
-                        <i class="fas fa-paint-roller text-xl"></i>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-500 mt-4 flex items-center">
-                    Detenidos en Pintura / Resurface
-                </p>
+            <div class="card flex items-center border-l-4 border-green-500">
+                <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4"><i class="fa-solid fa-check-double fa-2x"></i></div>
+                <div><p class="text-gray-500 text-sm">Final Walks (Aprobados)</p><p class="text-2xl font-bold">15</p></div>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <!-- Bar Chart -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm lg:col-span-2">
-                <h2 class="text-lg font-bold text-slate-800 mb-4">Inspecciones Prewalk por Mes (2026)</h2>
-                <div class="relative h-64 w-full">
-                    <canvas id="prewalkChart"></canvas>
-                </div>
+        <!-- Priority Table Section -->
+        <div class="card mb-8">
+            <div class="flex justify-between items-end mb-4 border-b pb-2">
+                <h2 class="text-xl font-bold"><i class="fa-solid fa-list-ol mr-2 text-blue-600"></i> Prioridad de Make Readys Pendientes (Total: 28 Unidades)</h2>
             </div>
             
-            <!-- Doughnut Chart -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                <h2 class="text-lg font-bold text-slate-800 mb-4">Distribución del Backlog (Tipos)</h2>
-                <div class="relative h-64 w-full flex justify-center">
-                    <canvas id="typeChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Master Table Section -->
-        <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-8">
-            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-                <h2 class="text-lg font-bold text-slate-800">Priorización de Make Ready & Backlog Activo</h2>
-                <div class="text-sm text-slate-500 font-medium">
-                    Regla de validación: Excluyendo Housekeeping. Foco en "Pending".
-                </div>
-            </div>
-            <div class="table-container max-h-[500px] overflow-y-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-white sticky top-0 z-10 shadow-sm">
+            <div class="table-container max-h-96 overflow-y-auto border border-gray-200 rounded">
+                <table class="min-w-full text-left text-sm whitespace-nowrap relative">
+                    <thead class="uppercase tracking-wider border-b-2 border-gray-200 bg-gray-50 sticky top-0 z-10">
                         <tr>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Unidad</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Tipo</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Días Vacantes</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Estatus Make Ready</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Bloqueo Principal</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Prioridad</th>
-                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">Notas Operativas</th>
+                            <th class="px-4 py-3">Prioridad</th>
+                            <th class="px-4 py-3">Unidad</th>
+                            <th class="px-4 py-3">Fecha Objetivo</th>
+                            <th class="px-4 py-3">Cuellos de Botella / Estado Actual</th>
+                            <th class="px-4 py-3">Acción Requerida</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100" id="tableBody">
-                        <!-- Populated via JS -->
+                    <tbody>
+                        <!-- CRÍTICAS (Severamente Vencidas) -->
+                        <tr class="border-b hover:bg-red-50 bg-red-100">
+                            <td class="px-4 py-3 font-bold text-red-600">1 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-semibold">307 (B2)</td>
+                            <td class="px-4 py-3 text-red-600 font-bold">2026-04-30</td>
+                            <td class="px-4 py-3">Make Ready General Pendiente (>14 días atraso)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Escalar a Gerencia</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-red-50 bg-red-100">
+                            <td class="px-4 py-3 font-bold text-red-600">2 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-semibold">102 (B2)</td>
+                            <td class="px-4 py-3 text-red-600 font-bold">2026-04-30</td>
+                            <td class="px-4 py-3">Limpieza pendiente (Alfred - >14 días atraso)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Cambiar Vendor</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-red-50 bg-red-50">
+                            <td class="px-4 py-3 font-bold text-red-600">3 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-semibold">805 (B2)</td>
+                            <td class="px-4 py-3 text-red-600 font-bold">2026-05-01</td>
+                            <td class="px-4 py-3">Esmaltado de tina y paredes (Artisan)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Cambiar Vendor</span></td>
+                        </tr>
+
+                        <!-- ALTAS (Vencidas Recientes) -->
+                        <tr class="border-b hover:bg-orange-50 bg-orange-50">
+                            <td class="px-4 py-3 font-bold text-orange-600">4 - ALTA (VENCIDA)</td>
+                            <td class="px-4 py-3 font-semibold">904 / 905 (A2)</td>
+                            <td class="px-4 py-3 text-orange-600">2026-05-06</td>
+                            <td class="px-4 py-3">Faltan cajones, esmaltados y pintura (J National)</td>
+                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Presionar J National</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-orange-50 bg-orange-50">
+                            <td class="px-4 py-3 font-bold text-orange-600">5 - ALTA (VENCIDA)</td>
+                            <td class="px-4 py-3 font-semibold">2705 (B2)</td>
+                            <td class="px-4 py-3 text-orange-600">2026-05-08</td>
+                            <td class="px-4 py-3">Pendiente proveedor Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Presionar Alfred</span></td>
+                        </tr>
+
+                        <!-- MEDIAS (Vencen HOY o están en proceso) -->
+                        <tr class="border-b hover:bg-yellow-50">
+                            <td class="px-4 py-3 font-bold text-yellow-600">6 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-semibold">916, 1605 (A2/A3)</td>
+                            <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-14</td>
+                            <td class="px-4 py-3">Pendiente Alfred / Alta Vacancia (>140 días)</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-yellow-50">
+                            <td class="px-4 py-3 font-bold text-yellow-600">7 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-semibold">3115, 2601</td>
+                            <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-13/14</td>
+                            <td class="px-4 py-3">Pendiente J National / Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-yellow-50">
+                            <td class="px-4 py-3 font-bold text-yellow-600">8 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-semibold">1408 (B1)</td>
+                            <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-14</td>
+                            <td class="px-4 py-3">Pendiente Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                        </tr>
+
+                        <!-- BACKLOG MASIVO -->
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-semibold">3009, 1908, 1116</td>
+                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
+                            <td class="px-4 py-3">Make Ready Pendiente General (25+ días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-semibold">712, 2608, 3307</td>
+                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
+                            <td class="px-4 py-3">Make Ready Pendiente General (21+ días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-semibold">1811, 3212, 2911</td>
+                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
+                            <td class="px-4 py-3">Make Ready Pendiente General (17-19 días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-semibold">604, 1514</td>
+                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
+                            <td class="px-4 py-3">Make Ready Pendiente General (6-13 días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                        </tr>
+
+                        <!-- PAUSADAS -->
+                        <tr class="border-b hover:bg-gray-100 bg-gray-50 text-gray-500">
+                            <td class="px-4 py-3 font-bold text-gray-600">10 - PAUSADA (FONDOS)</td>
+                            <td class="px-4 py-3 font-semibold line-through">2706 (B2)</td>
+                            <td class="px-4 py-3">2026-04-11</td>
+                            <td class="px-4 py-3">On Hold till 2bdrms leased due to funding</td>
+                            <td class="px-4 py-3"><span class="bg-gray-400 text-white px-2 py-1 rounded text-xs">Congelada / CapEx</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Action Plan -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-6">
-            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center">
-                <i class="fas fa-tasks text-blue-600 mr-2"></i> Plan de Acción Estratégico (4 Pilares)
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg border border-slate-200">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2">1. Desbloqueo de Proveedores</h4>
-                    <p class="text-xs text-slate-600">Citar a <em>J National</em> y <em>Alfred</em> para renegociar SLAs de Pintura y Resurface. Las unidades de >100 días deben ser procesadas en 48 hrs.</p>
+        <!-- Strategy Plan Section (UPDATED) -->
+        <div class="card mb-8 bg-blue-50 border-l-4 border-blue-600">
+            <h2 class="text-xl font-bold mb-4 text-blue-900"><i class="fa-solid fa-chess-knight mr-2"></i> Estrategia y Plan de Acción (14 de Mayo)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h3 class="font-bold text-red-600 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 1. Penalización / Reemplazo de Vendors</h3>
+                    <p class="text-sm text-gray-700">Las unidades 307, 102 y 805 tienen <strong>más de 14 días de retraso</strong>. Los proveedores asignados (Alfred / Artisan) están bloqueando el inventario. Se recomienda cancelar sus órdenes de trabajo hoy mismo, reasignar a un proveedor de respaldo (backup vendor) o enviar al equipo de mantenimiento interno (Punch Blitz) para finalizar.</p>
                 </div>
-                <div class="bg-white p-4 rounded-lg border border-slate-200">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2">2. Resolución Future Board</h4>
-                    <p class="text-xs text-slate-600">Aprobar órdenes de compra (PO) de Hazmat para 3207 y 2302. Escalar unidad 2706 (por fondos) con gerencia regional de inmediato.</p>
+
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h3 class="font-bold text-orange-600 mb-2"><i class="fa-solid fa-layer-group mr-1"></i> 2. Atención a Unidades de "Alta Vacancia"</h3>
+                    <p class="text-sm text-gray-700">Unidades como la <strong>1605 (182 días vacante)</strong> y <strong>916 (147 días)</strong> finalmente tienen programación (13-14 de mayo). El equipo de supervisión debe hacer un seguimiento presencial hoy. Estas unidades impactan negativamente la métrica de vacancia global de la propiedad.</p>
                 </div>
-                <div class="bg-white p-4 rounded-lg border border-slate-200">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2">3. Fast-Track Pre-rentas</h4>
-                    <p class="text-xs text-slate-600">Cruce diario del PMS (Property Management System) vs Make Ready Board para asegurar que cualquier unidad pre-rentada ignore el backlog regular.</p>
+
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h3 class="font-bold text-green-600 mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> 3. Cadena de Suministro y Retoques</h3>
+                    <p class="text-sm text-gray-700">El Checklist sigue mostrando faltantes en detalles finales (cajones de gabinetes, detectores de humo, puertas de lavandería). Se debe designar a un técnico exclusivamente para realizar rondas de "Punch-Out" con un carrito lleno de estas refacciones menores para cerrar unidades casi terminadas.</p>
                 </div>
-                <div class="bg-white p-4 rounded-lg border border-slate-200">
-                    <h4 class="font-bold text-slate-800 text-sm mb-2">4. Sincronización QA</h4>
-                    <p class="text-xs text-slate-600">Las Final Walks deben suceder 24 horas después del 'X' en Make Ready, ignorando Housekeeping si es necesario para adelantar la inspección técnica.</p>
+
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> 4. Limpieza del Backlog (14+ Unidades)</h3>
+                    <p class="text-sm text-gray-700">El backlog sigue creciendo. Identificar 4 unidades del backlog que requieran el menor esfuerzo (solo pintura y limpieza) y asignar un <em>Task Force</em> de fin de semana para sacarlas al mercado de inmediato, reduciendo el conteo de pendientes de 28 a 24 antes del lunes.</p>
                 </div>
             </div>
         </div>
 
-    </main>
+        <!-- Charts Grid Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Chart 1: Prewalks by Month -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-2 text-center">Volumen de Inspecciones (Prewalks) por Mes</h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="prewalksChart"></canvas>
+                </div>
+            </div>
 
+            <!-- Chart 2: Final Walk Problems -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-2 text-center">Problemas Frecuentes (Final Walk)</h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="finalWalkChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 3: Make Ready Checklist -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-2 text-center">Estado General: Make Ready Checklist</h3>
+                <div class="relative h-64 w-full flex justify-center">
+                    <canvas id="checklistChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 4: Future Unit Board -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-2 text-center">Estado del "Future Unit Board"</h3>
+                <div class="relative h-64 w-full flex justify-center">
+                    <canvas id="futureUnitsChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Chart Configuration Script -->
     <script>
-        // Data Configuration for Charts
-        const prewalkData = {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-            datasets: [{
-                label: 'Prewalks Realizados',
-                data: [4, 2, 5, 8, 3],
-                backgroundColor: '#3b82f6',
-                borderRadius: 4,
-                barThickness: 32
-            }]
-        };
+        // Configuración Global Chart.js
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#4B5563';
 
-        const typeData = {
-            labels: ['A1 (1B1B)', 'A2 (1B1B)', 'A3/A4 (1B+)', 'B2 (2B2B)'],
-            datasets: [{
-                data: [6, 12, 3, 5],
-                backgroundColor: ['#0f172a', '#3b82f6', '#94a3b8', '#e2e8f0'],
-                borderWidth: 0,
-                hoverOffset: 4
-            }]
-        };
-
-        // Initialize Charts
-        window.onload = function() {
-            const ctxBar = document.getElementById('prewalkChart').getContext('2d');
-            new Chart(ctxBar, {
-                type: 'bar',
-                data: prewalkData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-                        x: { grid: { display: false } }
-                    }
-                }
-            });
-
-            const ctxPie = document.getElementById('typeChart').getContext('2d');
-            new Chart(ctxPie, {
-                type: 'doughnut',
-                data: typeData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8 } }
-                    }
-                }
-            });
-
-            renderTable();
-        };
-
-        // Table Data Generation
-        const units = [
-            { unit: "1605", type: "A3-1B1.5B-S", days: 182, status: "Pending", block: "Pintura (J National) / Resurface", priority: "Crítica", notes: "" },
-            { unit: "3115", type: "A2-1B1B-S", days: 182, status: "Pending", block: "Trash Out / Pintura", priority: "Crítica", notes: "Usa electrodomésticos de #1408" },
-            { unit: "916", type: "A2-1B1B-U", days: 147, status: "Pending", block: "Pintura (J National) / Resurface", priority: "Crítica", notes: "" },
-            { unit: "2601", type: "A1-1B1B-U", days: 119, status: "Pending", block: "Pintura / Resurface", priority: "Crítica", notes: "" },
-            { unit: "3009", type: "A1-1B1B-U", days: 26, status: "Pending", block: "Pintura / Make Ready", priority: "Alta", notes: "" },
-            { unit: "1908", type: "A4-1B1B-U", days: 25, status: "Pending", block: "Make Ready", priority: "Alta", notes: "" },
-            { unit: "1116", type: "A2-1B1B-C", days: 25, status: "Pending", block: "Make Ready", priority: "Alta", notes: "" },
-            { unit: "712", type: "A2-1B1B-C", days: 21, status: "Pending", block: "Make Ready", priority: "Alta", notes: "" },
-            { unit: "2608", type: "A1-1B1B-C", days: 21, status: "Pending", block: "Make Ready", priority: "Alta", notes: "" },
-            { unit: "3307", type: "A2-1B1B-U", days: 21, status: "Pending", block: "Make Ready", priority: "Alta", notes: "" },
-            { unit: "1811", type: "A2-1B1B-U", days: 19, status: "Pending", block: "Make Ready", priority: "Media", notes: "" },
-            { unit: "3212", type: "A3-1B1.5B-U", days: 18, status: "Pending", block: "Make Ready", priority: "Media", notes: "" },
-            { unit: "2911", type: "A2-1B1B-U", days: 17, status: "Pending", block: "Make Ready", priority: "Media", notes: "" },
-            { unit: "1408", type: "A1-1B1B", days: 15, status: "Pending", block: "Faltan Electrodomésticos", priority: "Media", notes: "Cedió electrodomésticos a #3115" },
-            { unit: "604", type: "A1-1B1B-C", days: 13, status: "Pending", block: "Make Ready", priority: "Media", notes: "" },
-            { unit: "904", type: "A2-1B1B-U", days: 0, status: "X (OK)", block: "Ninguno", priority: "Baja", notes: "" },
-            // Future Board items
-            { unit: "3207", type: "A3-1B1.5B-U", days: "N/A", status: "Hold", block: "Hazmat / Daño Estructural", priority: "Future Board", notes: "" },
-            { unit: "2302", type: "A4-1B1B-C", days: "N/A", status: "Hold", block: "Hazmat / Down Unit", priority: "Future Board", notes: "" },
-            { unit: "3006", type: "A1-1B1B-C", days: "N/A", status: "Pending", block: "Mildew Remediation / Pintura", priority: "Future Board", notes: "" },
-            { unit: "2708", type: "B2-2B2B-C", days: "N/A", status: "Pending", block: "Gabinetes / Ventana Rota", priority: "Future Board", notes: "" },
-            { unit: "2706", type: "B2-2B2B-U", days: "N/A", status: "Hold", block: "Congelado por Presupuesto", priority: "Future Board", notes: "" },
-            // Extra to meet the requirement for simulation realism based on context
-            { unit: "1503", type: "A1-1B1B", days: 12, status: "Pending QA", block: "Puertas de Gabinete", priority: "Baja", notes: "" },
-            { unit: "2201", type: "A2-1B1B", days: 10, status: "Pending QA", block: "Instalación Lavavajillas", priority: "Baja", notes: "" },
-            { unit: "1904", type: "A2-1B1B", days: 9, status: "Pending QA", block: "Cambio de Alfombra", priority: "Baja", notes: "" }
-        ];
-
-        function getPriorityBadge(priority) {
-            switch(priority) {
-                case 'Crítica': return '<span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-md">Crítica</span>';
-                case 'Alta': return '<span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-bold rounded-md">Alta</span>';
-                case 'Media': return '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-md">Media</span>';
-                case 'Baja': return '<span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-md">Baja</span>';
-                case 'Future Board': return '<span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-md border border-purple-200">Future Board</span>';
-                default: return '';
+        // 1. Gráfica: Volumen de Inspecciones (Prewalks) por Mes
+        const ctxPrewalks = document.getElementById('prewalksChart').getContext('2d');
+        new Chart(ctxPrewalks, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+                datasets: [{
+                    label: 'Cantidad de Prewalks',
+                    data: [16, 27, 13, 18, 14], // Aumento en mayo a 14
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#2563EB',
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 5 } }
+                },
+                plugins: { legend: { display: false } }
             }
-        }
+        });
 
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            let html = '';
-            
-            units.forEach(u => {
-                // Styling based on row urgency
-                const rowClass = u.days >= 20 ? "bg-red-50/30" : "hover:bg-slate-50";
-                const daysStyle = u.days >= 20 ? "text-red-600 font-bold" : "text-slate-600";
-                
-                html += `
-                    <tr class="transition-colors ${rowClass}">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900">#${u.unit}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${u.type}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm ${daysStyle}">${u.days === 'N/A' ? '-' : u.days + ' días'}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-medium">${u.status}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 truncate max-w-[200px]" title="${u.block}">${u.block}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${getPriorityBadge(u.priority)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-xs text-slate-500 italic max-w-[150px] truncate" title="${u.notes}">${u.notes}</td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
+        // 2. Gráfica: Problemas Frecuentes (Final Walk) por Categoría
+        const ctxFinalWalk = document.getElementById('finalWalkChart').getContext('2d');
+        new Chart(ctxFinalWalk, {
+            type: 'bar',
+            data: {
+                labels: ['Cocina / Electrodom.', 'Baños (Vidrios/Tinas)', 'Persianas', 'Puertas', 'Salas/Cuartos', 'Lavandería', 'Curb Appeal'],
+                datasets: [{
+                    label: 'Incidencias Reportadas',
+                    data: [18, 13, 10, 7, 5, 4, 2], // Ligero aumento proporcional por nuevas inspecciones
+                    backgroundColor: [
+                        '#EF4444', '#F97316', '#F59E0B', '#10B981', '#3B82F6', '#6366F1', '#8B5CF6'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // 3. Gráfica: Make Ready Checklist (Doughnut)
+        const ctxChecklist = document.getElementById('checklistChart').getContext('2d');
+        new Chart(ctxChecklist, {
+            type: 'doughnut',
+            data: {
+                labels: ['Complete / Pass', 'Needs Repair', 'Pending Vendor'],
+                datasets: [{
+                    data: [70, 22, 8], // Reducción en completados debido al gran volumen de backlog
+                    backgroundColor: ['#10B981', '#EF4444', '#F59E0B'],
+                    hoverOffset: 4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                cutout: '65%'
+            }
+        });
+
+        // 4. Gráfica: Future Unit Board (Pie)
+        const ctxFutureUnits = document.getElementById('futureUnitsChart').getContext('2d');
+        new Chart(ctxFutureUnits, {
+            type: 'pie',
+            data: {
+                labels: ['Moho / Peligro Biológico', 'Daño Estructural Severo', 'Congeladas (CapEx)'],
+                datasets: [{
+                    data: [3, 1, 1], // Sin cambios reportados en este documento
+                    backgroundColor: ['#B91C1C', '#7F1D1D', '#6B7280'],
+                    hoverOffset: 4,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
+            }
+        });
     </script>
 </body>
 </html>
