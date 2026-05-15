@@ -23,8 +23,13 @@
     <!-- Navbar -->
     <nav class="bg-blue-900 text-white p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold"><i class="fa-solid fa-building-circle-check mr-2"></i> Make Ready Analytics Dashboard</h1>
-            <span class="text-sm bg-blue-800 px-3 py-1 rounded-full">Actualizado: 14 de Mayo, 2026</span>
+            <h1 class="text-2xl font-bold"><i class="fa-solid fa-building-circle-check mr-2"></i> <span data-i18n="nav_title">Make Ready Analytics Dashboard</span></h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm bg-blue-800 px-3 py-1 rounded-full" data-i18n="nav_updated">Actualizado: 14 de Mayo, 2026</span>
+                <button onclick="toggleLanguage()" id="langToggleBtn" class="bg-white text-blue-900 px-4 py-1 rounded font-bold text-sm hover:bg-gray-200 transition shadow">
+                    English
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -34,139 +39,139 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div class="card flex items-center border-l-4 border-red-500">
                 <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4"><i class="fa-solid fa-clock fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm">Make Readys Pendientes</p><p class="text-2xl font-bold">28</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_pending">Make Readys Pendientes</p><p class="text-2xl font-bold">28</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-yellow-500">
                 <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4"><i class="fa-solid fa-clipboard-list fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm">Prewalks Realizados</p><p class="text-2xl font-bold">88</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_prewalks">Prewalks Realizados</p><p class="text-2xl font-bold">88</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-blue-500">
                 <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4"><i class="fa-solid fa-hammer fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm">Future Units (Down/Renov)</p><p class="text-2xl font-bold">5</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_future">Future Units (Down/Renov)</p><p class="text-2xl font-bold">5</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-green-500">
                 <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4"><i class="fa-solid fa-check-double fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm">Final Walks (Aprobados)</p><p class="text-2xl font-bold">15</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_final">Final Walks (Aprobados)</p><p class="text-2xl font-bold">15</p></div>
             </div>
         </div>
 
         <!-- Priority Table Section -->
         <div class="card mb-8">
             <div class="flex justify-between items-end mb-4 border-b pb-2">
-                <h2 class="text-xl font-bold"><i class="fa-solid fa-list-ol mr-2 text-blue-600"></i> Prioridad de Make Readys Pendientes (Total: 28 Unidades)</h2>
+                <h2 class="text-xl font-bold"><i class="fa-solid fa-list-ol mr-2 text-blue-600"></i> <span data-i18n="table_title">Prioridad de Make Readys Pendientes (Total: 28 Unidades)</span></h2>
             </div>
             
             <div class="table-container max-h-96 overflow-y-auto border border-gray-200 rounded">
                 <table class="min-w-full text-left text-sm whitespace-nowrap relative">
                     <thead class="uppercase tracking-wider border-b-2 border-gray-200 bg-gray-50 sticky top-0 z-10">
                         <tr>
-                            <th class="px-4 py-3">Prioridad</th>
-                            <th class="px-4 py-3">Unidad</th>
-                            <th class="px-4 py-3">Fecha Objetivo</th>
-                            <th class="px-4 py-3">Cuellos de Botella / Estado Actual</th>
-                            <th class="px-4 py-3">Acción Requerida</th>
+                            <th class="px-4 py-3" data-i18n="th_priority">Prioridad</th>
+                            <th class="px-4 py-3" data-i18n="th_unit">Unidad</th>
+                            <th class="px-4 py-3" data-i18n="th_date">Fecha Objetivo</th>
+                            <th class="px-4 py-3" data-i18n="th_status">Cuellos de Botella / Estado Actual</th>
+                            <th class="px-4 py-3" data-i18n="th_action">Acción Requerida</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- CRÍTICAS (Severamente Vencidas) -->
                         <tr class="border-b hover:bg-red-50 bg-red-100">
-                            <td class="px-4 py-3 font-bold text-red-600">1 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-bold text-red-600" data-i18n="pri_1">1 - CRÍTICA (MUY VENCIDA)</td>
                             <td class="px-4 py-3 font-semibold">307 (B2)</td>
                             <td class="px-4 py-3 text-red-600 font-bold">2026-04-30</td>
-                            <td class="px-4 py-3">Make Ready General Pendiente (>14 días atraso)</td>
-                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Escalar a Gerencia</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_mr_pending_14">Make Ready General Pendiente (>14 días atraso)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_escalate">Escalar a Gerencia</span></td>
                         </tr>
                         <tr class="border-b hover:bg-red-50 bg-red-100">
-                            <td class="px-4 py-3 font-bold text-red-600">2 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-bold text-red-600" data-i18n="pri_2">2 - CRÍTICA (MUY VENCIDA)</td>
                             <td class="px-4 py-3 font-semibold">102 (B2)</td>
                             <td class="px-4 py-3 text-red-600 font-bold">2026-04-30</td>
-                            <td class="px-4 py-3">Limpieza pendiente (Alfred - >14 días atraso)</td>
-                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Cambiar Vendor</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_clean_alfred">Limpieza pendiente (Alfred - >14 días atraso)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_change">Cambiar Vendor</span></td>
                         </tr>
                         <tr class="border-b hover:bg-red-50 bg-red-50">
-                            <td class="px-4 py-3 font-bold text-red-600">3 - CRÍTICA (MUY VENCIDA)</td>
+                            <td class="px-4 py-3 font-bold text-red-600" data-i18n="pri_3">3 - CRÍTICA (MUY VENCIDA)</td>
                             <td class="px-4 py-3 font-semibold">805 (B2)</td>
                             <td class="px-4 py-3 text-red-600 font-bold">2026-05-01</td>
-                            <td class="px-4 py-3">Esmaltado de tina y paredes (Artisan)</td>
-                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs">Cambiar Vendor</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_tub_artisan">Esmaltado de tina y paredes (Artisan)</td>
+                            <td class="px-4 py-3"><span class="bg-red-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_change">Cambiar Vendor</span></td>
                         </tr>
 
                         <!-- ALTAS (Vencidas Recientes) -->
                         <tr class="border-b hover:bg-orange-50 bg-orange-50">
-                            <td class="px-4 py-3 font-bold text-orange-600">4 - ALTA (VENCIDA)</td>
+                            <td class="px-4 py-3 font-bold text-orange-600" data-i18n="pri_4">4 - ALTA (VENCIDA)</td>
                             <td class="px-4 py-3 font-semibold">904 / 905 (A2)</td>
                             <td class="px-4 py-3 text-orange-600">2026-05-06</td>
-                            <td class="px-4 py-3">Faltan cajones, esmaltados y pintura (J National)</td>
-                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Presionar J National</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_jn">Faltan cajones, esmaltados y pintura (J National)</td>
+                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_push_jn">Presionar J National</span></td>
                         </tr>
                         <tr class="border-b hover:bg-orange-50 bg-orange-50">
-                            <td class="px-4 py-3 font-bold text-orange-600">5 - ALTA (VENCIDA)</td>
+                            <td class="px-4 py-3 font-bold text-orange-600" data-i18n="pri_5">5 - ALTA (VENCIDA)</td>
                             <td class="px-4 py-3 font-semibold">2705 (B2)</td>
                             <td class="px-4 py-3 text-orange-600">2026-05-08</td>
-                            <td class="px-4 py-3">Pendiente proveedor Alfred</td>
-                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Presionar Alfred</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_alfred">Pendiente proveedor Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_push_al">Presionar Alfred</span></td>
                         </tr>
 
                         <!-- MEDIAS (Vencen HOY o están en proceso) -->
                         <tr class="border-b hover:bg-yellow-50">
-                            <td class="px-4 py-3 font-bold text-yellow-600">6 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-bold text-yellow-600" data-i18n="pri_6">6 - MEDIA (HOY/AYER)</td>
                             <td class="px-4 py-3 font-semibold">916, 1605 (A2/A3)</td>
                             <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-14</td>
-                            <td class="px-4 py-3">Pendiente Alfred / Alta Vacancia (>140 días)</td>
-                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_alfred_vac">Pendiente Alfred / Alta Vacancia (>140 días)</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_exec">Ejecutar Hoy</span></td>
                         </tr>
                         <tr class="border-b hover:bg-yellow-50">
-                            <td class="px-4 py-3 font-bold text-yellow-600">7 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-bold text-yellow-600" data-i18n="pri_7">7 - MEDIA (HOY/AYER)</td>
                             <td class="px-4 py-3 font-semibold">3115, 2601</td>
                             <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-13/14</td>
-                            <td class="px-4 py-3">Pendiente J National / Alfred</td>
-                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_jn_alfred">Pendiente J National / Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_exec">Ejecutar Hoy</span></td>
                         </tr>
                         <tr class="border-b hover:bg-yellow-50">
-                            <td class="px-4 py-3 font-bold text-yellow-600">8 - MEDIA (HOY/AYER)</td>
+                            <td class="px-4 py-3 font-bold text-yellow-600" data-i18n="pri_8">8 - MEDIA (HOY/AYER)</td>
                             <td class="px-4 py-3 font-semibold">1408 (B1)</td>
                             <td class="px-4 py-3 text-yellow-600 font-bold">2026-05-14</td>
-                            <td class="px-4 py-3">Pendiente Alfred</td>
-                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Ejecutar Hoy</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_alfred2">Pendiente Alfred</td>
+                            <td class="px-4 py-3"><span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs" data-i18n="badge_exec">Ejecutar Hoy</span></td>
                         </tr>
 
                         <!-- BACKLOG MASIVO -->
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-bold text-gray-500" data-i18n="pri_9">9 - BACKLOG</td>
                             <td class="px-4 py-3 font-semibold">3009, 1908, 1116</td>
-                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
-                            <td class="px-4 py-3">Make Ready Pendiente General (25+ días vacantes)</td>
-                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                            <td class="px-4 py-3 text-gray-400" data-i18n="stat_sin_asignar">Sin Asignar</td>
+                            <td class="px-4 py-3" data-i18n="stat_mr_25">Make Ready Pendiente General (25+ días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border" data-i18n="badge_sched">Programar Vendor</span></td>
                         </tr>
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-bold text-gray-500" data-i18n="pri_9">9 - BACKLOG</td>
                             <td class="px-4 py-3 font-semibold">712, 2608, 3307</td>
-                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
-                            <td class="px-4 py-3">Make Ready Pendiente General (21+ días vacantes)</td>
-                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                            <td class="px-4 py-3 text-gray-400" data-i18n="stat_sin_asignar">Sin Asignar</td>
+                            <td class="px-4 py-3" data-i18n="stat_mr_21">Make Ready Pendiente General (21+ días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border" data-i18n="badge_sched">Programar Vendor</span></td>
                         </tr>
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-bold text-gray-500" data-i18n="pri_9">9 - BACKLOG</td>
                             <td class="px-4 py-3 font-semibold">1811, 3212, 2911</td>
-                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
-                            <td class="px-4 py-3">Make Ready Pendiente General (17-19 días vacantes)</td>
-                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                            <td class="px-4 py-3 text-gray-400" data-i18n="stat_sin_asignar">Sin Asignar</td>
+                            <td class="px-4 py-3" data-i18n="stat_mr_17">Make Ready Pendiente General (17-19 días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border" data-i18n="badge_sched">Programar Vendor</span></td>
                         </tr>
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-3 font-bold text-gray-500">9 - BACKLOG</td>
+                            <td class="px-4 py-3 font-bold text-gray-500" data-i18n="pri_9">9 - BACKLOG</td>
                             <td class="px-4 py-3 font-semibold">604, 1514</td>
-                            <td class="px-4 py-3 text-gray-400">Sin Asignar</td>
-                            <td class="px-4 py-3">Make Ready Pendiente General (6-13 días vacantes)</td>
-                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border">Programar Vendor</span></td>
+                            <td class="px-4 py-3 text-gray-400" data-i18n="stat_sin_asignar">Sin Asignar</td>
+                            <td class="px-4 py-3" data-i18n="stat_mr_6">Make Ready Pendiente General (6-13 días vacantes)</td>
+                            <td class="px-4 py-3"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border" data-i18n="badge_sched">Programar Vendor</span></td>
                         </tr>
 
                         <!-- PAUSADAS -->
                         <tr class="border-b hover:bg-gray-100 bg-gray-50 text-gray-500">
-                            <td class="px-4 py-3 font-bold text-gray-600">10 - PAUSADA (FONDOS)</td>
+                            <td class="px-4 py-3 font-bold text-gray-600" data-i18n="pri_10">10 - PAUSADA (FONDOS)</td>
                             <td class="px-4 py-3 font-semibold line-through">2706 (B2)</td>
                             <td class="px-4 py-3">2026-04-11</td>
-                            <td class="px-4 py-3">On Hold till 2bdrms leased due to funding</td>
-                            <td class="px-4 py-3"><span class="bg-gray-400 text-white px-2 py-1 rounded text-xs">Congelada / CapEx</span></td>
+                            <td class="px-4 py-3" data-i18n="stat_onhold">On Hold till 2bdrms leased due to funding</td>
+                            <td class="px-4 py-3"><span class="bg-gray-400 text-white px-2 py-1 rounded text-xs" data-i18n="badge_frozen">Congelada / CapEx</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,27 +180,27 @@
 
         <!-- Strategy Plan Section (UPDATED) -->
         <div class="card mb-8 bg-blue-50 border-l-4 border-blue-600">
-            <h2 class="text-xl font-bold mb-4 text-blue-900"><i class="fa-solid fa-chess-knight mr-2"></i> Estrategia y Plan de Acción (14 de Mayo)</h2>
+            <h2 class="text-xl font-bold mb-4 text-blue-900"><i class="fa-solid fa-chess-knight mr-2"></i> <span data-i18n="strat_title">Estrategia y Plan de Acción (14 de Mayo)</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 <div class="bg-white p-4 rounded shadow-sm">
-                    <h3 class="font-bold text-red-600 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 1. Penalización / Reemplazo de Vendors</h3>
-                    <p class="text-sm text-gray-700">Las unidades 307, 102 y 805 tienen <strong>más de 14 días de retraso</strong>. Los proveedores asignados (Alfred / Artisan) están bloqueando el inventario. Se recomienda cancelar sus órdenes de trabajo hoy mismo, reasignar a un proveedor de respaldo (backup vendor) o enviar al equipo de mantenimiento interno (Punch Blitz) para finalizar.</p>
+                    <h3 class="font-bold text-red-600 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span data-i18n="strat_1_title">1. Penalización / Reemplazo de Vendors</span></h3>
+                    <p class="text-sm text-gray-700" data-i18n="strat_1_body">Las unidades 307, 102 y 805 tienen <strong>más de 14 días de retraso</strong>. Los proveedores asignados (Alfred / Artisan) están bloqueando el inventario. Se recomienda cancelar sus órdenes de trabajo hoy mismo, reasignar a un proveedor de respaldo (backup vendor) o enviar al equipo de mantenimiento interno (Punch Blitz) para finalizar.</p>
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
-                    <h3 class="font-bold text-orange-600 mb-2"><i class="fa-solid fa-layer-group mr-1"></i> 2. Atención a Unidades de "Alta Vacancia"</h3>
-                    <p class="text-sm text-gray-700">Unidades como la <strong>1605 (182 días vacante)</strong> y <strong>916 (147 días)</strong> finalmente tienen programación (13-14 de mayo). El equipo de supervisión debe hacer un seguimiento presencial hoy. Estas unidades impactan negativamente la métrica de vacancia global de la propiedad.</p>
+                    <h3 class="font-bold text-orange-600 mb-2"><i class="fa-solid fa-layer-group mr-1"></i> <span data-i18n="strat_2_title">2. Atención a Unidades de "Alta Vacancia"</span></h3>
+                    <p class="text-sm text-gray-700" data-i18n="strat_2_body">Unidades como la <strong>1605 (182 días vacante)</strong> y <strong>916 (147 días)</strong> finalmente tienen programación (13-14 de mayo). El equipo de supervisión debe hacer un seguimiento presencial hoy. Estas unidades impactan negativamente la métrica de vacancia global de la propiedad.</p>
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
-                    <h3 class="font-bold text-green-600 mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> 3. Cadena de Suministro y Retoques</h3>
-                    <p class="text-sm text-gray-700">El Checklist sigue mostrando faltantes en detalles finales (cajones de gabinetes, detectores de humo, puertas de lavandería). Se debe designar a un técnico exclusivamente para realizar rondas de "Punch-Out" con un carrito lleno de estas refacciones menores para cerrar unidades casi terminadas.</p>
+                    <h3 class="font-bold text-green-600 mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> <span data-i18n="strat_3_title">3. Cadena de Suministro y Retoques</span></h3>
+                    <p class="text-sm text-gray-700" data-i18n="strat_3_body">El Checklist sigue mostrando faltantes en detalles finales (cajones de gabinetes, detectores de humo, puertas de lavandería). Se debe designar a un técnico exclusivamente para realizar rondas de "Punch-Out" con un carrito lleno de estas refacciones menores para cerrar unidades casi terminadas.</p>
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
-                    <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> 4. Limpieza del Backlog (14+ Unidades)</h3>
-                    <p class="text-sm text-gray-700">El backlog sigue creciendo. Identificar 4 unidades del backlog que requieran el menor esfuerzo (solo pintura y limpieza) y asignar un <em>Task Force</em> de fin de semana para sacarlas al mercado de inmediato, reduciendo el conteo de pendientes de 28 a 24 antes del lunes.</p>
+                    <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> <span data-i18n="strat_4_title">4. Limpieza del Backlog (14+ Unidades)</span></h3>
+                    <p class="text-sm text-gray-700" data-i18n="strat_4_body">El backlog sigue creciendo. Identificar 4 unidades del backlog que requieran el menor esfuerzo (solo pintura y limpieza) y asignar un <em>Task Force</em> de fin de semana para sacarlas al mercado de inmediato, reduciendo el conteo de pendientes de 28 a 24 antes del lunes.</p>
                 </div>
             </div>
         </div>
@@ -205,7 +210,7 @@
             
             <!-- Chart 1: Prewalks by Month -->
             <div class="card">
-                <h3 class="text-lg font-bold mb-2 text-center">Volumen de Inspecciones (Prewalks) por Mes</h3>
+                <h3 class="text-lg font-bold mb-2 text-center" data-i18n="chart1_title">Volumen de Inspecciones (Prewalks) por Mes</h3>
                 <div class="relative h-64 w-full">
                     <canvas id="prewalksChart"></canvas>
                 </div>
@@ -213,7 +218,7 @@
 
             <!-- Chart 2: Final Walk Problems -->
             <div class="card">
-                <h3 class="text-lg font-bold mb-2 text-center">Problemas Frecuentes (Final Walk)</h3>
+                <h3 class="text-lg font-bold mb-2 text-center" data-i18n="chart2_title">Problemas Frecuentes (Final Walk)</h3>
                 <div class="relative h-64 w-full">
                     <canvas id="finalWalkChart"></canvas>
                 </div>
@@ -221,7 +226,7 @@
 
             <!-- Chart 3: Make Ready Checklist -->
             <div class="card">
-                <h3 class="text-lg font-bold mb-2 text-center">Estado General: Make Ready Checklist</h3>
+                <h3 class="text-lg font-bold mb-2 text-center" data-i18n="chart3_title">Estado General: Make Ready Checklist</h3>
                 <div class="relative h-64 w-full flex justify-center">
                     <canvas id="checklistChart"></canvas>
                 </div>
@@ -229,7 +234,7 @@
 
             <!-- Chart 4: Future Unit Board -->
             <div class="card">
-                <h3 class="text-lg font-bold mb-2 text-center">Estado del "Future Unit Board"</h3>
+                <h3 class="text-lg font-bold mb-2 text-center" data-i18n="chart4_title">Estado del "Future Unit Board"</h3>
                 <div class="relative h-64 w-full flex justify-center">
                     <canvas id="futureUnitsChart"></canvas>
                 </div>
@@ -238,21 +243,123 @@
         </div>
     </div>
 
-    <!-- Chart Configuration Script -->
+    <!-- Translations & Script -->
     <script>
-        // Configuración Global Chart.js
+        // --- Translation Dictionary ---
+        const translations = {
+            nav_title: { es: "Make Ready Analytics Dashboard", en: "Make Ready Analytics Dashboard" },
+            nav_updated: { es: "Actualizado: 14 de Mayo, 2026", en: "Updated: May 14, 2026" },
+            kpi_pending: { es: "Make Readys Pendientes", en: "Pending Make Readys" },
+            kpi_prewalks: { es: "Prewalks Realizados", en: "Completed Prewalks" },
+            kpi_future: { es: "Future Units (Down/Renov)", en: "Future Units (Down/Renov)" },
+            kpi_final: { es: "Final Walks (Aprobados)", en: "Final Walks (Approved)" },
+            table_title: { es: "Prioridad de Make Readys Pendientes (Total: 28 Unidades)", en: "Pending Make Ready Priority (Total: 28 Units)" },
+            th_priority: { es: "Prioridad", en: "Priority" },
+            th_unit: { es: "Unidad", en: "Unit" },
+            th_date: { es: "Fecha Objetivo", en: "Target Date" },
+            th_status: { es: "Cuellos de Botella / Estado Actual", en: "Bottlenecks / Current Status" },
+            th_action: { es: "Acción Requerida", en: "Required Action" },
+            
+            // Priorities
+            pri_1: { es: "1 - CRÍTICA (MUY VENCIDA)", en: "1 - CRITICAL (VERY OVERDUE)" },
+            pri_2: { es: "2 - CRÍTICA (MUY VENCIDA)", en: "2 - CRITICAL (VERY OVERDUE)" },
+            pri_3: { es: "3 - CRÍTICA (MUY VENCIDA)", en: "3 - CRITICAL (VERY OVERDUE)" },
+            pri_4: { es: "4 - ALTA (VENCIDA)", en: "4 - HIGH (OVERDUE)" },
+            pri_5: { es: "5 - ALTA (VENCIDA)", en: "5 - HIGH (OVERDUE)" },
+            pri_6: { es: "6 - MEDIA (HOY/AYER)", en: "6 - MEDIUM (TODAY/YESTERDAY)" },
+            pri_7: { es: "7 - MEDIA (HOY/AYER)", en: "7 - MEDIUM (TODAY/YESTERDAY)" },
+            pri_8: { es: "8 - MEDIA (HOY/AYER)", en: "8 - MEDIUM (TODAY/YESTERDAY)" },
+            pri_9: { es: "9 - BACKLOG", en: "9 - BACKLOG" },
+            pri_10: { es: "10 - PAUSADA (FONDOS)", en: "10 - PAUSED (FUNDING)" },
+            
+            // Bottleneck Statuses
+            stat_mr_pending_14: { es: "Make Ready General Pendiente (>14 días atraso)", en: "General Make Ready Pending (>14 days overdue)" },
+            stat_clean_alfred: { es: "Limpieza pendiente (Alfred - >14 días atraso)", en: "Pending cleaning (Alfred - >14 days overdue)" },
+            stat_tub_artisan: { es: "Esmaltado de tina y paredes (Artisan)", en: "Tub & wall resurface (Artisan)" },
+            stat_jn: { es: "Faltan cajones, esmaltados y pintura (J National)", en: "Missing drawers, resurfacing & paint (J National)" },
+            stat_alfred: { es: "Pendiente proveedor Alfred", en: "Pending vendor Alfred" },
+            stat_alfred_vac: { es: "Pendiente Alfred / Alta Vacancia (>140 días)", en: "Pending Alfred / High Vacancy (>140 days)" },
+            stat_jn_alfred: { es: "Pendiente J National / Alfred", en: "Pending J National / Alfred" },
+            stat_alfred2: { es: "Pendiente Alfred", en: "Pending Alfred" },
+            stat_mr_25: { es: "Make Ready Pendiente General (25+ días vacantes)", en: "General Make Ready Pending (25+ days vacant)" },
+            stat_mr_21: { es: "Make Ready Pendiente General (21+ días vacantes)", en: "General Make Ready Pending (21+ days vacant)" },
+            stat_mr_17: { es: "Make Ready Pendiente General (17-19 días vacantes)", en: "General Make Ready Pending (17-19 days vacant)" },
+            stat_mr_6: { es: "Make Ready Pendiente General (6-13 días vacantes)", en: "General Make Ready Pending (6-13 days vacant)" },
+            stat_sin_asignar: { es: "Sin Asignar", en: "Unassigned" },
+            stat_onhold: { es: "On Hold till 2bdrms leased due to funding", en: "On Hold till 2bdrms leased due to funding" },
+            
+            // Actions Badges
+            badge_escalate: { es: "Escalar a Gerencia", en: "Escalate to Mgmt" },
+            badge_change: { es: "Cambiar Vendor", en: "Change Vendor" },
+            badge_push_jn: { es: "Presionar J National", en: "Push J National" },
+            badge_push_al: { es: "Presionar Alfred", en: "Push Alfred" },
+            badge_exec: { es: "Ejecutar Hoy", en: "Execute Today" },
+            badge_sched: { es: "Programar Vendor", en: "Schedule Vendor" },
+            badge_frozen: { es: "Congelada / CapEx", en: "Frozen / CapEx" },
+            
+            // Strategies
+            strat_title: { es: "Estrategia y Plan de Acción (14 de Mayo)", en: "Strategy & Action Plan (May 14)" },
+            strat_1_title: { es: "1. Penalización / Reemplazo de Vendors", en: "1. Vendor Penalties / Replacement" },
+            strat_1_body: { 
+                es: "Las unidades 307, 102 y 805 tienen <strong>más de 14 días de retraso</strong>. Los proveedores asignados (Alfred / Artisan) están bloqueando el inventario. Se recomienda cancelar sus órdenes de trabajo hoy mismo, reasignar a un proveedor de respaldo (backup vendor) o enviar al equipo de mantenimiento interno (Punch Blitz) para finalizar.", 
+                en: "Units 307, 102, and 805 are <strong>more than 14 days overdue</strong>. Assigned vendors (Alfred / Artisan) are blocking inventory. Recommend canceling their work orders today, reassigning to a backup vendor, or deploying internal maintenance (Punch Blitz) to finalize." 
+            },
+            strat_2_title: { es: "2. Atención a Unidades de \"Alta Vacancia\"", en: "2. Focus on \"High Vacancy\" Units" },
+            strat_2_body: { 
+                es: "Unidades como la <strong>1605 (182 días vacante)</strong> y <strong>916 (147 días)</strong> finalmente tienen programación (13-14 de mayo). El equipo de supervisión debe hacer un seguimiento presencial hoy. Estas unidades impactan negativamente la métrica de vacancia global de la propiedad.", 
+                en: "Units like <strong>1605 (182 days vacant)</strong> and <strong>916 (147 days)</strong> finally have scheduling (May 13-14). Supervisory team must follow up in person today. These units negatively impact the property's overall vacancy metrics." 
+            },
+            strat_3_title: { es: "3. Cadena de Suministro y Retoques", en: "3. Supply Chain & Touch-ups" },
+            strat_3_body: { 
+                es: "El Checklist sigue mostrando faltantes en detalles finales (cajones de gabinetes, detectores de humo, puertas de lavandería). Se debe designar a un técnico exclusivamente para realizar rondas de \"Punch-Out\" con un carrito lleno de estas refacciones menores para cerrar unidades casi terminadas.", 
+                en: "The Checklist still shows missing final details (cabinet drawers, smoke detectors, laundry doors). A dedicated tech must be assigned to do \"Punch-Out\" rounds with a cart full of these minor parts to close out almost-finished units." 
+            },
+            strat_4_title: { es: "4. Limpieza del Backlog (14+ Unidades)", en: "4. Backlog Cleanup (14+ Units)" },
+            strat_4_body: { 
+                es: "El backlog sigue creciendo. Identificar 4 unidades del backlog que requieran el menor esfuerzo (solo pintura y limpieza) y asignar un <em>Task Force</em> de fin de semana para sacarlas al mercado de inmediato, reduciendo el conteo de pendientes de 28 a 24 antes del lunes.", 
+                en: "The backlog continues to grow. Identify 4 backlog units requiring the lowest effort (paint and clean only) and assign a weekend <em>Task Force</em> to get them market-ready immediately, dropping pending count from 28 to 24 by Monday." 
+            },
+            
+            // Chart Titles
+            chart1_title: { es: "Volumen de Inspecciones (Prewalks) por Mes", en: "Inspection Volume (Prewalks) per Month" },
+            chart2_title: { es: "Problemas Frecuentes (Final Walk)", en: "Frequent Issues (Final Walk)" },
+            chart3_title: { es: "Estado General: Make Ready Checklist", en: "Overall Status: Make Ready Checklist" },
+            chart4_title: { es: "Estado del \"Future Unit Board\"", en: "\"Future Unit Board\" Status" }
+        };
+
+        let currentLang = 'es';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            
+            // Update Toggle Button Text
+            document.getElementById('langToggleBtn').innerText = currentLang === 'es' ? 'English' : 'Español';
+
+            // Update DOM Texts
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[key] && translations[key][currentLang]) {
+                    el.innerHTML = translations[key][currentLang];
+                }
+            });
+
+            // Update Charts
+            updateChartsLanguage();
+        }
+
+        // --- Configuración Global Chart.js ---
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.color = '#4B5563';
 
-        // 1. Gráfica: Volumen de Inspecciones (Prewalks) por Mes
+        // 1. Gráfica: Volumen de Inspecciones
         const ctxPrewalks = document.getElementById('prewalksChart').getContext('2d');
-        new Chart(ctxPrewalks, {
+        let prewalksChart = new Chart(ctxPrewalks, {
             type: 'line',
             data: {
                 labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
                 datasets: [{
                     label: 'Cantidad de Prewalks',
-                    data: [16, 27, 13, 18, 14], // Aumento en mayo a 14
+                    data: [16, 27, 13, 18, 14],
                     borderColor: '#3B82F6',
                     backgroundColor: 'rgba(59, 130, 246, 0.2)',
                     borderWidth: 3,
@@ -265,25 +372,21 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 5 } }
-                },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 5 } } },
                 plugins: { legend: { display: false } }
             }
         });
 
-        // 2. Gráfica: Problemas Frecuentes (Final Walk) por Categoría
+        // 2. Gráfica: Problemas Frecuentes
         const ctxFinalWalk = document.getElementById('finalWalkChart').getContext('2d');
-        new Chart(ctxFinalWalk, {
+        let finalWalkChart = new Chart(ctxFinalWalk, {
             type: 'bar',
             data: {
                 labels: ['Cocina / Electrodom.', 'Baños (Vidrios/Tinas)', 'Persianas', 'Puertas', 'Salas/Cuartos', 'Lavandería', 'Curb Appeal'],
                 datasets: [{
                     label: 'Incidencias Reportadas',
-                    data: [18, 13, 10, 7, 5, 4, 2], // Ligero aumento proporcional por nuevas inspecciones
-                    backgroundColor: [
-                        '#EF4444', '#F97316', '#F59E0B', '#10B981', '#3B82F6', '#6366F1', '#8B5CF6'
-                    ],
+                    data: [18, 13, 10, 7, 5, 4, 2],
+                    backgroundColor: ['#EF4444', '#F97316', '#F59E0B', '#10B981', '#3B82F6', '#6366F1', '#8B5CF6'],
                     borderWidth: 0,
                     borderRadius: 4
                 }]
@@ -296,14 +399,14 @@
             }
         });
 
-        // 3. Gráfica: Make Ready Checklist (Doughnut)
+        // 3. Gráfica: Make Ready Checklist
         const ctxChecklist = document.getElementById('checklistChart').getContext('2d');
-        new Chart(ctxChecklist, {
+        let checklistChart = new Chart(ctxChecklist, {
             type: 'doughnut',
             data: {
                 labels: ['Complete / Pass', 'Needs Repair', 'Pending Vendor'],
                 datasets: [{
-                    data: [70, 22, 8], // Reducción en completados debido al gran volumen de backlog
+                    data: [70, 22, 8],
                     backgroundColor: ['#10B981', '#EF4444', '#F59E0B'],
                     hoverOffset: 4,
                     borderWidth: 2
@@ -317,14 +420,14 @@
             }
         });
 
-        // 4. Gráfica: Future Unit Board (Pie)
+        // 4. Gráfica: Future Unit Board
         const ctxFutureUnits = document.getElementById('futureUnitsChart').getContext('2d');
-        new Chart(ctxFutureUnits, {
+        let futureUnitsChart = new Chart(ctxFutureUnits, {
             type: 'pie',
             data: {
                 labels: ['Moho / Peligro Biológico', 'Daño Estructural Severo', 'Congeladas (CapEx)'],
                 datasets: [{
-                    data: [3, 1, 1], // Sin cambios reportados en este documento
+                    data: [3, 1, 1],
                     backgroundColor: ['#B91C1C', '#7F1D1D', '#6B7280'],
                     hoverOffset: 4,
                     borderWidth: 1
@@ -336,6 +439,33 @@
                 plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
             }
         });
+
+        // --- Lógica para traducir las Gráficas ---
+        function updateChartsLanguage() {
+            // Prewalks
+            prewalksChart.data.labels = currentLang === 'es' 
+                ? ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'] 
+                : ['January', 'February', 'March', 'April', 'May'];
+            prewalksChart.data.datasets[0].label = currentLang === 'es' ? 'Cantidad de Prewalks' : 'Prewalk Count';
+            prewalksChart.update();
+
+            // Final Walk
+            finalWalkChart.data.labels = currentLang === 'es' 
+                ? ['Cocina / Electrodom.', 'Baños (Vidrios/Tinas)', 'Persianas', 'Puertas', 'Salas/Cuartos', 'Lavandería', 'Curb Appeal'] 
+                : ['Kitchen / Appls.', 'Bathrooms (Glass/Tubs)', 'Blinds', 'Doors', 'Living/Bedrooms', 'Laundry', 'Curb Appeal'];
+            finalWalkChart.data.datasets[0].label = currentLang === 'es' ? 'Incidencias Reportadas' : 'Reported Incidents';
+            finalWalkChart.update();
+
+            // Checklist - Keep labels mostly same since they are standard but enforce explicit array
+            checklistChart.data.labels = ['Complete / Pass', 'Needs Repair', 'Pending Vendor'];
+            checklistChart.update();
+
+            // Future Units
+            futureUnitsChart.data.labels = currentLang === 'es'
+                ? ['Moho / Peligro Biológico', 'Daño Estructural Severo', 'Congeladas (CapEx)']
+                : ['Mold / Biohazard', 'Severe Structural Damage', 'Frozen (CapEx)'];
+            futureUnitsChart.update();
+        }
     </script>
 </body>
 </html>
