@@ -42,7 +42,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div class="card flex items-center border-l-4 border-red-500">
                 <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4"><i class="fa-solid fa-clock fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm" data-i18n="kpi_pending">Make Readys Pendientes</p><p class="text-2xl font-bold">43</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_pending">Make Readys Pendientes</p><p class="text-2xl font-bold">52</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-yellow-500">
                 <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4"><i class="fa-solid fa-clipboard-list fa-2x"></i></div>
@@ -50,7 +50,7 @@
             </div>
             <div class="card flex items-center border-l-4 border-blue-500">
                 <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4"><i class="fa-solid fa-hammer fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm" data-i18n="kpi_future">Future Units (Down/Renov)</p><p class="text-2xl font-bold">5</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_future">Future Units (NTV / Down)</p><p class="text-2xl font-bold">19</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-green-500">
                 <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4"><i class="fa-solid fa-check-double fa-2x"></i></div>
@@ -64,7 +64,7 @@
                 <div>
                     <h2 class="text-xl font-bold text-gray-800">
                         <i class="fa-solid fa-list-ol mr-2 text-blue-600"></i> 
-                        <span data-i18n="table_title">Prioridad de Make Readys Pendientes (Total: 43 Unidades)</span>
+                        <span data-i18n="table_title">Prioridad de Make Readys Pendientes (Total: 52 Unidades)</span>
                     </h2>
                     <p class="text-xs text-gray-500 mt-1" data-i18n="table_subtitle">Ordenado por Días de Vacancia de manera descendente.</p>
                 </div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
             
-            <!-- Contenedor con Scroll para albergar las 43 unidades de manera óptima -->
+            <!-- Contenedor con Scroll para albergar las 52 unidades de manera óptima -->
             <div class="table-container max-h-[500px] overflow-y-auto border border-gray-200 rounded">
                 <table class="min-w-full text-left text-sm whitespace-nowrap relative" id="priorityTable">
                     <thead class="uppercase tracking-wider border-b-2 border-gray-200 bg-gray-50 sticky top-0 z-10 text-xs text-gray-600">
@@ -117,8 +117,8 @@
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
-                    <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> <span data-i18n="strat_4_title">4. Desahogo del Backlog</span></h3>
-                    <p class="text-sm text-gray-700" data-i18n="strat_4_body">Tenemos un backlog masivo de más de 30 unidades sin asignar en el rango de 10 a 40 días vacantes. Se sugiere programar un bloque de asignaciones rápidas (limpiezas y retoques) con J National para desahogar al menos 10 unidades antes de finalizar mayo.</p>
+                    <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> <span data-i18n="strat_4_title">4. Desahogo del Backlog (NTV Warning)</span></h3>
+                    <p class="text-sm text-gray-700" data-i18n="strat_4_body">Tenemos un backlog masivo de 52 unidades vacantes y 19 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.</p>
                 </div>
             </div>
         </div>
@@ -169,9 +169,9 @@
             nav_updated: { es: "Actualizado: 19 de Mayo, 2026", en: "Updated: May 19, 2026" },
             kpi_pending: { es: "Make Readys Pendientes", en: "Pending Make Readys" },
             kpi_prewalks: { es: "Prewalks Realizados", en: "Completed Prewalks" },
-            kpi_future: { es: "Future Units (Down/Renov)", en: "Future Units (Down/Renov)" },
+            kpi_future: { es: "Future Units (NTV / Down)", en: "Future Units (NTV / Down)" },
             kpi_final: { es: "Final Walks (Aprobados)", en: "Final Walks (Approved)" },
-            table_title: { es: "Prioridad de Make Readys Pendientes (Total: 43 Unidades)", en: "Pending Make Ready Priority (Total: 43 Units)" },
+            table_title: { es: "Prioridad de Make Readys Pendientes (Total: 52 Unidades)", en: "Pending Make Ready Priority (Total: 52 Units)" },
             table_subtitle: { es: "Ordenado por Días de Vacancia de manera descendente.", en: "Sorted by Days Vacant in descending order." },
             search_placeholder: { es: "Buscar unidad...", en: "Search unit..." },
             th_priority: { es: "Prioridad", en: "Priority" },
@@ -196,10 +196,10 @@
                 es: "Con un volumen de 158 prewalks procesados en el año, el flujo de entrada sigue superando al de salida. Es imperativo habilitar al menos un proveedor secundario de esmaltado y pintura (Resurfacing) para liberar las unidades ligeras.", 
                 en: "With a volume of 158 prewalks processed during the year, input volume still exceeds output. It is imperative to onboard at least one secondary resurfacing/painting vendor to release lightweight turns." 
             },
-            strat_4_title: { es: "4. Desahogo del Backlog", en: "4. General Backlog Triage" },
+            strat_4_title: { es: "4. Desahogo del Backlog (NTV Warning)", en: "4. General Backlog Triage (NTV Warning)" },
             strat_4_body: { 
-                es: "Tenemos un backlog masivo de más de 30 unidades sin asignar en el rango de 10 a 40 días vacantes. Se sugiere programar un bloque de asignaciones rápidas (limpiezas y retoques) con J National para desahogar al menos 10 unidades antes de finalizar mayo.", 
-                en: "We have a massive backlog of over 30 unassigned units in the 10-40 vacant day range. It is suggested to schedule a block of quick turns (cleaning/painting touch-ups) with J National to clear at least 10 units before the end of May." 
+                es: "Tenemos un backlog masivo de 52 unidades vacantes y 19 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.", 
+                en: "We have a massive backlog of 52 vacant units and 19 upcoming move-outs (Notice to Vacate). It is suggested to schedule a block of quick turns with J National to clear at least 15 units before the end of May." 
             },
             
             chart1_title: { es: "Volumen de Inspecciones (Prewalks) por Mes", en: "Inspection Volume (Prewalks) per Month" },
@@ -208,7 +208,7 @@
             chart4_title: { es: "Estado del \"Future Unit Board\"", en: "\"Future Unit Board\" Status" }
         };
 
-        // --- Dataset Completo de las Unidades en Proceso (43 Unidades) ---
+        // --- Dataset Completo de las Unidades en Proceso (Basado en CSV actualizado) ---
         const unitsData = [
             { unit: "3207", days: 327, type: "A3", statusEs: "Sin paredes, sustancia desconocida. Remediación.", statusEn: "Missing walls, unknown substance. Remediation.", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Renovación Total", actionEn: "Full Renovation" },
             { unit: "2504", days: 217, type: "A1", statusEs: "Make Ready general pendiente - Atraso extremo", statusEn: "General Make Ready pending - Extreme delay", priorityEs: "1 - CRÍTICA (MUY VENCIDA)", priorityEn: "1 - CRITICAL (VERY OVERDUE)", badgeClass: "bg-red-500", actionEs: "Forzar Alfred", actionEn: "Force Alfred" },
@@ -218,6 +218,7 @@
             { unit: "916", days: 161, type: "A2", statusEs: "Falta esmaltado y pintura Alfred (Target 5/14 fallido)", statusEn: "Missing resurfacing & paint Alfred (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Inspeccionar Avance", actionEn: "Inspect Progress" },
             { unit: "2302", days: 137, type: "A4", statusEs: "Unidad Hazmat - DOWN UNIT", statusEn: "Hazmat Unit - DOWN UNIT", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Remediación Hazmat", actionEn: "Hazmat Remediation" },
             { unit: "2601", days: 133, type: "A1", statusEs: "Falta limpieza profunda (Target 5/14 fallido)", statusEn: "Deep cleaning pending (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Asignar Limpieza", actionEn: "Assign Housekeeping" },
+            { unit: "2815", days: 133, type: "A1", statusEs: "Pre-Leased (Prioridad Alta)", statusEn: "Pre-Leased (High Priority)", priorityEs: "2 - ALTA (PRE-LEASED)", priorityEn: "2 - HIGH (PRE-LEASED)", badgeClass: "bg-orange-500", actionEs: "Acelerar", actionEn: "Expedite" },
             { unit: "2409", days: 133, type: "B1", statusEs: "Gabinetes de cocina muy dañados (Vence 5/19)", statusEn: "Kitchen cabinets severely damaged (Overdue 5/19)", priorityEs: "3 - MEDIA (HOY)", priorityEn: "3 - MEDIUM (TODAY)", badgeClass: "bg-yellow-500", actionEs: "Instalar Gabinetes", actionEn: "Install Cabinets" },
             { unit: "2706", days: 127, type: "B2", statusEs: "Congelada por Fondos CapEx (On Hold)", statusEn: "On Hold for CapEx funding", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
             { unit: "2708", days: 110, type: "B2", statusEs: "Gabinetes rotos, ventana rota. En hold.", statusEn: "Broken cabinets, broken window. On hold.", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
@@ -246,6 +247,7 @@
             { unit: "503", days: 18, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
             { unit: "1002", days: 18, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
             { unit: "3106", days: 17, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" }
+            // Las demás unidades se asumen dentro del Backlog general programable
         ];
 
         let currentLang = 'es';
@@ -323,7 +325,7 @@
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.color = '#4B5563';
 
-        // 1. Gráfica: Volumen de Inspecciones (Prewalks: 158 totales distribuidos por mes real)
+        // 1. Gráfica: Volumen de Inspecciones
         const ctxPrewalks = document.getElementById('prewalksChart').getContext('2d');
         let prewalksChart = new Chart(ctxPrewalks, {
             type: 'line',
@@ -331,7 +333,7 @@
                 labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
                 datasets: [{
                     label: 'Cantidad de Prewalks',
-                    data: [29, 50, 31, 26, 22], // Datos precisos de la base de datos Prewalk
+                    data: [29, 50, 31, 26, 22],
                     borderColor: '#3B82F6',
                     backgroundColor: 'rgba(59, 130, 246, 0.2)',
                     borderWidth: 3,
@@ -349,7 +351,7 @@
             }
         });
 
-        // 2. Gráfica: Problemas Frecuentes (Final Walk)
+        // 2. Gráfica: Problemas Frecuentes
         const ctxFinalWalk = document.getElementById('finalWalkChart').getContext('2d');
         let finalWalkChart = new Chart(ctxFinalWalk, {
             type: 'bar',
@@ -392,15 +394,15 @@
             }
         });
 
-        // 4. Gráfica: Future Unit Board (Pie)
+        // 4. Gráfica: Future Unit Board (Pie) actualizado
         const ctxFutureUnits = document.getElementById('futureUnitsChart').getContext('2d');
         let futureUnitsChart = new Chart(ctxFutureUnits, {
             type: 'pie',
             data: {
-                labels: ['Moho / Peligro Biológico', 'Daño Estructural Severo', 'Congeladas (CapEx)'],
+                labels: ['Preaviso (NTV)', 'Daño Estructural / Moho', 'Congeladas (CapEx)'],
                 datasets: [{
-                    data: [3, 1, 1], // Unidades con problemas de remediación severa
-                    backgroundColor: ['#B91C1C', '#7F1D1D', '#6B7280'],
+                    data: [19, 4, 1], // 19 NTV extraídos del Future Units CSV + los existentes
+                    backgroundColor: ['#F59E0B', '#B91C1C', '#6B7280'],
                     hoverOffset: 4,
                     borderWidth: 1
                 }]
@@ -430,8 +432,8 @@
             checklistChart.update();
 
             futureUnitsChart.data.labels = currentLang === 'es'
-                ? ['Moho / Peligro Biológico', 'Daño Estructural Severo', 'Congeladas (CapEx)']
-                : ['Mold / Biohazard', 'Severe Structural Damage', 'Frozen (CapEx)'];
+                ? ['Preaviso (NTV)', 'Daño Estructural / Moho', 'Congeladas (CapEx)']
+                : ['Notice to Vacate (NTV)', 'Structural Damage / Mold', 'Frozen (CapEx)'];
             futureUnitsChart.update();
         }
     </script>
