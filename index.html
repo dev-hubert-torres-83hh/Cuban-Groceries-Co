@@ -28,7 +28,7 @@
                 <span data-i18n="nav_title">Make Ready Analytics Dashboard</span>
             </h1>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-blue-800 px-3 py-1 rounded-full" data-i18n="nav_updated">Actualizado: 19 de Mayo, 2026</span>
+                <span class="text-sm bg-blue-800 px-3 py-1 rounded-full" data-i18n="nav_updated">Actualizado: 20 de Mayo, 2026</span>
                 <button onclick="toggleLanguage()" id="langToggleBtn" class="bg-white text-blue-900 px-4 py-1 rounded font-bold text-sm hover:bg-gray-200 transition shadow">
                     English
                 </button>
@@ -50,11 +50,30 @@
             </div>
             <div class="card flex items-center border-l-4 border-blue-500">
                 <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4"><i class="fa-solid fa-hammer fa-2x"></i></div>
-                <div><p class="text-gray-500 text-sm" data-i18n="kpi_future">Future Units (NTV / Down)</p><p class="text-2xl font-bold">19</p></div>
+                <div><p class="text-gray-500 text-sm" data-i18n="kpi_future">Future Units (NTV / Down)</p><p class="text-2xl font-bold">20</p></div>
             </div>
             <div class="card flex items-center border-l-4 border-green-500">
                 <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4"><i class="fa-solid fa-check-double fa-2x"></i></div>
                 <div><p class="text-gray-500 text-sm" data-i18n="kpi_final">Final Walks (Aprobados)</p><p class="text-2xl font-bold">12</p></div>
+            </div>
+        </div>
+
+        <!-- Sección: Triage de Unidades Listas para Transición (Sin Limpieza) -->
+        <div class="card mb-8 bg-emerald-50 border-l-4 border-emerald-500">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-2 border-b border-emerald-100">
+                <div>
+                    <h2 class="text-xl font-bold text-emerald-900">
+                        <i class="fa-solid fa-truck-ramp-box mr-2"></i>
+                        <span data-i18n="triage_title">Triage de Producción: Listas para Make Ready (Checklist)</span>
+                    </h2>
+                    <p class="text-xs text-emerald-700 mt-1" data-i18n="triage_subtitle">Unidades de alta prioridad listas para entrega física (se descarta estatus de limpieza).</p>
+                </div>
+                <span class="bg-emerald-500 text-white text-xs px-2.5 py-1 rounded-full font-bold mt-2 md:mt-0" data-i18n="triage_badge">6 Unidades Identificadas</span>
+            </div>
+
+            <!-- Contenedor Responsivo de Triage -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="triageContainer">
+                <!-- Tarjetas dinámicas inyectadas por JS -->
             </div>
         </div>
 
@@ -70,7 +89,7 @@
                 </div>
                 <!-- Barra de búsqueda dinámica -->
                 <div class="relative w-full md:w-80">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <span class="absolute inset-y-0 flex items-center pl-3 text-gray-400">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input type="text" id="searchInput" oninput="filterTable()" placeholder="Buscar unidad..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" data-i18n-placeholder="search_placeholder">
@@ -98,17 +117,17 @@
 
         <!-- Sección de Plan de Acción Estratégico -->
         <div class="card mb-8 bg-blue-50 border-l-4 border-blue-600">
-            <h2 class="text-xl font-bold mb-4 text-blue-900"><i class="fa-solid fa-chess-knight mr-2"></i> <span data-i18n="strat_title">Estrategia y Plan de Acción (19 de Mayo)</span></h2>
+            <h2 class="text-xl font-bold mb-4 text-blue-900"><i class="fa-solid fa-chess-knight mr-2"></i> <span data-i18n="strat_title">Estrategia y Plan de Acción (20 de Mayo)</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 <div class="bg-white p-4 rounded shadow-sm">
                     <h3 class="font-bold text-red-600 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span data-i18n="strat_1_title">1. Rescate de Alta Vacancia Extrema</span></h3>
-                    <p class="text-sm text-gray-700" data-i18n="strat_1_body">Unidades como 3207, 2504, 3115 y 1605 superan los 190 días vacantes. Representan un impacto crítico a la métrica de retención y arrendamiento. Se debe rescindir contratos con proveedores lentos y realizar un plan interno de choque (Punch Blitz) inmediato.</p>
+                    <p class="text-sm text-gray-700" data-i18n="strat_1_body">Unidades como 3207, 2504, 3115 y 1605 superan los 197 días vacantes. Representan un impacto crítico a la métrica de retención y arrendamiento. Se debe rescindir contratos con proveedores lentos y realizar un plan interno de choque (Punch Blitz) inmediato.</p>
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
                     <h3 class="font-bold text-orange-600 mb-2"><i class="fa-solid fa-layer-group mr-1"></i> <span data-i18n="strat_2_title">2. Abastecimiento de Piezas Faltantes</span></h3>
-                    <p class="text-sm text-gray-700" data-i18n="strat_2_body">La unidad 2409 (vencida el 5/19) presenta gabinetes de cocina gravemente destruidos. Así mismo, la unidad 1408 necesita puertas de gabinetes completas. Se debe ordenar de manera expedita (Rush order) el set de partes hoy mismo.</p>
+                    <p class="text-sm text-gray-700" data-i18n="strat_2_body">La unidad 2409 (vencida el 5/19) presenta gabinetes de cocina muy dañados pero ya entró a Checklist. Asimismo, la unidad 1408 necesita puertas de gabinetes completas para superar su retención de 33 días.</p>
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm">
@@ -118,7 +137,7 @@
 
                 <div class="bg-white p-4 rounded shadow-sm">
                     <h3 class="font-bold text-purple-600 mb-2"><i class="fa-solid fa-phone-volume mr-1"></i> <span data-i18n="strat_4_title">4. Desahogo del Backlog (NTV Warning)</span></h3>
-                    <p class="text-sm text-gray-700" data-i18n="strat_4_body">Tenemos un backlog masivo de 52 unidades vacantes y 19 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.</p>
+                    <p class="text-sm text-gray-700" data-i18n="strat_4_body">Tenemos un backlog masivo de 52 unidades vacantes y 20 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.</p>
                 </div>
             </div>
         </div>
@@ -166,30 +185,33 @@
         // --- Diccionario de Traducción ---
         const translations = {
             nav_title: { es: "Make Ready Analytics Dashboard", en: "Make Ready Analytics Dashboard" },
-            nav_updated: { es: "Actualizado: 19 de Mayo, 2026", en: "Updated: May 19, 2026" },
+            nav_updated: { es: "Actualizado: 20 de Mayo, 2026", en: "Updated: May 20, 2026" },
             kpi_pending: { es: "Make Readys Pendientes", en: "Pending Make Readys" },
             kpi_prewalks: { es: "Prewalks Realizados", en: "Completed Prewalks" },
             kpi_future: { es: "Future Units (NTV / Down)", en: "Future Units (NTV / Down)" },
             kpi_final: { es: "Final Walks (Aprobados)", en: "Final Walks (Approved)" },
+            triage_title: { es: "Triage de Producción: Listas para Make Ready (Checklist)", en: "Production Triage: Ready for Make Ready (Checklist)" },
+            triage_subtitle: { es: "Unidades de alta prioridad listas para entrega física (se descarta estatus de limpieza).", en: "High-priority units ready for physical handover (cleaning status is bypassed)." },
+            triage_badge: { es: "6 Unidades Identificadas", en: "6 Units Identified" },
+            search_placeholder: { es: "Buscar unidad...", en: "Search unit..." },
             table_title: { es: "Prioridad de Make Readys Pendientes (Total: 52 Unidades)", en: "Pending Make Ready Priority (Total: 52 Units)" },
             table_subtitle: { es: "Ordenado por Días de Vacancia de manera descendente.", en: "Sorted by Days Vacant in descending order." },
-            search_placeholder: { es: "Buscar unidad...", en: "Search unit..." },
             th_priority: { es: "Prioridad", en: "Priority" },
             th_unit: { es: "Unidad", en: "Unit" },
             th_days: { es: "Días Vacante", en: "Days Vacant" },
             th_status: { es: "Cuellos de Botella / Estado Actual", en: "Bottlenecks / Current Status" },
             th_action: { es: "Acción Requerida", en: "Required Action" },
             
-            strat_title: { es: "Estrategia y Plan de Acción (19 de Mayo)", en: "Strategy & Action Plan (May 19)" },
+            strat_title: { es: "Estrategia y Plan de Acción (20 de Mayo)", en: "Strategy & Action Plan (May 20)" },
             strat_1_title: { es: "1. Rescate de Alta Vacancia Extrema", en: "1. Extreme High Vacancy Rescue" },
             strat_1_body: { 
-                es: "Unidades como 3207, 2504, 3115 y 1605 superan los 190 días vacantes. Representan un impacto crítico a la métrica de retención y arrendamiento. Se debe rescindir contratos con proveedores lentos y realizar un plan interno de choque (Punch Blitz) inmediato.", 
-                en: "Units like 3207, 2504, 3115, and 1605 exceed 190 vacant days. They represent a critical impact on retention and occupancy metrics. Cancel contracts with slow vendors and execute an immediate internal Punch Blitz." 
+                es: "Unidades como 3207, 2504, 3115 y 1605 superan los 197 días vacantes. Representan un impacto crítico a la métrica de retención y arrendamiento. Se debe rescindir contratos con proveedores lentos y realizar un plan interno de choque (Punch Blitz) inmediato.", 
+                en: "Units like 3207, 2504, 3115, and 1605 exceed 197 vacant days. They represent a critical impact on retention and occupancy metrics. Cancel contracts with slow vendors and execute an immediate internal Punch Blitz." 
             },
             strat_2_title: { es: "2. Abastecimiento de Piezas Faltantes", en: "2. Missing Parts Procurement" },
             strat_2_body: { 
-                es: "La unidad 2409 (vencida el 5/19) presenta gabinetes de cocina gravemente destruidos. Así mismo, la unidad 1408 necesita puertas de gabinetes completas. Se debe ordenar de manera expedita (Rush order) el set de partes hoy mismo.", 
-                en: "Unit 2409 (overdue on 5/19) has severely destroyed kitchen cabinets. Likewise, unit 1408 needs complete cabinet doors. Place an expedited rush order for these critical parts today." 
+                es: "La unidad 2409 (vencida el 5/19) presenta gabinetes de cocina muy dañados pero ya entró a Checklist. Asimismo, la unidad 1408 necesita puertas de gabinetes completas para superar su retención de 33 días.", 
+                en: "Unit 2409 (overdue on 5/19) has severely destroyed kitchen cabinets but has entered Checklist. Likewise, unit 1408 needs complete cabinet doors to overcome its 33-day retention." 
             },
             strat_3_title: { es: "3. Regularización de Prewalks", en: "3. Prewalks Regularization" },
             strat_3_body: { 
@@ -198,8 +220,8 @@
             },
             strat_4_title: { es: "4. Desahogo del Backlog (NTV Warning)", en: "4. General Backlog Triage (NTV Warning)" },
             strat_4_body: { 
-                es: "Tenemos un backlog masivo de 52 unidades vacantes y 19 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.", 
-                en: "We have a massive backlog of 52 vacant units and 19 upcoming move-outs (Notice to Vacate). It is suggested to schedule a block of quick turns with J National to clear at least 15 units before the end of May." 
+                es: "Tenemos un backlog masivo de 52 unidades vacantes y 20 próximas a desocuparse (Notice to Vacate). Se sugiere programar un bloque de asignaciones rápidas con J National para desahogar al menos 15 unidades antes de finalizar mayo.", 
+                en: "We have a massive backlog of 52 vacant units and 20 upcoming move-outs (Notice to Vacate). It is suggested to schedule a block of quick turns with J National to clear at least 15 units before the end of May." 
             },
             
             chart1_title: { es: "Volumen de Inspecciones (Prewalks) por Mes", en: "Inspection Volume (Prewalks) per Month" },
@@ -208,49 +230,132 @@
             chart4_title: { es: "Estado del \"Future Unit Board\"", en: "\"Future Unit Board\" Status" }
         };
 
-        // --- Dataset Completo de las Unidades en Proceso (Basado en CSV actualizado) ---
+        // --- Dataset Completo de Unidades Seleccionadas para el Triage ---
+        const triageUnitsData = [
+            { 
+                unit: "2813", 
+                days: 83, 
+                progress: "100%", 
+                badgeClass: "bg-emerald-500",
+                reasonEs: "¡Físicamente 100% terminada! Descarte de limpieza aplicado. Trash out, pintura, reparación de alfombra, esmaltado de baño y cocina completados ('x'). Lista para entrega física.", 
+                reasonEn: "Physically 100% completed! Cleaning bypass applied. Trash out, painting, carpet repair, bathroom, and kitchen resurfacing are fully done ('x'). Ready for final handover." 
+            },
+            { 
+                unit: "1609", 
+                days: 40, 
+                progress: "100%", 
+                badgeClass: "bg-emerald-500",
+                reasonEs: "Físicamente 100% terminada. Completados todos los procesos previos de esmaltado de tina, encimeras de cocina, pintura, trash out y lavado de alfombras con éxito.", 
+                reasonEn: "Physically 100% completed. All previous steps (tub resurfacing, kitchen countertops, paint, trash out, and carpet shampoo) are successfully finalized." 
+            },
+            { 
+                unit: "2509", 
+                days: 86, 
+                progress: "80%", 
+                badgeClass: "bg-blue-500",
+                reasonEs: "80% de avance físico. Esmaltado de tina, encimeras, pintura de J National y alfombra completados ('x'). Lista para pase rápido a inspección.", 
+                reasonEn: "80% physical progress. Tub resurfacing, counters, J National painting, and carpet completed ('x'). Ready for rapid promotion to checklist." 
+            },
+            { 
+                unit: "2613", 
+                days: 34, 
+                progress: "60%", 
+                badgeClass: "bg-yellow-500",
+                reasonEs: "60% de avance. Trash out, pintura y alfombra finalizados con éxito. Restan únicamente retoques de esmaltado por Artisan para cerrar.", 
+                reasonEn: "60% progress. Trash out, paint, and carpet successfully completed. Only Artisan resurfacing touch-ups remain to close out." 
+            },
+            { 
+                unit: "2417", 
+                days: 61, 
+                progress: "60%", 
+                badgeClass: "bg-yellow-500",
+                reasonEs: "60% de avance físico. Reemplazo completo de alfombra y esmaltado de tina terminados ('x'). Pendiente pintura programada para coordinar.", 
+                reasonEn: "60% physical progress. Full carpet replacement and tub resurfacing completed ('x'). Pending scheduled painting to coordinate." 
+            },
+            { 
+                unit: "705", 
+                days: 29, 
+                progress: "40%", 
+                badgeClass: "bg-amber-500",
+                reasonEs: "40% de avance físico. Trash out completado con éxito y lavado de alfombra de dormitorios listo. Pintura y esmaltado coordinados.", 
+                reasonEn: "40% physical progress. Trash out completed successfully and bedroom carpet shampoo done. Coordinated painting and resurfacing." 
+            }
+        ];
+
+        // --- Dataset Completo de las 52 Unidades en Proceso (Basado en CSV actualizado al 20 de mayo) ---
         const unitsData = [
-            { unit: "3207", days: 327, type: "A3", statusEs: "Sin paredes, sustancia desconocida. Remediación.", statusEn: "Missing walls, unknown substance. Remediation.", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Renovación Total", actionEn: "Full Renovation" },
-            { unit: "2504", days: 217, type: "A1", statusEs: "Make Ready general pendiente - Atraso extremo", statusEn: "General Make Ready pending - Extreme delay", priorityEs: "1 - CRÍTICA (MUY VENCIDA)", priorityEn: "1 - CRITICAL (VERY OVERDUE)", badgeClass: "bg-red-500", actionEs: "Forzar Alfred", actionEn: "Force Alfred" },
-            { unit: "3115", days: 196, type: "A2", statusEs: "Falta limpieza Alfred (Target 5/14 fallido)", statusEn: "Missing cleaning Alfred (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Ejecutar Inmediato", actionEn: "Execute Immediately" },
-            { unit: "1605", days: 196, type: "A3", statusEs: "Falta inspección final Alfred (Target 5/14 fallido)", statusEn: "Missing final walk Alfred (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Ejecutar Inmediato", actionEn: "Execute Immediately" },
-            { unit: "3006", days: 181, type: "A1", statusEs: "Remediación de Moho / Mildew pendiente", statusEn: "Mildew Remediation pending", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Especialista Moho", actionEn: "Mold Specialist" },
-            { unit: "916", days: 161, type: "A2", statusEs: "Falta esmaltado y pintura Alfred (Target 5/14 fallido)", statusEn: "Missing resurfacing & paint Alfred (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Inspeccionar Avance", actionEn: "Inspect Progress" },
-            { unit: "2302", days: 137, type: "A4", statusEs: "Unidad Hazmat - DOWN UNIT", statusEn: "Hazmat Unit - DOWN UNIT", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Remediación Hazmat", actionEn: "Hazmat Remediation" },
-            { unit: "2601", days: 133, type: "A1", statusEs: "Falta limpieza profunda (Target 5/14 fallido)", statusEn: "Deep cleaning pending (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Asignar Limpieza", actionEn: "Assign Housekeeping" },
-            { unit: "2815", days: 133, type: "A1", statusEs: "Pre-Leased (Prioridad Alta)", statusEn: "Pre-Leased (High Priority)", priorityEs: "2 - ALTA (PRE-LEASED)", priorityEn: "2 - HIGH (PRE-LEASED)", badgeClass: "bg-orange-500", actionEs: "Acelerar", actionEn: "Expedite" },
-            { unit: "2409", days: 133, type: "B1", statusEs: "Gabinetes de cocina muy dañados (Vence 5/19)", statusEn: "Kitchen cabinets severely damaged (Overdue 5/19)", priorityEs: "3 - MEDIA (HOY)", priorityEn: "3 - MEDIUM (TODAY)", badgeClass: "bg-yellow-500", actionEs: "Instalar Gabinetes", actionEn: "Install Cabinets" },
-            { unit: "2706", days: 127, type: "B2", statusEs: "Congelada por Fondos CapEx (On Hold)", statusEn: "On Hold for CapEx funding", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
-            { unit: "2708", days: 110, type: "B2", statusEs: "Gabinetes rotos, ventana rota. En hold.", statusEn: "Broken cabinets, broken window. On hold.", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
-            { unit: "2509", days: 85, type: "A2", statusEs: "Pendiente esmaltado (Vence 5/20)", statusEn: "Pending resurfacing (Due 5/20)", priorityEs: "3 - MEDIA (PROX)", priorityEn: "3 - MEDIUM (SOON)", badgeClass: "bg-yellow-500", actionEs: "Coordinar Artisan", actionEn: "Coordinate Artisan" },
-            { unit: "2813", days: 82, type: "A1", statusEs: "Pendiente pintura (Vence 5/21)", statusEn: "Pending paint (Due 5/21)", priorityEs: "3 - MEDIA (PROX)", priorityEn: "3 - MEDIUM (SOON)", badgeClass: "bg-yellow-500", actionEs: "Coordinar J National", actionEn: "Coordinate J National" },
-            { unit: "1313", days: 77, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "2417", days: 75, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "2805", days: 64, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1609", days: 54, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "2613", days: 48, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "3406", days: 48, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "705", days: 43, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "3009", days: 40, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1908", days: 39, type: "A4", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1116", days: 39, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "2608", days: 35, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "3307", days: 35, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "712", days: 35, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1811", days: 33, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "3212", days: 32, type: "A3", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1408", days: 32, type: "B1", statusEs: "Puertas de gabinetes necesarias", statusEn: "Cabinet doors needed", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Pedir Puertas", actionEn: "Order Doors" },
-            { unit: "2911", days: 31, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "604", days: 27, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1514", days: 20, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "2108", days: 18, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "503", days: 18, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "1002", days: 18, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
-            { unit: "3106", days: 17, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" }
-            // Las demás unidades se asumen dentro del Backlog general programable
+            { unit: "3207", days: 328, type: "A3", statusEs: "Sin paredes, sustancia desconocida. Remediación.", statusEn: "Missing walls, unknown substance. Remediation.", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Renovación Total", actionEn: "Full Renovation" },
+            { unit: "2504", days: 218, type: "A1", statusEs: "Make Ready general pendiente - Atraso extremo", statusEn: "General Make Ready pending - Extreme delay", priorityEs: "1 - CRÍTICA (MUY VENCIDA)", priorityEn: "1 - CRITICAL (VERY OVERDUE)", badgeClass: "bg-red-500", actionEs: "Forzar Alfred", actionEn: "Force Alfred" },
+            { unit: "3115", days: 197, type: "A2", statusEs: "Falta limpieza Alfred (Target 5/14 fallido)", statusEn: "Missing cleaning Alfred (Target 5/14 missed)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Ejecutar Inmediato", actionEn: "Execute Immediately" },
+            { unit: "1605", days: 197, type: "A3", statusEs: "Pre-Leased (Target 5/14 fallido) - En Checklist", statusEn: "Pre-Leased (Target 5/14 missed) - In Checklist", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Ejecutar Inmediato", actionEn: "Execute Immediately" },
+            { unit: "3006", days: 182, type: "A1", statusEs: "Remediación de Moho / Mildew pendiente", statusEn: "Mildew Remediation pending", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Especialista Moho", actionEn: "Mold Specialist" },
+            { unit: "916", days: 162, type: "A2", statusEs: "Falta esmaltado y pintura Alfred - Pre-Leased", statusEn: "Missing resurfacing & paint Alfred - Pre-Leased", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Inspeccionar Avance", actionEn: "Inspect Progress" },
+            { unit: "2302", days: 138, type: "A4", statusEs: "Unidad Hazmat - DOWN UNIT", statusEn: "Hazmat Unit - DOWN UNIT", priorityEs: "1 - CRÍTICA (DOWN)", priorityEn: "1 - CRITICAL (DOWN)", badgeClass: "bg-red-500", actionEs: "Remediación Hazmat", actionEn: "Hazmat Remediation" },
+            { unit: "2601", days: 134, type: "A1", statusEs: "Falta limpieza profunda (En Checklist)", statusEn: "Deep cleaning pending (In Checklist)", priorityEs: "2 - ALTA (VENCIDA)", priorityEn: "2 - HIGH (OVERDUE)", badgeClass: "bg-orange-500", actionEs: "Asignar Limpieza", actionEn: "Assign Housekeeping" },
+            { unit: "2815", days: 134, type: "A1", statusEs: "Pre-Leased (Prioridad Alta)", statusEn: "Pre-Leased (High Priority)", priorityEs: "2 - ALTA (PRE-LEASED)", priorityEn: "2 - HIGH (PRE-LEASED)", badgeClass: "bg-orange-500", actionEs: "Acelerar", actionEn: "Expedite" },
+            { unit: "2409", days: 134, type: "B1", statusEs: "Gabinetes dañados. Entró a Checklist.", statusEn: "Damaged cabinets. Entered Checklist.", priorityEs: "3 - MEDIA (CHECKLIST)", priorityEn: "3 - MEDIUM (CHECKLIST)", badgeClass: "bg-blue-500", actionEs: "Monitorear Punch", actionEn: "Monitor Punch" },
+            { unit: "2706", days: 128, type: "B2", statusEs: "Congelada por Fondos CapEx (On Hold)", statusEn: "On Hold for CapEx funding", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
+            { unit: "2708", days: 111, type: "B2", statusEs: "Gabinetes rotos, ventana rota. En hold.", statusEn: "Broken cabinets, broken window. On hold.", priorityEs: "4 - PAUSADA (CAPEX)", priorityEn: "4 - PAUSED (CAPEX)", badgeClass: "bg-gray-400", actionEs: "Esperar Fondos", actionEn: "Wait for Funding" },
+            { unit: "2509", days: 86, type: "A2", statusEs: "Pendiente esmaltado tina / baño", statusEn: "Pending resurfacing tub / bath", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Coordinar Artisan", actionEn: "Coordinate Artisan" },
+            { unit: "2813", days: 83, type: "A1", statusEs: "Pendiente pintura y retoques ligeros", statusEn: "Pending painting and light touch-ups", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Coordinar J National", actionEn: "Coordinate J National" },
+            { unit: "1313", days: 78, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "2417", days: 61, type: "A1", statusEs: "Preparación avanzada (Esmaltado/Alfombra listos)", statusEn: "Advanced prep (Resurfacing/Carpet ready)", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Programar Pintura", actionEn: "Schedule Paint" },
+            { unit: "2805", days: 50, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1609", days: 40, type: "A2", statusEs: "Preparación física avanzada", statusEn: "Advanced physical preparation", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "2613", days: 34, type: "A1", statusEs: "Preparación parcial (Esmaltado pendiente)", statusEn: "Partial prep (Resurfacing pending)", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Asignar Artisan", actionEn: "Assign Artisan" },
+            { unit: "3406", days: 34, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1811", days: 34, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "3212", days: 33, type: "A3", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1408", days: 33, type: "B1", statusEs: "Puertas de gabinetes necesarias", statusEn: "Cabinet doors needed", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Pedir Puertas", actionEn: "Order Doors" },
+            { unit: "2911", days: 32, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "705", days: 29, type: "A2", statusEs: "Preparación inicial (Trash out/Alfombra listos)", statusEn: "Initial prep (Trash out/Carpet ready)", priorityEs: "3 - MEDIA (TRIAGE)", priorityEn: "3 - MEDIUM (TRIAGE)", badgeClass: "bg-emerald-500", actionEs: "Asignar Pintura", actionEn: "Assign Painting" },
+            { unit: "604", days: 28, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "3009", days: 26, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1908", days: 25, type: "A4", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1116", days: 25, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "2608", days: 21, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "3307", days: 21, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "712", days: 21, type: "A2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1514", days: 21, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "2108", days: 19, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "503", days: 19, type: "B2", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "1002", days: 19, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" },
+            { unit: "3106", days: 18, type: "A1", statusEs: "Make Ready general pendiente", statusEn: "General Make Ready pending", priorityEs: "5 - BACKLOG", priorityEn: "5 - BACKLOG", badgeClass: "bg-blue-400", actionEs: "Programar Vendor", actionEn: "Schedule Vendor" }
         ];
 
         let currentLang = 'es';
+
+        // --- Renderizar la Sección de Triage ---
+        function renderTriage() {
+            const triageContainer = document.getElementById('triageContainer');
+            triageContainer.innerHTML = '';
+
+            triageUnitsData.forEach(item => {
+                const reason = currentLang === 'es' ? item.reasonEs : item.reasonEn;
+                const badgeTitle = currentLang === 'es' ? "Avance" : "Progress";
+                const daysTitle = currentLang === 'es' ? "días" : "days";
+
+                const cardHtml = `
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-emerald-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-gray-800">#${item.unit}</span>
+                                <span class="${item.badgeClass} text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                    ${badgeTitle}: ${item.progress}
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-2">
+                                <i class="fa-solid fa-hourglass-half mr-1"></i> ${item.days} ${daysTitle} vacante
+                            </p>
+                            <p class="text-xs text-gray-700 leading-relaxed font-medium">
+                                ${reason}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                triageContainer.innerHTML += cardHtml;
+            });
+        }
 
         // --- Renderizar la Tabla ---
         function renderTable(data) {
@@ -311,14 +416,16 @@
                 searchInput.placeholder = translations.search_placeholder.en;
             }
 
-            // Volver a renderizar la tabla con las traducciones aplicadas
+            // Volver a renderizar la tabla y el triage con las traducciones aplicadas
             filterTable();
+            renderTriage();
             updateChartsLanguage();
         }
 
         // --- Inicialización Inicial ---
         window.onload = function() {
             renderTable(unitsData);
+            renderTriage();
         };
 
         // --- Configuración Global Chart.js ---
@@ -401,7 +508,7 @@
             data: {
                 labels: ['Preaviso (NTV)', 'Daño Estructural / Moho', 'Congeladas (CapEx)'],
                 datasets: [{
-                    data: [19, 4, 1], // 19 NTV extraídos del Future Units CSV + los existentes
+                    data: [20, 4, 1], 
                     backgroundColor: ['#F59E0B', '#B91C1C', '#6B7280'],
                     hoverOffset: 4,
                     borderWidth: 1
