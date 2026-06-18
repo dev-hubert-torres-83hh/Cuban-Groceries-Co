@@ -1,467 +1,702 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviva Plaza North — Make Ready Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --navy:   #0E1C37;
-            --gold:   #B5924C;
-            --slate:  #44546A;
-            --offwhite: #F8F8F8;
-            --border: #D9DCE0;
-        }
-        * { box-sizing: border-box; }
-        body { font-family: 'Calibri', 'Segoe UI', sans-serif; background: #f1f4f8; color: var(--slate); }
-
-        /* Navbar */
-        .navbar { background: var(--navy); border-bottom: 3px solid var(--gold); }
-        .logo-res  { color: #fff; font-weight: 700; letter-spacing: .02em; }
-        .logo-prop { color: var(--gold); font-weight: 700; }
-        .logo-mgmt { color: #a0aec0; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; }
-
-        /* Cards */
-        .card { background: white; border-radius: .5rem; box-shadow: 0 2px 8px rgba(14,28,55,.09); padding: 1.25rem; }
-
-        /* KPI cards */
-        .kpi-card { background: white; border-radius: .5rem; box-shadow: 0 2px 8px rgba(14,28,55,.09);
-                    padding: 1rem; display:flex; flex-direction:column; align-items:center; text-align:center;
-                    border-top: 3px solid var(--border); }
-        .kpi-card.accent { border-top-color: var(--gold); }
-        .kpi-icon { width:2.4rem; height:2.4rem; border-radius:.4rem; display:flex; align-items:center; justify-content:center; font-size:1rem; margin-bottom:.4rem; }
-
-        /* Section header */
-        .section-hd { font-size:1.05rem; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:.5rem;
-                       padding-bottom:.4rem; border-bottom:2px solid var(--gold); margin-bottom:.9rem; }
-
-        /* Triage cards */
-        .triage-card { border-left:4px solid var(--gold); border-radius:.5rem; background:white;
-                        box-shadow:0 1px 6px rgba(14,28,55,.08); padding:1rem; }
-        .triage-card.red    { border-left-color:#ef4444; }
-        .triage-card.orange { border-left-color:#f97316; }
-        .triage-card.yellow { border-left-color:#eab308; }
-        .triage-card.blue   { border-left-color:#3b82f6; }
-
-        /* Badges */
-        .badge { display:inline-block; padding:2px 8px; border-radius:9999px; font-size:.7rem; font-weight:700; white-space:nowrap; }
-        .badge-red    { background:#fee2e2; color:#b91c1c; }
-        .badge-orange { background:#ffedd5; color:#c2410c; }
-        .badge-yellow { background:#fef9c3; color:#a16207; }
-        .badge-blue   { background:#dbeafe; color:#1d4ed8; }
-        .badge-green  { background:#dcfce7; color:#15803d; }
-        .badge-navy   { background:var(--navy); color:#fff; }
-        .badge-gold   { background:var(--gold); color:#fff; }
-
-        /* Task pills */
-        .task-pill { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:9999px;
-                     font-size:.67rem; font-weight:600; margin:1px; }
-        .task-done    { background:#dcfce7; color:#166534; }
-        .task-pending { background:#f1f5f9; color:#64748b; }
-
-        /* Table */
-        .data-table { width:100%; border-collapse:collapse; font-size:.82rem; }
-        .data-table thead tr { background:var(--navy); color:#fff; text-transform:uppercase;
-                                font-size:.68rem; letter-spacing:.06em; }
-        .data-table thead th { padding:.55rem .65rem; text-align:left; white-space:nowrap; }
-        .data-table tbody tr { border-bottom:1px solid var(--border); transition:background .12s; }
-        .data-table tbody tr:nth-child(even) { background:var(--offwhite); }
-        .data-table tbody tr:hover { background:#eef2ff; }
-        .data-table td { padding:.45rem .65rem; vertical-align:top; }
-        .table-wrap { overflow-x:auto; }
-        .table-wrap::-webkit-scrollbar { height:5px; }
-        .table-wrap::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
-
-        /* Filter / search bar */
-        .filter-btn { padding:4px 13px; border-radius:9999px; font-size:.75rem; font-weight:700;
-                       border:2px solid transparent; cursor:pointer; transition:all .15s; background:#f1f5f9; color:var(--slate); }
-        .filter-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
-        .search-input { border:1.5px solid var(--border); border-radius:.4rem; padding:.35rem .75rem;
-                         font-size:.82rem; color:var(--slate); outline:none; width:220px; }
-        .search-input:focus { border-color:var(--gold); box-shadow:0 0 0 2px rgba(181,146,76,.15); }
-        .col-select { border:1.5px solid var(--border); border-radius:.4rem; padding:.35rem .6rem;
-                       font-size:.82rem; color:var(--slate); background:white; outline:none; cursor:pointer; }
-        .col-select:focus { border-color:var(--gold); }
-
-        /* Lang button */
-        .lang-btn { background:var(--gold); color:#fff; border:none; padding:.35rem 1rem;
-                     border-radius:.35rem; font-weight:700; font-size:.82rem; cursor:pointer; transition:opacity .15s; }
-        .lang-btn:hover { opacity:.88; }
-
-        /* Chart card */
-        .chart-title { font-size:.9rem; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:.4rem; margin-bottom:.6rem; }
-
-        /* Future grid */
-        .future-chip { background:var(--offwhite); border:1px solid var(--border); border-top:3px solid var(--gold);
-                        border-radius:.4rem; padding:.5rem .6rem; text-align:center; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviva Plaza North — Make Ready Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --rp-navy:      #0E1C37;
+    --rp-gold:      #B5924C;
+    --rp-slate:     #44546A;
+    --rp-white:     #FFFFFF;
+    --rp-offwhite:  #F8F8F8;
+    --rp-border:    #D9DCE0;
+    --rp-red:       #EF4444;
+    --rp-orange:    #F97316;
+    --rp-yellow:    #EAB308;
+    --rp-green:     #22C55E;
+    --rp-blue:      #3B82F6;
+    --rp-red-bg:    #FEE2E2; --rp-red-text:    #991B1B;
+    --rp-orange-bg: #FEF3C7; --rp-orange-text: #92400E;
+    --rp-yellow-bg: #FEF9C3; --rp-yellow-text: #713F12;
+    --rp-green-bg:  #D1FAE5; --rp-green-text:  #065F46;
+    --rp-blue-bg:   #DBEAFE; --rp-blue-text:   #1E40AF;
+}
+* { box-sizing: border-box; }
+body { font-family: 'Inter', 'Calibri', sans-serif; background: var(--rp-offwhite); color: var(--rp-slate); margin: 0; }
+.card { background: var(--rp-white); border-radius: .5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,.08); padding: 1.5rem; }
+.kpi-card { background: var(--rp-white); border-radius: .5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,.08); padding: 1.25rem; text-align: center; transition: transform .15s; }
+.kpi-card:hover { transform: translateY(-2px); }
+.kpi-card.accent-gold   { border-bottom: 3px solid var(--rp-gold); }
+.kpi-card.accent-green  { border-bottom: 3px solid #22C55E; }
+.kpi-card.accent-yellow { border-bottom: 3px solid #EAB308; }
+.kpi-card.accent-red    { border-bottom: 3px solid #EF4444; }
+.kpi-card.accent-orange { border-bottom: 3px solid #F97316; }
+.kpi-card.accent-blue   { border-bottom: 3px solid #3B82F6; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 9999px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+.badge-red    { background: #FEE2E2; color: #991B1B; }
+.badge-orange { background: #FEF3C7; color: #92400E; }
+.badge-yellow { background: #FEF9C3; color: #713F12; }
+.badge-blue   { background: #DBEAFE; color: #1E40AF; }
+.badge-green  { background: #D1FAE5; color: #065F46; }
+.badge-purple { background: #EDE9FE; color: #5B21B6; }
+.triage-card { border-left: 5px solid; border-radius: .5rem; background: var(--rp-white); box-shadow: 0 2px 6px rgba(0,0,0,.08); padding: 1.25rem 1.5rem; }
+.triage-card.red    { border-color: #EF4444; }
+.triage-card.orange { border-color: #F97316; }
+.triage-card.yellow { border-color: #EAB308; }
+.triage-card.green  { border-color: #22C55E; }
+.triage-card.blue   { border-color: #3B82F6; }
+.filter-btn { padding: .3rem .85rem; border-radius: 9999px; font-size: .78rem; font-weight: 600; border: 2px solid var(--rp-border); cursor: pointer; background: var(--rp-white); color: var(--rp-slate); transition: all .15s; }
+.filter-btn.active { background-color: var(--rp-navy); color: var(--rp-white); border-color: var(--rp-navy); }
+.filter-btn:hover:not(.active) { border-color: var(--rp-navy); color: var(--rp-navy); }
+.action-week { background-color: var(--rp-navy); border-radius: .5rem; padding: 1.5rem; color: var(--rp-white); margin-top: 1.5rem; }
+.action-col.urgent    { background: rgba(239,68,68,.18); border-top: 2px solid #EF4444; border-radius: .5rem; padding: 1rem; }
+.action-col.week      { background: rgba(234,179,8,.15); border-top: 2px solid #EAB308; border-radius: .5rem; padding: 1rem; }
+.action-col.two-weeks { background: rgba(34,197,94,.15); border-top: 2px solid #22C55E; border-radius: .5rem; padding: 1rem; }
+table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+thead tr { background-color: var(--rp-navy); color: var(--rp-white); }
+thead th { padding: .65rem .75rem; text-align: left; font-size: .78rem; letter-spacing: .04em; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--rp-border); transition: background .1s; }
+tbody tr:hover { background: #F0F4FF; }
+tbody td { padding: .6rem .75rem; vertical-align: top; }
+.table-wrap { overflow-x: auto; border-radius: .5rem; }
+mark { background: #FEF08A; border-radius: 2px; padding: 0 2px; }
+.section-header { background: linear-gradient(135deg, var(--rp-navy) 0%, #1a3260 100%); color: white; border-radius: .5rem .5rem 0 0; padding: 1rem 1.5rem; }
+.panel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; padding: 1rem; background: var(--rp-white); border: 1px solid var(--rp-border); border-top: none; border-radius: 0 0 .5rem .5rem; }
+.strat-panel { border-radius: .5rem; padding: 1rem; }
+.strat-panel.red    { background: #FEF2F2; border-left: 4px solid #EF4444; }
+.strat-panel.green  { background: #F0FDF4; border-left: 4px solid #22C55E; }
+.strat-panel.yellow { background: #FEFCE8; border-left: 4px solid #EAB308; }
+.strat-panel.blue   { background: #EFF6FF; border-left: 4px solid #3B82F6; }
+.strat-panel ul { margin: .5rem 0 0 0; padding-left: 1.2rem; font-size: .82rem; }
+.strat-panel li { margin-bottom: .3rem; }
+.future-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem; }
+.future-card { background: var(--rp-white); border-radius: .5rem; border: 1px solid var(--rp-border); padding: 1rem; border-top: 3px solid var(--rp-gold); }
+input[type=text] { border: 1px solid var(--rp-border); border-radius: .375rem; padding: .4rem .75rem; font-size: .85rem; width: 100%; }
+input[type=text]:focus { outline: 2px solid var(--rp-navy); outline-offset: 1px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+@media (max-width: 768px) {
+  .panel-grid { grid-template-columns: 1fr; }
+  .action-cols { flex-direction: column; }
+}
+</style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar sticky top-0 z-50">
-    <div style="max-width:1280px;margin:0 auto;padding:.75rem 1.25rem;display:flex;justify-content:space-between;align-items:center;">
-        <div style="display:flex;align-items:center;gap:.75rem;">
-            <i class="fa-solid fa-building-circle-check" style="color:var(--gold);font-size:1.3rem;"></i>
-            <div>
-                <div style="font-size:1.2rem;line-height:1;">
-                    <span class="logo-res">RES</span><span class="logo-prop">PROP</span>
-                </div>
-                <div class="logo-mgmt">Management</div>
-            </div>
-            <div style="width:1px;height:2.2rem;background:rgba(255,255,255,.15);margin:0 .5rem;"></div>
-            <div>
-                <div style="color:#fff;font-size:.95rem;font-weight:700;" data-i18n="nav_title">Make Ready Analytics</div>
-                <div style="color:#a0aec0;font-size:.7rem;" data-i18n="nav_sub">Aviva Plaza North · 03-Jun-2026</div>
-            </div>
+<nav style="background-color:#0E1C37;" class="text-white shadow-lg sticky top-0 z-50">
+  <div class="container" style="padding: .85rem 1rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;">
+      <div style="display:flex; align-items:center; gap:.75rem;">
+        <i class="fa-solid fa-building-circle-check" style="color:#B5924C; font-size:1.4rem;"></i>
+        <div>
+          <div style="font-weight:700; font-size:1.1rem;" data-i18n="nav_title">Dashboard Make Ready</div>
+          <div style="font-size:.72rem; opacity:.6;">Aviva Plaza North &nbsp;·&nbsp; ResProp Management &nbsp;·&nbsp; <span id="genDate"></span></div>
         </div>
-        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">English</button>
+      </div>
+      <button onclick="toggleLang()" id="langBtn"
+        style="background:#B5924C; color:#0E1C37; border:none; padding:.35rem 1rem; border-radius:.375rem; font-weight:700; font-size:.85rem; cursor:pointer;">
+        English
+      </button>
     </div>
+  </div>
 </nav>
 
-<div style="max-width:1280px;margin:0 auto;padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;">
+<div class="container" style="padding-top:1.25rem; padding-bottom:2rem;">
 
 <!-- KPI STRIP -->
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem;">
-    <div class="kpi-card">
-        <div class="kpi-icon" style="background:#e8edf5;color:var(--navy);"><i class="fa-solid fa-door-open"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:var(--navy);">46</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_vacant">Vacantes</div>
-    </div>
-    <div class="kpi-card accent">
-        <div class="kpi-icon" style="background:#fee2e2;color:#b91c1c;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#b91c1c;">3</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_critical">Críticas +150d</div>
-    </div>
-    <div class="kpi-card accent">
-        <div class="kpi-icon" style="background:#ffedd5;color:#c2410c;"><i class="fa-solid fa-arrow-up"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#c2410c;">6</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_high">Alta Prioridad</div>
-    </div>
-    <div class="kpi-card accent">
-        <div class="kpi-icon" style="background:#fef9c3;color:#a16207;"><i class="fa-solid fa-clipboard-list"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#a16207;">4</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_triage">Triage Listo</div>
-    </div>
-    <div class="kpi-card">
-        <div class="kpi-icon" style="background:#dbeafe;color:#1d4ed8;"><i class="fa-solid fa-hammer"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#1d4ed8;">9</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_active">MRs Activos</div>
-    </div>
-    <div class="kpi-card">
-        <div class="kpi-icon" style="background:#dcfce7;color:#15803d;"><i class="fa-solid fa-check-double"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#15803d;">1</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_checklist">En Checklist</div>
-    </div>
-    <div class="kpi-card">
-        <div class="kpi-icon" style="background:#ede9fe;color:#6d28d9;"><i class="fa-solid fa-file-signature"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#6d28d9;">4</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_preleased">Pre-Arrendadas</div>
-    </div>
-    <div class="kpi-card">
-        <div class="kpi-icon" style="background:#e0e7ff;color:#3730a3;"><i class="fa-solid fa-calendar-days"></i></div>
-        <div style="font-size:1.9rem;font-weight:700;color:#3730a3;">60</div>
-        <div style="font-size:.72rem;color:var(--slate);margin-top:2px;" data-i18n="kpi_avg">Días Prom.</div>
-    </div>
+<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:.75rem; margin-bottom:1.25rem;">
+  <div class="kpi-card accent-red">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_vacant">Total Vacantes</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kVacant"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_vacant_sub">unidades sin ocupar</div>
+  </div>
+  <div class="kpi-card accent-orange">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_progress">En Proceso MR</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kProgress"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_progress_sub">en Make Ready Board</div>
+  </div>
+  <div class="kpi-card accent-blue">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_checklist">Checklist Iniciados</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kChecklist"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_checklist_sub">con checklist activo</div>
+  </div>
+  <div class="kpi-card accent-green">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#065F46;" data-i18n="kpi_mrhecho">MR-Hecho ✅</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#065F46; line-height:1.1;" id="kMrHecho"></div>
+    <div style="font-size:.7rem; color:#065F46;" data-i18n="kpi_mrhecho_sub">listos para arrendar</div>
+  </div>
+  <div class="kpi-card accent-yellow">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_triage">Triage Listo 🚀</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kTriage"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_triage_sub">listos para checklist</div>
+  </div>
+  <div class="kpi-card accent-gold">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_avgdays">Prom. Días</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kAvgDays"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_avgdays_sub">días vacante prom.</div>
+  </div>
+  <div class="kpi-card accent-gold">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_score">Score Final Walk</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kScore"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_score_sub">promedio /10</div>
+  </div>
+  <div class="kpi-card" style="border-bottom:3px solid #7C3AED;">
+    <div style="font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:#44546A;" data-i18n="kpi_future">Unidades Futuras</div>
+    <div style="font-size:2.2rem; font-weight:900; color:#0E1C37; line-height:1.1;" id="kFuture"></div>
+    <div style="font-size:.7rem; color:#44546A;" data-i18n="kpi_future_sub">notice to vacate</div>
+  </div>
 </div>
 
 <!-- TRIAGE DE PRODUCCIÓN -->
-<div>
-    <div class="section-hd">
-        <i class="fa-solid fa-fire-flame-curved" style="color:var(--gold);"></i>
-        <span data-i18n="triage_title">Triage de Producción — Listas para Make Ready</span>
+<div class="card" style="margin-bottom:1.25rem;">
+  <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;">
+    <i class="fa-solid fa-rocket" style="color:#B5924C;"></i>
+    <h2 style="font-weight:700; font-size:1rem; color:#0E1C37; margin:0;" data-i18n="triage_title">Triage de Producción</h2>
+    <span class="badge badge-yellow" id="triageBadge"></span>
+  </div>
+  <div style="font-size:.8rem; color:#44546A; margin-bottom:1rem;" data-i18n="triage_sub">Unidades activas en MR Board con ≥3 tareas completadas, listas para iniciar Checklist</div>
+  <div id="triageGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1rem;"></div>
+  <div id="triageEmpty" style="display:none; text-align:center; padding:2rem; color:#44546A;">
+    <i class="fa-solid fa-check-circle" style="font-size:2rem; color:#22C55E; margin-bottom:.5rem;"></i>
+    <p data-i18n="triage_empty">No hay unidades en triage actualmente.</p>
+  </div>
+</div>
+
+<!-- ANÁLISIS ESTRATÉGICO -->
+<div style="margin-bottom:1.25rem;">
+  <div class="section-header" style="display:flex; align-items:center; gap:.5rem;">
+    <i class="fa-solid fa-chess-rook"></i>
+    <h2 style="font-weight:700; font-size:1rem; margin:0;" data-i18n="strat_title">Análisis Estratégico</h2>
+  </div>
+  <div class="panel-grid" id="stratPanels"></div>
+  <div class="action-week">
+    <div style="font-weight:700; font-size:.95rem; margin-bottom:1rem;" data-i18n="action_week_title">📅 Plan de Acción Semanal</div>
+    <div class="action-cols" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem;">
+      <div class="action-col urgent">
+        <div style="font-weight:700; font-size:.85rem; margin-bottom:.5rem;" data-i18n="action_today">🔴 Hoy / Urgente</div>
+        <ul id="actionUrgent" style="margin:0; padding-left:1.1rem; font-size:.8rem; color:#fecaca;"></ul>
+      </div>
+      <div class="action-col week">
+        <div style="font-weight:700; font-size:.85rem; margin-bottom:.5rem;" data-i18n="action_week">🟡 Esta Semana</div>
+        <ul id="actionWeek" style="margin:0; padding-left:1.1rem; font-size:.8rem; color:#fef9c3;"></ul>
+      </div>
+      <div class="action-col two-weeks">
+        <div style="font-weight:700; font-size:.85rem; margin-bottom:.5rem;" data-i18n="action_twoweeks">🟢 Próximas 2 Semanas</div>
+        <ul id="actionTwoWeeks" style="margin:0; padding-left:1.1rem; font-size:.8rem; color:#bbf7d0;"></ul>
+      </div>
     </div>
-    <div id="triage-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.85rem;"></div>
-    <p style="font-size:.72rem;color:#94a3b8;margin-top:.5rem;" data-i18n="triage_note">
-        Unidades con ≥3 tareas físicas ✓ en sección activa del Board. Excluye daños estructurales y unidades ya en Checklist.
-    </p>
+  </div>
 </div>
 
 <!-- TABLA DE PRIORIDADES -->
-<div class="card">
-    <!-- Header row -->
-    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.85rem;">
-        <div class="section-hd" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">
-            <i class="fa-solid fa-table-list" style="color:var(--navy);"></i>
-            <span data-i18n="table_title">Tabla de Prioridades — Todas las Vacantes</span>
-        </div>
+<div class="card" style="margin-bottom:1.25rem;">
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; margin-bottom:1rem;">
+    <div style="display:flex; align-items:center; gap:.5rem;">
+      <i class="fa-solid fa-table-list" style="color:#B5924C;"></i>
+      <h2 style="font-weight:700; font-size:1rem; color:#0E1C37; margin:0;" data-i18n="table_title">Tabla de Prioridades — Vacantes</h2>
     </div>
-
-    <!-- Search + col selector + filters -->
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-bottom:.85rem;">
-        <!-- Search -->
-        <div style="position:relative;flex:0 0 auto;">
-            <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:.78rem;pointer-events:none;"></i>
-            <input type="text" id="searchInput" class="search-input" style="padding-left:1.9rem;"
-                   placeholder="Buscar unidad..." oninput="onSearch()" data-i18n-placeholder="search_placeholder">
-        </div>
-        <!-- Column to search in -->
-        <select id="searchCol" class="col-select" onchange="onSearch()" title="Columna de búsqueda">
-            <option value="all" data-i18n="col_all">Todas las columnas</option>
-            <option value="unit" data-i18n="col_unit">Unidad</option>
-            <option value="status" data-i18n="col_status">Estado</option>
-            <option value="priority" data-i18n="col_priority">Prioridad</option>
-            <option value="bottleneck" data-i18n="col_bottleneck">Cuello de botella</option>
-        </select>
-        <!-- Divider -->
-        <div style="width:1px;height:1.5rem;background:var(--border);"></div>
-        <!-- Priority filter buttons -->
-        <button class="filter-btn active" onclick="filterTable('all',this)" data-i18n="filter_all">Todas</button>
-        <button class="filter-btn" onclick="filterTable('red',this)" data-i18n="filter_critical">Críticas</button>
-        <button class="filter-btn" onclick="filterTable('orange',this)" data-i18n="filter_high">Alta</button>
-        <button class="filter-btn" onclick="filterTable('yellow',this)" data-i18n="filter_medium">Media</button>
-        <button class="filter-btn" onclick="filterTable('blue',this)" data-i18n="filter_backlog">Backlog</button>
-        <button class="filter-btn" onclick="filterTable('mr',this)" data-i18n="filter_mr">En MR</button>
-        <!-- Result count -->
-        <span id="row-count" style="font-size:.75rem;color:#94a3b8;margin-left:auto;"></span>
-    </div>
-
-    <div class="table-wrap">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th data-i18n="th_unit">Unidad</th>
-                    <th data-i18n="th_type">Tipo</th>
-                    <th data-i18n="th_days">Días</th>
-                    <th data-i18n="th_status">Estado</th>
-                    <th data-i18n="th_priority">Prioridad</th>
-                    <th data-i18n="th_bottleneck">Cuello de Botella</th>
-                    <th data-i18n="th_action">Acción</th>
-                </tr>
-            </thead>
-            <tbody id="units-table-body"></tbody>
-        </table>
-    </div>
-    <div id="no-results" style="display:none;text-align:center;padding:1.5rem;color:#94a3b8;font-size:.85rem;">
-        <i class="fa-solid fa-search" style="margin-right:.4rem;"></i>
-        <span data-i18n="no_results">Sin resultados para esta búsqueda.</span>
-    </div>
+    <span class="badge badge-blue" id="tableCount"></span>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.75rem; align-items:center;">
+    <input type="text" id="tableSearch" placeholder="Buscar unidad, tipo, estado..." style="max-width:240px;" oninput="filterTable()" data-i18n-placeholder="search_placeholder">
+    <button class="filter-btn active" onclick="setFilter('all',this)" data-i18n="filter_all">Todos</button>
+    <button class="filter-btn" onclick="setFilter('red',this)" data-i18n="filter_critical">Crítica</button>
+    <button class="filter-btn" onclick="setFilter('orange',this)" data-i18n="filter_high">Alta</button>
+    <button class="filter-btn" onclick="setFilter('yellow',this)" data-i18n="filter_medium">Media</button>
+    <button class="filter-btn" onclick="setFilter('blue',this)" data-i18n="filter_backlog">Backlog</button>
+    <button class="filter-btn" onclick="setFilter('active_mr',this)" data-i18n="filter_active">En MR</button>
+    <button class="filter-btn" onclick="setFilter('checklist',this)" data-i18n="filter_checklist">Checklist</button>
+    <button class="filter-btn" onclick="setFilter('mr_hecho',this)" data-i18n="filter_mrhecho">MR-Hecho</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="col_unit">Unidad</th>
+          <th data-i18n="col_type">Tipo</th>
+          <th data-i18n="col_days">Días</th>
+          <th data-i18n="col_status">Estado</th>
+          <th data-i18n="col_priority">Prioridad</th>
+          <th data-i18n="col_bottleneck">Cuello de Botella</th>
+          <th data-i18n="col_action">Acción</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
 </div>
 
-<!-- CHARTS -->
-<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem;">
-    <div class="card">
-        <div class="chart-title"><i class="fa-solid fa-chart-bar" style="color:var(--gold);"></i><span data-i18n="chart_prewalk">Prewalks por Mes</span></div>
-        <canvas id="chartPrewalk" height="160"></canvas>
-    </div>
-    <div class="card">
-        <div class="chart-title"><i class="fa-solid fa-star" style="color:var(--gold);"></i><span data-i18n="chart_finale">Puntajes Final Walk</span></div>
-        <canvas id="chartFinale" height="160"></canvas>
-    </div>
-    <div class="card">
-        <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color:var(--gold);"></i><span data-i18n="chart_buckets">Vacantes por Rango</span></div>
-        <canvas id="chartBuckets" height="160"></canvas>
-    </div>
+<!-- GRÁFICAS -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; margin-bottom:1.25rem;">
+  <div class="card">
+    <h3 style="font-weight:700; font-size:.9rem; color:#0E1C37; margin:0 0 .75rem;" data-i18n="chart_prewalk">Prewalks por Mes</h3>
+    <canvas id="chartPrewalk" height="220"></canvas>
+  </div>
+  <div class="card">
+    <h3 style="font-weight:700; font-size:.9rem; color:#0E1C37; margin:0 0 .75rem;" data-i18n="chart_score">Scores Final Walk</h3>
+    <canvas id="chartScore" height="220"></canvas>
+  </div>
+  <div class="card">
+    <h3 style="font-weight:700; font-size:.9rem; color:#0E1C37; margin:0 0 .75rem;" data-i18n="chart_vac">Distribución Días Vacancia</h3>
+    <canvas id="chartVac" height="220"></canvas>
+  </div>
 </div>
 
-<!-- FUTURE UNITS -->
+<!-- UNIDADES FUTURAS -->
 <div class="card">
-    <div class="section-hd">
-        <i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i>
-        <span data-i18n="future_title">Próximas Salidas — Notice to Vacate</span>
-    </div>
-    <div id="future-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;"></div>
+  <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;">
+    <i class="fa-solid fa-calendar-days" style="color:#7C3AED;"></i>
+    <h2 style="font-weight:700; font-size:1rem; color:#0E1C37; margin:0;" data-i18n="future_title">Unidades Futuras — Notice to Vacate</h2>
+    <span class="badge badge-purple" id="futureBadge"></span>
+  </div>
+  <div class="future-grid" id="futureGrid"></div>
 </div>
 
 </div><!-- /container -->
 
-<footer style="text-align:center;font-size:.72rem;color:#94a3b8;padding:1rem 0 1.5rem;">
-    <span style="color:var(--gold);font-weight:700;">RES</span><span style="color:var(--navy);font-weight:700;">PROP</span>
-    MANAGEMENT · Aviva Plaza North · Make Ready Dashboard · 03-Jun-2026
+<footer style="background:#0E1C37; color:#D9DCE0; text-align:center; padding:.75rem; font-size:.75rem; margin-top:1rem;">
+  ResProp Management &nbsp;·&nbsp; Aviva Plaza North &nbsp;|&nbsp;
+  <span style="color:#B5924C;">respropmanagement.com</span>
+  &nbsp;|&nbsp; <span data-i18n="footer_generated">Generado</span>: <span id="footerDate"></span>
 </footer>
 
-<!-- ===================== DATA ===================== -->
 <script>
-const DATA = {"kpis":{"total_vacant":46,"active_mr":9,"triage":4,"checklist":1,"preleased":4,"future":17,"avg_days":60,"critical":3,"high":6},"triage_list":[{"unit":"2815","unit_type":"A1-1B1B-U","days_vacant":145,"status":"Vacant Pre-Leased","tasks_n":4,"defined_tasks":["Trash out","Alfombra/Shampoo","Esmaltado baño","Esmaltado cocina"],"pending_tasks":["Pintura"],"notes_es":[],"notes_en":[],"priority_es":"2 - ALTA (VENCIDA)","priority_en":"2 - HIGH (OVERDUE)","priority_color":"orange","priority_order":2,"cost":"$1,510"},{"unit":"2417","unit_type":"A1-1B1B-U","days_vacant":87,"status":"Vacant","tasks_n":5,"defined_tasks":["Trash out","Pintura","Alfombra/Shampoo","Esmaltado baño","Esmaltado cocina"],"pending_tasks":[],"notes_es":[],"notes_en":[],"priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","priority_order":3,"cost":"$310"},{"unit":"2805","unit_type":"A1-1B1B-U","days_vacant":76,"status":"Vacant","tasks_n":4,"defined_tasks":["Trash out","Pintura","Esmaltado baño","Esmaltado cocina"],"pending_tasks":["Alfombra/Shampoo"],"notes_es":["Alfombra requiere reemplazo"],"notes_en":["Carpet needs full replacement"],"priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","priority_order":3,"cost":"$560"},{"unit":"2108","unit_type":"B2-2B2B-U","days_vacant":30,"status":"Vacant","tasks_n":4,"defined_tasks":["Trash out","Pintura","Esmaltado baño","Esmaltado cocina"],"pending_tasks":["Alfombra/Shampoo"],"notes_es":["Alfombra requiere reemplazo"],"notes_en":["Carpet needs full replacement"],"priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","priority_order":5,"cost":"$560"}],"units_data":[{"unit":"3207","unit_type":"---","days_vacant":339,"status":"Vacant","priority_es":"1 - CRÍTICA","priority_en":"1 - CRITICAL","priority_color":"red","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2504","unit_type":"A1-1B1B-C","days_vacant":229,"status":"Vacant","priority_es":"1 - CRÍTICA","priority_en":"1 - CRITICAL","priority_color":"red","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3006","unit_type":"---","days_vacant":193,"status":"Vacant","priority_es":"1 - CRÍTICA","priority_en":"1 - CRITICAL","priority_color":"red","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2302","unit_type":"---","days_vacant":149,"status":"Vacant","priority_es":"2 - ALTA (VENCIDA)","priority_en":"2 - HIGH (OVERDUE)","priority_color":"orange","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2815","unit_type":"A1-1B1B-U","days_vacant":145,"status":"Vacant Pre-Leased","priority_es":"3 - TRIAGE LISTO","priority_en":"3 - TRIAGE READY","priority_color":"yellow","bottleneck_es":"4/5 tareas ✓. Pendiente: Pintura","bottleneck_en":"4/5 tasks done. Pending: Pintura","action_es":"Iniciar Make Ready Checklist","action_en":"Start Make Ready Checklist","in_mr_hecho":false,"in_active_mr":true,"is_triage":true},{"unit":"2706","unit_type":"---","days_vacant":139,"status":"Vacant","priority_es":"2 - ALTA (VENCIDA)","priority_en":"2 - HIGH (OVERDUE)","priority_color":"orange","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2708","unit_type":"---","days_vacant":122,"status":"Vacant","priority_es":"2 - ALTA (VENCIDA)","priority_en":"2 - HIGH (OVERDUE)","priority_color":"orange","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1313","unit_type":"A2-1B1B-S","days_vacant":89,"status":"Vacant","priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","bottleneck_es":"5/5 tareas ✓. Falta: ---","bottleneck_en":"5/5 tasks done. Missing: ---","action_es":"Completar 0 tareas físicas","action_en":"Complete 0 physical tasks","in_mr_hecho":false,"in_active_mr":true,"is_triage":false},{"unit":"2417","unit_type":"A1-1B1B-U","days_vacant":87,"status":"Vacant","priority_es":"3 - TRIAGE LISTO","priority_en":"3 - TRIAGE READY","priority_color":"yellow","bottleneck_es":"5/5 tareas ✓. Pendiente: ---","bottleneck_en":"5/5 tasks done. Pending: ---","action_es":"Iniciar Make Ready Checklist","action_en":"Start Make Ready Checklist","in_mr_hecho":false,"in_active_mr":true,"is_triage":true},{"unit":"2805","unit_type":"A1-1B1B-U","days_vacant":76,"status":"Vacant","priority_es":"3 - TRIAGE LISTO","priority_en":"3 - TRIAGE READY","priority_color":"yellow","bottleneck_es":"4/5 tareas ✓. Pendiente: Alfombra/Shampoo","bottleneck_en":"4/5 tasks done. Pending: Alfombra/Shampoo","action_es":"Iniciar Make Ready Checklist","action_en":"Start Make Ready Checklist","in_mr_hecho":false,"in_active_mr":true,"is_triage":true},{"unit":"1609","unit_type":"A3-1B1.5B-S","days_vacant":66,"status":"Vacant","priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","bottleneck_es":"5/5 tareas ✓. Falta: ---","bottleneck_en":"5/5 tasks done. Missing: ---","action_es":"Completar 0 tareas físicas","action_en":"Complete 0 physical tasks","in_mr_hecho":false,"in_active_mr":true,"is_triage":false},{"unit":"2613","unit_type":"A1-1B1B-U","days_vacant":60,"status":"Vacant","priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","bottleneck_es":"5/5 tareas ✓. Falta: ---","bottleneck_en":"5/5 tasks done. Missing: ---","action_es":"Completar 0 tareas físicas","action_en":"Complete 0 physical tasks","in_mr_hecho":false,"in_active_mr":true,"is_triage":false},{"unit":"3406","unit_type":"---","days_vacant":60,"status":"Vacant","priority_es":"3 - MEDIA","priority_en":"3 - MEDIUM","priority_color":"yellow","bottleneck_es":"Checklist iniciado — Make Ready en proceso final","bottleneck_en":"Checklist started — Make Ready in final process","action_es":"Verificar completado y programar Final Walk","action_en":"Verify completion and schedule Final Walk","in_mr_hecho":true,"in_active_mr":false,"is_triage":false},{"unit":"705","unit_type":"A2-1B1B-U","days_vacant":55,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"4/5 tareas ✓. Falta: Alfombra/Shampoo","bottleneck_en":"4/5 tasks done. Missing: Alfombra/Shampoo","action_es":"Completar 1 tareas físicas","action_en":"Complete 1 physical tasks","in_mr_hecho":false,"in_active_mr":true,"is_triage":false},{"unit":"2406","unit_type":"A1-1B1B-C","days_vacant":54,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"3/5 tareas ✓. Falta: Pintura, Esmaltado baño","bottleneck_en":"3/5 tasks done. Missing: Pintura, Esmaltado baño","action_es":"Completar 2 tareas físicas","action_en":"Complete 2 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3009","unit_type":"A1-1B1B-U","days_vacant":52,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"1/5 tareas ✓. Falta: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño","bottleneck_en":"1/5 tasks done. Missing: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño","action_es":"Completar 4 tareas físicas","action_en":"Complete 4 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1908","unit_type":"---","days_vacant":51,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1116","unit_type":"A2-1B1B-C","days_vacant":51,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"712","unit_type":"A2-1","days_vacant":47,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3307","unit_type":"---","days_vacant":47,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2608","unit_type":"A1-1B1B-C","days_vacant":47,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1811","unit_type":"---","days_vacant":45,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3212","unit_type":"---","days_vacant":44,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2911","unit_type":"---","days_vacant":43,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"604","unit_type":"A1-1B1B-C","days_vacant":39,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"1/5 tareas ✓. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","bottleneck_en":"1/5 tasks done. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","action_es":"Completar 4 tareas físicas","action_en":"Complete 4 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1514","unit_type":"A1-1B1B-C","days_vacant":32,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"1/5 tareas ✓. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","bottleneck_en":"1/5 tasks done. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","action_es":"Completar 4 tareas físicas","action_en":"Complete 4 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2108","unit_type":"B2-2B2B-U","days_vacant":30,"status":"Vacant","priority_es":"3 - TRIAGE LISTO","priority_en":"3 - TRIAGE READY","priority_color":"yellow","bottleneck_es":"4/5 tareas ✓. Pendiente: Alfombra/Shampoo","bottleneck_en":"4/5 tasks done. Pending: Alfombra/Shampoo","action_es":"Iniciar Make Ready Checklist","action_en":"Start Make Ready Checklist","in_mr_hecho":false,"in_active_mr":true,"is_triage":true},{"unit":"503","unit_type":"A1-1B1B-U","days_vacant":30,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"2/5 tareas ✓. Falta: Pintura, Esmaltado baño, Esmaltado cocina","bottleneck_en":"2/5 tasks done. Missing: Pintura, Esmaltado baño, Esmaltado cocina","action_es":"Completar 3 tareas físicas","action_en":"Complete 3 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1002","unit_type":"A1-1B1B-C","days_vacant":30,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1713","unit_type":"A1-1B1B-U","days_vacant":29,"status":"Vacant Pre-Leased","priority_es":"2 - ALTA (PRE-LEASED)","priority_en":"2 - HIGH (PRE-LEASED)","priority_color":"orange","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3106","unit_type":"A1-1B1B-S","days_vacant":29,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2612","unit_type":"A1-1B1B-S","days_vacant":29,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2814","unit_type":"A1-1B1B-C","days_vacant":25,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1809","unit_type":"A1-1B1B-U","days_vacant":24,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"708","unit_type":"A1-1B1B-C","days_vacant":23,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"1/5 tareas ✓. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","bottleneck_en":"1/5 tasks done. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina","action_es":"Completar 4 tareas físicas","action_en":"Complete 4 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1516","unit_type":"A1-1B1B-C","days_vacant":23,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"1/5 tareas ✓. Falta: Trash out, Pintura, Esmaltado baño, Esmaltado cocina","bottleneck_en":"1/5 tasks done. Missing: Trash out, Pintura, Esmaltado baño, Esmaltado cocina","action_es":"Completar 4 tareas físicas","action_en":"Complete 4 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2005","unit_type":"A1-1B1B-C","days_vacant":20,"status":"Vacant Pre-Leased","priority_es":"2 - ALTA (PRE-LEASED)","priority_en":"2 - HIGH (PRE-LEASED)","priority_color":"orange","bottleneck_es":"5/5 tareas ✓. Falta: ---","bottleneck_en":"5/5 tasks done. Missing: ---","action_es":"Completar 0 tareas físicas","action_en":"Complete 0 physical tasks","in_mr_hecho":false,"in_active_mr":true,"is_triage":false},{"unit":"3303","unit_type":"A1-1B1B-U","days_vacant":20,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"2/5 tareas ✓. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño","bottleneck_en":"2/5 tasks done. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño","action_es":"Completar 3 tareas físicas","action_en":"Complete 3 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2910","unit_type":"A1-1B1B-C","days_vacant":20,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2903","unit_type":"A1-1B1B-U","days_vacant":18,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2105","unit_type":"A1-1B1B-U","days_vacant":18,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"2/5 tareas ✓. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño","bottleneck_en":"2/5 tasks done. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño","action_es":"Completar 3 tareas físicas","action_en":"Complete 3 physical tasks","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"1711","unit_type":"A1-1B1B-U","days_vacant":18,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2812","unit_type":"A1-1B1B-C","days_vacant":15,"status":"Vacant Pre-Leased","priority_es":"2 - ALTA (PRE-LEASED)","priority_en":"2 - HIGH (PRE-LEASED)","priority_color":"orange","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"3011","unit_type":"A1-1B1B-S","days_vacant":13,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"2702","unit_type":"---","days_vacant":9,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false},{"unit":"909","unit_type":"---","days_vacant":3,"status":"Vacant","priority_es":"5 - BACKLOG","priority_en":"5 - BACKLOG","priority_color":"blue","bottleneck_es":"Sin tareas con x definidas","bottleneck_en":"No tasks with x defined","action_es":"Programar Prewalk","action_en":"Schedule Prewalk","in_mr_hecho":false,"in_active_mr":false,"is_triage":false}],"charts":{"pw_labels":["Ene","Feb","Mar","Abr","May"],"pw_labels_en":["Jan","Feb","Mar","Apr","May"],"pw_data":[29,46,34,26,24],"finale_labels":["7","8","9"],"finale_data":[5,5,2],"status_labels":["Vacant","Vacant Pre-Leased"],"status_data":[42,4],"buckets":{"0-30":20,"31-60":15,"61-90":4,"91-150":4,"150+":3}}};
+const DATA = {"kpis": {"total_vacant": 47, "in_progress": 5, "checklist_done": 33, "mr_hecho": 0, "triage": 1, "avg_days": 66, "avg_score": 7.8, "future_units": 14}, "triage": [{"unit": "2815", "unit_type": "A1-1B1B-U", "days_vacant": 162, "status": "Vacant Pre-Leased", "tasks_n": 5, "defined_tasks": ["Trash out", "Pintura", "Alfombra/Shampoo", "Esmaltado baño", "Esmaltado cocina"], "pending_tasks": [], "task_vals_display": {"Trash out": "x", "Pintura": "x", "Alfombra/Shampoo": "x", "Esmaltado baño": "x", "Esmaltado cocina": "x"}, "notes_es": [], "notes_en": [], "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "priority_order": 1, "cost": "$310"}], "units": [{"unit": "2815", "unit_type": "A1-1B1B-U", "days_vacant": 162, "status": "Vacant Pre-Leased", "priority_es": "3 - MEDIA (TRIAGE LISTO)", "priority_en": "3 - MEDIUM (TRIAGE READY)", "priority_color": "yellow", "bottleneck_es": "5/5 tareas con x. Pendiente: ---", "bottleneck_en": "5/5 tasks with x. Pending: ---", "action_es": "Iniciar Make Ready (lista para MR)", "action_en": "Start Make Ready (MR ready)", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": true}, {"unit": "1713", "unit_type": "A1-1B1B-U", "days_vacant": 46, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2005", "unit_type": "A1-1B1B-C", "days_vacant": 37, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "5/5 tareas con x. Falta: ---", "bottleneck_en": "5/5 tasks with x. Missing: ---", "action_es": "Completar 0 tareas físicas restantes", "action_en": "Complete 0 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "3307", "unit_type": "A2-1B1B-U", "days_vacant": 64, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "2/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo", "bottleneck_en": "2/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3207", "unit_type": "A3-1B1.5B-U", "days_vacant": 356, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3006", "unit_type": "A1-1B1B-C", "days_vacant": 210, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2302", "unit_type": "A4-1B1B-C", "days_vacant": 166, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2706", "unit_type": "2706", "days_vacant": 156, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "4/5 tareas con x. Falta: Trash out", "bottleneck_en": "4/5 tasks with x. Missing: Trash out", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2708", "unit_type": "B2-2B2B-C", "days_vacant": 139, "status": "Vacant", "priority_es": "2 - ALTA (VENCIDA)", "priority_en": "2 - HIGH (OVERDUE)", "priority_color": "orange", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2417", "unit_type": "A1-1B1B-U", "days_vacant": 104, "status": "Vacant", "priority_es": "2 - ALTA (VENCIDA)", "priority_en": "2 - HIGH (OVERDUE)", "priority_color": "orange", "bottleneck_es": "5/5 tareas con x. Falta: ---", "bottleneck_en": "5/5 tasks with x. Missing: ---", "action_es": "Completar 0 tareas físicas restantes", "action_en": "Complete 0 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "2805", "unit_type": "A1-1B1B-U", "days_vacant": 93, "status": "Vacant", "priority_es": "2 - ALTA (VENCIDA)", "priority_en": "2 - HIGH (OVERDUE)", "priority_color": "orange", "bottleneck_es": "4/5 tareas con x. Falta: Alfombra/Shampoo", "bottleneck_en": "4/5 tasks with x. Missing: Alfombra/Shampoo", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "3406", "unit_type": "A3-1B1.5B-U", "days_vacant": 77, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "705", "unit_type": "—", "days_vacant": 72, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2406", "unit_type": "A1-1B1B-C", "days_vacant": 71, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "3/5 tareas con x. Falta: Pintura, Esmaltado baño", "bottleneck_en": "3/5 tasks with x. Missing: Pintura, Esmaltado baño", "action_es": "Completar 2 tareas físicas restantes", "action_en": "Complete 2 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3009", "unit_type": "A1-1B1B-U", "days_vacant": 69, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1908", "unit_type": "A4-1B1B-U", "days_vacant": 68, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "3/5 tareas con x. Falta: Pintura, Alfombra/Shampoo", "bottleneck_en": "3/5 tasks with x. Missing: Pintura, Alfombra/Shampoo", "action_es": "Completar 2 tareas físicas restantes", "action_en": "Complete 2 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1116", "unit_type": "A2-1B1B-C", "days_vacant": 68, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "712", "unit_type": "A2-1B1B-C", "days_vacant": 64, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2608", "unit_type": "A1-1B1B-C", "days_vacant": 64, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1811", "unit_type": "A2-1B1B-U", "days_vacant": 62, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3212", "unit_type": "A3-1B1.5B-U", "days_vacant": 61, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2911", "unit_type": "A2-1B1B-U", "days_vacant": 60, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "604", "unit_type": "A1-1B1B-C", "days_vacant": 56, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1514", "unit_type": "A1-1B1B-C", "days_vacant": 49, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2108", "unit_type": "B2-2B2B-U", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "4/5 tareas con x. Falta: Alfombra/Shampoo", "bottleneck_en": "4/5 tasks with x. Missing: Alfombra/Shampoo", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "503", "unit_type": "A1-1B1B-U", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1002", "unit_type": "A1-1B1B-C", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3106", "unit_type": "A1-1B1B-S", "days_vacant": 46, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2612", "unit_type": "A1-1B1B-S", "days_vacant": 46, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2814", "unit_type": "A1-1B1B-C", "days_vacant": 42, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1809", "unit_type": "A1-1B1B-U", "days_vacant": 41, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "708", "unit_type": "A1-1B1B-C", "days_vacant": 40, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1516", "unit_type": "A1-1B1B-C", "days_vacant": 40, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3303", "unit_type": "A1-1B1B-U", "days_vacant": 37, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2910", "unit_type": "A1-1B1B-C", "days_vacant": 37, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2903", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2105", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1711", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2812", "unit_type": "A1-1B1B-C", "days_vacant": 32, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3011", "unit_type": "A1-1B1B-S", "days_vacant": 30, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2702", "unit_type": "—", "days_vacant": 26, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "909", "unit_type": "—", "days_vacant": 20, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "101", "unit_type": "—", "days_vacant": 19, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "707", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2605", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2520", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2515", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}], "mr_hecho": [], "charts": {"prewalk_labels": ["Ene", "Feb", "Mar", "Abr", "May"], "prewalk_labels_en": ["Jan", "Feb", "Mar", "Apr", "May"], "prewalk_data": [29, 46, 34, 26, 27], "finale_labels": ["7", "8", "9"], "finale_data": [5, 5, 2], "vac_labels_es": ["0-30 días", "31-60 días", "61-90 días", "91-120 días", "121-150 días", "150+ días"], "vac_labels_en": ["0-30 days", "31-60 days", "61-90 days", "91-120 days", "121-150 days", "150+ days"], "vac_data": [8, 20, 11, 2, 1, 5]}, "future": [{"unit": "1206", "sq_ft": "921.0", "move_out": "07/15", "date_available": "06/22", "days": 0, "status": "Notice to Vacate"}, {"unit": "3401", "sq_ft": "748.0", "move_out": "06/17", "date_available": "06/24", "days": 0, "status": "Notice to Vacate"}, {"unit": "2807", "sq_ft": "574.0", "move_out": "06/17", "date_available": "06/24", "days": 0, "status": "Notice to Vacate"}, {"unit": "2603", "sq_ft": "574.0", "move_out": "06/29", "date_available": "07/06", "days": 0, "status": "Notice to Vacate"}, {"unit": "2506", "sq_ft": "705.0", "move_out": "7/12", "date_available": "07/19", "days": 0, "status": "Notice to Vacate"}, {"unit": "713", "sq_ft": "705.0", "move_out": "07/16", "date_available": "07/23", "days": 0, "status": "Notice to Vacate"}, {"unit": "2402", "sq_ft": "574.0", "move_out": "7/29", "date_available": "08/05", "days": 0, "status": "Notice to Vacate"}, {"unit": "1008", "sq_ft": "574.0", "move_out": "7/29", "date_available": "08/05", "days": 0, "status": "Notice to Vacate"}, {"unit": "1608", "sq_ft": "748.0", "move_out": "7/31", "date_available": "08/07", "days": 0, "status": "Notice to Vacate"}, {"unit": "3407", "sq_ft": "748.0", "move_out": "8/3", "date_available": "08/10", "days": 0, "status": "Notice to Vacate"}, {"unit": "1715", "sq_ft": "574.0", "move_out": "08/03", "date_available": "08/10", "days": 0, "status": "Notice to Vacate"}, {"unit": "1602", "sq_ft": "748.0", "move_out": "08/03", "date_available": "08/10", "days": 0, "status": "Notice to Vacate"}, {"unit": "1701", "sq_ft": "574.0", "move_out": "08/09", "date_available": "08/16", "days": 0, "status": "Notice to Vacate"}, {"unit": "1712", "sq_ft": "574.0", "move_out": "09/16", "date_available": "09/23", "days": 0, "status": "Notice to Vacate"}], "generated": "2026-06-18 03:56"};
 
-const FUTURE_UNITS = [
-  {unit:'2605',sq:'574',move_out:'06/01',date_avail:'06/08'},{unit:'2515',sq:'705',move_out:'06/01',date_avail:'06/08'},
-  {unit:'1509',sq:'574',move_out:'06/01',date_avail:'06/08'},{unit:'901',sq:'705',move_out:'06/03',date_avail:'06/10'},
-  {unit:'2901',sq:'705',move_out:'06/10',date_avail:'06/17'},{unit:'2518',sq:'705',move_out:'06/10',date_avail:'06/17'},
-  {unit:'3211',sq:'748',move_out:'06/15',date_avail:'06/22'},{unit:'1206',sq:'921',move_out:'06/15',date_avail:'06/22'},
-  {unit:'913',sq:'705',move_out:'06/16',date_avail:'06/23'},{unit:'2603',sq:'574',move_out:'06/29',date_avail:'07/06'},
-  {unit:'2701',sq:'1041',move_out:'07/01',date_avail:'07/08'},{unit:'2506',sq:'705',move_out:'07/12',date_avail:'07/19'},
-  {unit:'713',sq:'705',move_out:'07/16',date_avail:'07/23'},{unit:'2402',sq:'574',move_out:'07/29',date_avail:'08/05'},
-  {unit:'1008',sq:'574',move_out:'07/29',date_avail:'08/05'},{unit:'1715',sq:'574',move_out:'08/03',date_avail:'08/10'},
-  {unit:'1602',sq:'748',move_out:'08/03',date_avail:'08/10'},
-];
-
-// ===================== i18n =====================
-let lang = 'es';
 const T = {
-    es:{nav_title:'Make Ready Analytics',nav_sub:'Aviva Plaza North · 03-Jun-2026',kpi_vacant:'Vacantes',kpi_critical:'Críticas +150d',kpi_high:'Alta Prioridad',kpi_triage:'Triage Listo',kpi_active:'MRs Activos',kpi_checklist:'En Checklist',kpi_preleased:'Pre-Arrendadas',kpi_avg:'Días Prom.',triage_title:'Triage de Producción — Listas para Make Ready',triage_note:'Unidades con ≥3 tareas físicas ✓ en sección activa del Board. Excluye daños estructurales y unidades ya en Checklist.',table_title:'Tabla de Prioridades — Todas las Vacantes',filter_all:'Todas',filter_critical:'Críticas',filter_high:'Alta',filter_medium:'Media',filter_backlog:'Backlog',filter_mr:'En MR',th_unit:'Unidad',th_type:'Tipo',th_days:'Días',th_status:'Estado',th_priority:'Prioridad',th_bottleneck:'Cuello de Botella',th_action:'Acción',chart_prewalk:'Prewalks por Mes',chart_finale:'Puntajes Final Walk',chart_buckets:'Vacantes por Rango',future_title:'Próximas Salidas — Notice to Vacate',triage_days:'días',triage_tasks:'tareas ✓',label_in_mr:'En MR',label_triage:'Triage',label_checklist:'Checklist',search_placeholder:'Buscar unidad...',col_all:'Todas las columnas',col_unit:'Unidad',col_status:'Estado',col_priority:'Prioridad',col_bottleneck:'Cuello de botella',no_results:'Sin resultados para esta búsqueda.'},
-    en:{nav_title:'Make Ready Analytics',nav_sub:'Aviva Plaza North · Jun-03-2026',kpi_vacant:'Vacant',kpi_critical:'Critical +150d',kpi_high:'High Priority',kpi_triage:'Triage Ready',kpi_active:'Active MRs',kpi_checklist:'In Checklist',kpi_preleased:'Pre-Leased',kpi_avg:'Avg Days',triage_title:'Production Triage — Ready for Make Ready',triage_note:'Units with ≥3 physical tasks ✓ in active Board section. Excludes structural damage and units already in Checklist.',table_title:'Priority Table — All Vacant Units',filter_all:'All',filter_critical:'Critical',filter_high:'High',filter_medium:'Medium',filter_backlog:'Backlog',filter_mr:'In MR',th_unit:'Unit',th_type:'Type',th_days:'Days',th_status:'Status',th_priority:'Priority',th_bottleneck:'Bottleneck',th_action:'Action',chart_prewalk:'Prewalks per Month',chart_finale:'Final Walk Scores',chart_buckets:'Vacants by Range',future_title:'Upcoming Move-Outs — Notice to Vacate',triage_days:'days',triage_tasks:'tasks ✓',label_in_mr:'In MR',label_triage:'Triage',label_checklist:'Checklist',search_placeholder:'Search unit...',col_all:'All columns',col_unit:'Unit',col_status:'Status',col_priority:'Priority',col_bottleneck:'Bottleneck',no_results:'No results found.'}
+  es: {
+    nav_title: 'Dashboard Make Ready',
+    kpi_vacant: 'Total Vacantes', kpi_vacant_sub: 'unidades sin ocupar',
+    kpi_progress: 'En Proceso MR', kpi_progress_sub: 'en Make Ready Board',
+    kpi_checklist: 'Checklist Iniciados', kpi_checklist_sub: 'con checklist activo',
+    kpi_mrhecho: 'MR-Hecho ✅', kpi_mrhecho_sub: 'listos para arrendar',
+    kpi_triage: 'Triage Listo 🚀', kpi_triage_sub: 'listos para checklist',
+    kpi_avgdays: 'Prom. Días', kpi_avgdays_sub: 'días vacante prom.',
+    kpi_score: 'Score Final Walk', kpi_score_sub: 'promedio /10',
+    kpi_future: 'Unidades Futuras', kpi_future_sub: 'notice to vacate',
+    triage_title: 'Triage de Producción',
+    triage_sub: 'Unidades activas en MR Board con ≥3 tareas completadas, listas para iniciar Checklist',
+    triage_empty: 'No hay unidades en triage actualmente.',
+    strat_title: 'Análisis Estratégico',
+    action_week_title: '📅 Plan de Acción Semanal',
+    action_today: '🔴 Hoy / Urgente', action_week: '🟡 Esta Semana', action_twoweeks: '🟢 Próximas 2 Semanas',
+    table_title: 'Tabla de Prioridades — Vacantes',
+    search_placeholder: 'Buscar unidad, tipo, estado...',
+    filter_all: 'Todos', filter_critical: 'Crítica', filter_high: 'Alta', filter_medium: 'Media',
+    filter_backlog: 'Backlog', filter_active: 'En MR', filter_checklist: 'Checklist', filter_mrhecho: 'MR-Hecho',
+    col_unit: 'Unidad', col_type: 'Tipo', col_days: 'Días', col_status: 'Estado',
+    col_priority: 'Prioridad', col_bottleneck: 'Cuello de Botella', col_action: 'Acción',
+    chart_prewalk: 'Prewalks por Mes', chart_score: 'Scores Final Walk', chart_vac: 'Distribución Días Vacancia',
+    future_title: 'Unidades Futuras — Notice to Vacate',
+    footer_generated: 'Generado',
+    days_label: 'días',
+    tasks_done: 'Tareas completadas',
+    pending_label: 'Pendiente',
+    notes_label: 'Nota',
+    badge_mr_hecho: '✅ MR-HECHO', badge_checklist: '📋 Checklist',
+    badge_triage: '🚀 Triage Listo', badge_active: '🔧 En MR',
+    sqft_label: 'ft²', available_label: 'Disponible', moveout_label: 'Move Out',
+    strat_critical_title: '🔴 Situación Crítica', strat_critical_desc: 'Unidades con más de 150 días vacías',
+    strat_mrhecho_title: '✅ Logros MR-Hecho', strat_mrhecho_desc: 'Listas para Final Walk y Arrendamiento',
+    strat_triage_title: '🚀 Oportunidad Triage', strat_triage_desc: 'Listas para iniciar Make Ready Checklist',
+    strat_checklist_title: '📋 Pipeline Checklist', strat_checklist_desc: 'En proceso, verificar completado',
+    no_critical: 'Sin unidades críticas actualmente', no_mrhecho: 'Sin unidades MR-Hecho actualmente',
+    no_triage: 'Sin unidades en triage actualmente', no_checklist: 'Sin unidades en checklist',
+    act_escalate: 'Coordinar con gerencia — escalada inmediata',
+    act_prewalk: 'Programar Prewalk urgente',
+    act_vendor: 'Contactar vendors para pintura y servicios',
+    act_finalwalk: 'Programar Final Walk',
+    act_publish: 'Publicar unidad para arrendamiento',
+    act_leasing: 'Notificar al equipo de Leasing',
+    act_checklist: 'Iniciar Make Ready Checklist',
+    act_assign: 'Asignar técnico responsable',
+    act_track: 'Dar seguimiento diario al avance',
+    act_verify: 'Verificar completado del Checklist',
+    act_schedule_fw: 'Programar Final Walk de verificación',
+    act_sign: 'Coordinar firma de aprobación',
+    act_plan: 'Planificar pipeline para próximas semanas',
+    act_train: 'Revisar métricas con el equipo',
+    act_future: 'Anticipar unidades futuras en pipeline',
+  },
+  en: {
+    nav_title: 'Make Ready Dashboard',
+    kpi_vacant: 'Total Vacant', kpi_vacant_sub: 'units unoccupied',
+    kpi_progress: 'MR In Progress', kpi_progress_sub: 'on Make Ready Board',
+    kpi_checklist: 'Checklists Started', kpi_checklist_sub: 'active checklist',
+    kpi_mrhecho: 'MR-Done ✅', kpi_mrhecho_sub: 'ready for leasing',
+    kpi_triage: 'Triage Ready 🚀', kpi_triage_sub: 'ready for checklist',
+    kpi_avgdays: 'Avg. Days', kpi_avgdays_sub: 'avg. days vacant',
+    kpi_score: 'Final Walk Score', kpi_score_sub: 'average /10',
+    kpi_future: 'Future Units', kpi_future_sub: 'notice to vacate',
+    triage_title: 'Production Triage',
+    triage_sub: 'Active units on MR Board with ≥3 tasks done, ready to start Checklist',
+    triage_empty: 'No units in triage at this time.',
+    strat_title: 'Strategic Analysis',
+    action_week_title: '📅 Weekly Action Plan',
+    action_today: '🔴 Today / Urgent', action_week: '🟡 This Week', action_twoweeks: '🟢 Next 2 Weeks',
+    table_title: 'Priority Table — Vacant Units',
+    search_placeholder: 'Search unit, type, status...',
+    filter_all: 'All', filter_critical: 'Critical', filter_high: 'High', filter_medium: 'Medium',
+    filter_backlog: 'Backlog', filter_active: 'In MR', filter_checklist: 'Checklist', filter_mrhecho: 'MR-Done',
+    col_unit: 'Unit', col_type: 'Type', col_days: 'Days', col_status: 'Status',
+    col_priority: 'Priority', col_bottleneck: 'Bottleneck', col_action: 'Action',
+    chart_prewalk: 'Prewalks by Month', chart_score: 'Final Walk Scores', chart_vac: 'Vacancy Days Distribution',
+    future_title: 'Future Units — Notice to Vacate',
+    footer_generated: 'Generated',
+    days_label: 'days',
+    tasks_done: 'Tasks completed',
+    pending_label: 'Pending',
+    notes_label: 'Note',
+    badge_mr_hecho: '✅ MR-DONE', badge_checklist: '📋 Checklist',
+    badge_triage: '🚀 Triage Ready', badge_active: '🔧 In MR',
+    sqft_label: 'ft²', available_label: 'Available', moveout_label: 'Move Out',
+    strat_critical_title: '🔴 Critical Situation', strat_critical_desc: 'Units vacant for 150+ days',
+    strat_mrhecho_title: '✅ MR-Done Achievements', strat_mrhecho_desc: 'Ready for Final Walk and Leasing',
+    strat_triage_title: '🚀 Triage Opportunity', strat_triage_desc: 'Ready to start Make Ready Checklist',
+    strat_checklist_title: '📋 Checklist Pipeline', strat_checklist_desc: 'In process, verify completion',
+    no_critical: 'No critical units at this time', no_mrhecho: 'No MR-Done units at this time',
+    no_triage: 'No triage units at this time', no_checklist: 'No units in checklist',
+    act_escalate: 'Coordinate with management — immediate escalation',
+    act_prewalk: 'Schedule urgent Prewalk',
+    act_vendor: 'Contact vendors for paint and services',
+    act_finalwalk: 'Schedule Final Walk',
+    act_publish: 'List unit for leasing',
+    act_leasing: 'Notify Leasing team',
+    act_checklist: 'Start Make Ready Checklist',
+    act_assign: 'Assign responsible technician',
+    act_track: 'Daily progress follow-up',
+    act_verify: 'Verify Checklist completion',
+    act_schedule_fw: 'Schedule verification Final Walk',
+    act_sign: 'Coordinate approval signature',
+    act_plan: 'Plan pipeline for upcoming weeks',
+    act_train: 'Review metrics with team',
+    act_future: 'Anticipate future units in pipeline',
+  }
 };
-const t = k => (T[lang][k]||k);
 
-function toggleLanguage() {
-    lang = lang==='es'?'en':'es';
-    document.getElementById('langBtn').textContent = lang==='es'?'English':'Español';
-    document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[lang][k])el.textContent=T[lang][k];});
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.getAttribute('data-i18n-placeholder');if(T[lang][k])el.placeholder=T[lang][k];});
-    // update select options
-    document.querySelectorAll('#searchCol option').forEach(opt=>{const k=opt.getAttribute('data-i18n');if(k&&T[lang][k])opt.textContent=T[lang][k];});
-    renderTriage(); renderTable(); renderFuture(); updateCharts();
+let lang = 'es';
+let filterMode = 'all';
+let searchQuery = '';
+
+function t(key) { return (T[lang][key] || key); }
+
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  document.getElementById('langBtn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.documentElement.lang = lang;
+  applyTranslations();
+  renderAll();
 }
 
-// ===================== TRIAGE =====================
-function bc(c){return 'badge badge-'+(c||'blue');}
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (T[lang][key]) el.textContent = T[lang][key];
+  });
+  const srch = document.getElementById('tableSearch');
+  if (srch) srch.placeholder = t('search_placeholder');
+}
 
-function renderTriage(){
-    const g=document.getElementById('triage-grid');
-    g.innerHTML=DATA.triage_list.map(u=>{
-        const pri=lang==='es'?u.priority_es:u.priority_en;
-        const notes=lang==='es'?u.notes_es:u.notes_en;
-        const done=u.defined_tasks.map(x=>`<span class="task-pill task-done"><i class="fa-solid fa-check" style="font-size:7px;"></i>${x}</span>`).join('');
-        const pend=u.pending_tasks.map(x=>`<span class="task-pill task-pending">${x}</span>`).join('');
-        const nh=notes.length?`<div style="margin-top:.5rem;font-size:.72rem;color:#92400e;background:#fffbeb;border-radius:.3rem;padding:.25rem .5rem;">⚠ ${notes.join(', ')}</div>`:'';
-        return `<div class="triage-card ${u.priority_color}">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;">
-                <div><span style="font-size:1.3rem;font-weight:700;color:#0E1C37;">#${u.unit}</span><span style="font-size:.72rem;color:#64748b;margin-left:.4rem;">${u.unit_type}</span></div>
-                <span class="${bc(u.priority_color)}">${pri}</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:.5rem;font-size:.72rem;color:#64748b;margin-bottom:.5rem;">
-                <span><i class="fa-solid fa-calendar-days" style="color:#B5924C;margin-right:3px;"></i>${u.days_vacant} ${t('triage_days')}</span>
-                <span><i class="fa-solid fa-list-check" style="color:#B5924C;margin-right:3px;"></i>${u.tasks_n}/5 ${t('triage_tasks')}</span>
-                ${u.cost!=='—'?`<span><i class="fa-solid fa-dollar-sign" style="color:#B5924C;margin-right:3px;"></i>${u.cost}</span>`:''}
-            </div>
-            <div style="display:flex;flex-wrap:wrap;">${done}${pend}</div>
-            ${nh}
-        </div>`;
+function renderAll() {
+  renderKPIs();
+  renderTriage();
+  renderStrat();
+  renderTable();
+  renderFuture();
+  applyTranslations();
+}
+
+function renderKPIs() {
+  const k = DATA.kpis;
+  document.getElementById('kVacant').textContent = k.total_vacant;
+  document.getElementById('kProgress').textContent = k.in_progress;
+  document.getElementById('kChecklist').textContent = k.checklist_done;
+  document.getElementById('kMrHecho').textContent = k.mr_hecho;
+  document.getElementById('kTriage').textContent = k.triage;
+  document.getElementById('kAvgDays').textContent = k.avg_days;
+  document.getElementById('kScore').textContent = k.avg_score;
+  document.getElementById('kFuture').textContent = k.future_units;
+}
+
+function badgeClass(color) {
+  const map = {red:'badge-red',orange:'badge-orange',yellow:'badge-yellow',blue:'badge-blue',green:'badge-green'};
+  return map[color] || 'badge-blue';
+}
+
+function priLabel(u) {
+  return lang === 'es' ? u.priority_es : u.priority_en;
+}
+
+function renderTriage() {
+  const grid = document.getElementById('triageGrid');
+  const empty = document.getElementById('triageEmpty');
+  document.getElementById('triageBadge').textContent = DATA.triage.length;
+  if (!DATA.triage.length) {
+    grid.style.display = 'none'; empty.style.display = 'block'; return;
+  }
+  grid.style.display = 'grid'; empty.style.display = 'none';
+  grid.innerHTML = DATA.triage.map(u => {
+    const tasks = u.defined_tasks.map(t => `<span style="font-size:.72rem; background:#D1FAE5; color:#065F46; padding:2px 7px; border-radius:9999px; margin:2px; display:inline-block;">✓ ${t}</span>`).join('');
+    const pending = u.pending_tasks.length ? `<div style="margin-top:.4rem; font-size:.75rem; color:#92400E;"><strong>${t('pending_label')}:</strong> ${u.pending_tasks.join(', ')}</div>` : '';
+    const notes = u.notes_es.length && lang==='es' ? `<div style="margin-top:.4rem; font-size:.75rem; color:#B45309;">⚠️ ${u.notes_es.join('; ')}</div>` :
+                  u.notes_en.length && lang==='en' ? `<div style="margin-top:.4rem; font-size:.75rem; color:#B45309;">⚠️ ${u.notes_en.join('; ')}</div>` : '';
+    return `<div class="triage-card ${u.priority_color}">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.5rem;">
+        <div>
+          <span style="font-size:1.3rem; font-weight:900; color:#0E1C37;">${u.unit}</span>
+          <span style="font-size:.75rem; color:#44546A; margin-left:.4rem;">${u.unit_type}</span>
+        </div>
+        <span class="badge ${badgeClass(u.priority_color)}">${lang==='es'?u.priority_es:u.priority_en}</span>
+      </div>
+      <div style="font-size:.78rem; color:#44546A; margin-bottom:.5rem;">
+        <i class="fa-regular fa-clock" style="margin-right:.3rem;"></i>${u.days_vacant} ${t('days_label')} &nbsp;·&nbsp; ${u.cost !== '—' ? u.cost : ''} &nbsp;·&nbsp; ${u.status}
+      </div>
+      <div style="margin-bottom:.4rem;">${tasks}</div>
+      ${pending}${notes}
+    </div>`;
+  }).join('');
+}
+
+function renderStrat() {
+  const units = DATA.units;
+  const critical = units.filter(u => u.priority_color === 'red' && !u.in_mr_hecho);
+  const mrHecho = DATA.mr_hecho;
+  const triage = DATA.triage;
+  const checklist = units.filter(u => u.in_checklist && !u.in_mr_hecho);
+
+  function listItems(items, isUnit=true) {
+    if (!items.length) return '';
+    return items.slice(0,5).map(u => {
+      if (isUnit) return `<li><strong>${u.unit || u}</strong> — ${u.unit_type||u.days||''} ${isUnit&&u.days_vacant!==undefined?' ('+u.days_vacant+' '+t('days_label')+')':''}</li>`;
+      return `<li>${u}</li>`;
     }).join('');
+  }
+
+  const panels = [
+    {
+      cls: 'red',
+      title: t('strat_critical_title'),
+      desc: t('strat_critical_desc'),
+      body: critical.length
+        ? `<ul>${listItems(critical)}</ul><p style="font-size:.75rem; color:#991B1B; margin-top:.5rem;">${critical.length} ${t('days_label').replace('días','unidades').replace('days','units')}</p>`
+        : `<p style="font-size:.8rem; color:#888;">${t('no_critical')}</p>`,
+      actions: [t('act_escalate'), t('act_prewalk'), t('act_vendor')],
+    },
+    {
+      cls: 'green',
+      title: t('strat_mrhecho_title'),
+      desc: t('strat_mrhecho_desc'),
+      body: mrHecho.length
+        ? `<ul>${mrHecho.map(u=>`<li><strong>${u.unit}</strong> — ${u.unit_type} (${u.days} ${t('days_label')})</li>`).join('')}</ul>`
+        : `<p style="font-size:.8rem; color:#888;">${t('no_mrhecho')}</p>`,
+      actions: [t('act_finalwalk'), t('act_publish'), t('act_leasing')],
+    },
+    {
+      cls: 'yellow',
+      title: t('strat_triage_title'),
+      desc: t('strat_triage_desc'),
+      body: triage.length
+        ? `<ul>${triage.map(u=>`<li><strong>${u.unit}</strong> — ${u.unit_type} (${u.days_vacant} ${t('days_label')})</li>`).join('')}</ul>`
+        : `<p style="font-size:.8rem; color:#888;">${t('no_triage')}</p>`,
+      actions: [t('act_checklist'), t('act_assign'), t('act_track')],
+    },
+    {
+      cls: 'blue',
+      title: t('strat_checklist_title'),
+      desc: t('strat_checklist_desc'),
+      body: checklist.length
+        ? `<ul>${checklist.slice(0,6).map(u=>`<li><strong>${u.unit}</strong> — ${u.unit_type} (${u.days_vacant} ${t('days_label')})</li>`).join('')}${checklist.length>6?`<li>...y ${checklist.length-6} más</li>`:''}</ul>`
+        : `<p style="font-size:.8rem; color:#888;">${t('no_checklist')}</p>`,
+      actions: [t('act_verify'), t('act_schedule_fw'), t('act_sign')],
+    },
+  ];
+
+  document.getElementById('stratPanels').innerHTML = panels.map(p => `
+    <div class="strat-panel ${p.cls}">
+      <div style="font-weight:700; font-size:.88rem; margin-bottom:.25rem;">${p.title}</div>
+      <div style="font-size:.74rem; opacity:.7; margin-bottom:.5rem;">${p.desc}</div>
+      <div style="font-size:.8rem;">${p.body}</div>
+      <div style="margin-top:.5rem; font-size:.74rem; font-weight:600; opacity:.8;">${t('col_action')}:</div>
+      <ul style="margin:.25rem 0 0 0; padding-left:1.1rem; font-size:.75rem;">${p.actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+
+  // Action plan
+  const critN = critical.length, triN = DATA.triage.length, chkN = checklist.filter(u=>!u.in_mr_hecho).length;
+  document.getElementById('actionUrgent').innerHTML = [
+    critN ? `<li>${critN} ${lang==='es'?'unidades críticas — escalar':'critical units — escalate'}</li>` : '',
+    triN ? `<li>${triN} ${lang==='es'?'unidades triage — iniciar Checklist':'triage units — start Checklist'}</li>` : '',
+    `<li>${t('act_escalate')}</li>`,
+    `<li>${t('act_vendor')}</li>`,
+  ].filter(Boolean).join('');
+
+  document.getElementById('actionWeek').innerHTML = [
+    `<li>${t('act_verify')}: ${chkN} ${lang==='es'?'unidades en checklist':'checklist units'}</li>`,
+    `<li>${t('act_assign')}</li>`,
+    `<li>${t('act_prewalk')}</li>`,
+    `<li>${t('act_track')}</li>`,
+  ].join('');
+
+  document.getElementById('actionTwoWeeks').innerHTML = [
+    `<li>${t('act_plan')}</li>`,
+    `<li>${t('act_train')}</li>`,
+    `<li>${t('act_future')}: ${DATA.kpis.future_units} ${lang==='es'?'unidades pendientes':'upcoming units'}</li>`,
+  ].join('');
 }
 
-// ===================== TABLE =====================
-let currentFilter='all';
-let currentSearch='';
-
-function filterTable(f, btn){
-    currentFilter=f;
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    renderTable();
-}
-function onSearch(){
-    currentSearch=document.getElementById('searchInput').value.trim().toLowerCase();
-    renderTable();
+function highlightText(text, query) {
+  if (!query) return text;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return String(text).replace(re, '<mark>$1</mark>');
 }
 
-function matchSearch(u, q, col){
-    if(!q) return true;
-    const fields={
-        unit:   '#'+u.unit+' '+u.unit_type,
-        status: u.status,
-        priority: (lang==='es'?u.priority_es:u.priority_en),
-        bottleneck: (lang==='es'?u.bottleneck_es:u.bottleneck_en),
-    };
-    if(col==='all') return Object.values(fields).some(v=>v.toLowerCase().includes(q));
-    return (fields[col]||'').toLowerCase().includes(q);
+let currentFilter = 'all';
+
+function setFilter(mode, btn) {
+  currentFilter = mode;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTable();
 }
 
-function renderTable(){
-    const col=document.getElementById('searchCol').value;
-    let rows=DATA.units_data;
-    // Priority filter
-    if(currentFilter==='red')    rows=rows.filter(r=>r.priority_color==='red');
-    if(currentFilter==='orange') rows=rows.filter(r=>r.priority_color==='orange');
-    if(currentFilter==='yellow') rows=rows.filter(r=>r.priority_color==='yellow');
-    if(currentFilter==='blue')   rows=rows.filter(r=>r.priority_color==='blue');
-    if(currentFilter==='mr')     rows=rows.filter(r=>r.in_active_mr||r.in_mr_hecho);
-    // Search filter
-    if(currentSearch) rows=rows.filter(r=>matchSearch(r, currentSearch, col));
-
-    const noRes=document.getElementById('no-results');
-    const tbody=document.getElementById('units-table-body');
-    const cnt=document.getElementById('row-count');
-    cnt.textContent=rows.length+' / '+DATA.units_data.length;
-
-    if(!rows.length){noRes.style.display='block';tbody.innerHTML='';return;}
-    noRes.style.display='none';
-
-    const daysColor=d=>d>=150?'color:#b91c1c;font-weight:700;':d>=90?'color:#c2410c;font-weight:600;':d>=60?'color:#a16207;':'color:var(--slate);';
-    const hl=(text)=>{
-        if(!currentSearch) return text;
-        const re=new RegExp('('+currentSearch.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
-        return text.replace(re,'<mark style="background:#fef9c3;border-radius:2px;padding:0 1px;">$1</mark>');
-    };
-
-    tbody.innerHTML=rows.map(u=>{
-        const pri=lang==='es'?u.priority_es:u.priority_en;
-        const bn =lang==='es'?u.bottleneck_es:u.bottleneck_en;
-        const act=lang==='es'?u.action_es:u.action_en;
-        const tag=u.in_mr_hecho?`<span class="${bc('green')}" style="margin-left:4px;">${t('label_checklist')}</span>`:
-                  u.is_triage  ?`<span class="${bc('yellow')}" style="margin-left:4px;">${t('label_triage')}</span>`:
-                  u.in_active_mr?`<span class="${bc('blue')}" style="margin-left:4px;">${t('label_in_mr')}</span>`:'';
-        return `<tr>
-            <td style="font-weight:600;color:var(--navy);white-space:nowrap;">${hl('#'+u.unit)}${tag}</td>
-            <td style="color:var(--slate);font-size:.75rem;">${u.unit_type}</td>
-            <td style="${daysColor(u.days_vacant)}">${u.days_vacant}</td>
-            <td style="font-size:.75rem;color:var(--slate);">${hl(u.status)}</td>
-            <td><span class="${bc(u.priority_color)}">${hl(pri)}</span></td>
-            <td style="font-size:.75rem;color:var(--slate);max-width:260px;">${hl(bn)}</td>
-            <td style="font-size:.75rem;color:#1d4ed8;font-weight:500;">${act}</td>
-        </tr>`;
-    }).join('');
+function filterTable() {
+  searchQuery = document.getElementById('tableSearch').value.toLowerCase().trim();
+  renderTable();
 }
 
-// ===================== FUTURE =====================
-function renderFuture(){
-    document.getElementById('future-grid').innerHTML=FUTURE_UNITS.map(u=>
-        `<div class="future-chip">
-            <div style="font-weight:700;color:var(--navy);">#${u.unit}</div>
-            <div style="font-size:.68rem;color:var(--slate);">${u.sq} sf</div>
-            <div style="font-size:.68rem;color:#94a3b8;margin-top:2px;">Out: ${u.move_out}</div>
-            <div style="font-size:.68rem;color:var(--gold);font-weight:600;">Avail: ${u.date_avail}</div>
-        </div>`
-    ).join('');
-}
+function renderTable() {
+  let units = [...DATA.units];
 
-// ===================== CHARTS =====================
-let chartPrewalk, chartFinale, chartBuckets;
-const C=DATA.charts;
-const NAVY='#0E1C37', GOLD='#B5924C';
+  // Sort: mr_hecho first, then by priority
+  units.sort((a, b) => {
+    if (a.in_mr_hecho && !b.in_mr_hecho) return -1;
+    if (!a.in_mr_hecho && b.in_mr_hecho) return 1;
+    const priOrder = {red:1, orange:2, yellow:3, green:4, blue:5};
+    const pa = priOrder[a.priority_color] || 9;
+    const pb = priOrder[b.priority_color] || 9;
+    if (pa !== pb) return pa - pb;
+    return b.days_vacant - a.days_vacant;
+  });
 
-function buildCharts(){
-    Chart.defaults.font.family="'Calibri','Segoe UI',sans-serif";
-    Chart.defaults.color='#44546A';
+  // Filter by category
+  if (currentFilter === 'red')       units = units.filter(u => u.priority_color === 'red' && !u.in_mr_hecho);
+  else if (currentFilter === 'orange') units = units.filter(u => u.priority_color === 'orange' && !u.in_mr_hecho);
+  else if (currentFilter === 'yellow') units = units.filter(u => u.priority_color === 'yellow' && !u.in_mr_hecho);
+  else if (currentFilter === 'blue')   units = units.filter(u => u.priority_color === 'blue');
+  else if (currentFilter === 'active_mr') units = units.filter(u => u.in_active_mr);
+  else if (currentFilter === 'checklist') units = units.filter(u => u.in_checklist && !u.in_mr_hecho);
+  else if (currentFilter === 'mr_hecho')  units = units.filter(u => u.in_mr_hecho);
 
-    chartPrewalk=new Chart(document.getElementById('chartPrewalk'),{
-        type:'bar',
-        data:{labels:C.pw_labels,datasets:[{label:'Prewalks',data:C.pw_data,
-            backgroundColor:GOLD,borderRadius:5,hoverBackgroundColor:NAVY}]},
-        options:{responsive:true,plugins:{legend:{display:false}},
-            scales:{y:{beginAtZero:true,grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}}
+  // Search
+  if (searchQuery) {
+    units = units.filter(u => {
+      const haystack = [u.unit, u.unit_type, u.status, u.priority_es, u.priority_en, u.bottleneck_es, u.bottleneck_en].join(' ').toLowerCase();
+      return haystack.includes(searchQuery);
     });
-    chartFinale=new Chart(document.getElementById('chartFinale'),{
-        type:'bar',
-        data:{labels:C.finale_labels,datasets:[{data:C.finale_data,
-            backgroundColor:[GOLD,'#a3b899','#6b8cba'],borderRadius:5}]},
-        options:{responsive:true,plugins:{legend:{display:false}},
-            scales:{x:{title:{display:true,text:'Score',color:'#94a3b8',font:{size:10}}},
-                    y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f1f5f9'}}}}
-    });
-    const bKeys=Object.keys(C.buckets),bVals=Object.values(C.buckets);
-    chartBuckets=new Chart(document.getElementById('chartBuckets'),{
-        type:'doughnut',
-        data:{labels:bKeys,datasets:[{data:bVals,
-            backgroundColor:['#34d399','#60a5fa',GOLD,'#f97316','#ef4444'],
-            borderWidth:2,borderColor:'#fff',hoverOffset:4}]},
-        options:{responsive:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}}}
-    });
+  }
+
+  document.getElementById('tableCount').textContent = units.length;
+
+  const tbody = document.getElementById('tableBody');
+  if (!units.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:#888;">—</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = units.map(u => {
+    const rowStyle = u.in_mr_hecho ? 'background:#F0FDF4;' : '';
+    const hl = q => highlightText(q, searchQuery);
+
+    let badgeParts = '';
+    if (u.in_mr_hecho) badgeParts += `<span class="badge badge-green" style="margin-bottom:2px;">${t('badge_mr_hecho')}</span> `;
+    else if (u.in_checklist) badgeParts += `<span class="badge badge-blue" style="margin-bottom:2px;">${t('badge_checklist')}</span> `;
+    else if (u.is_triage) badgeParts += `<span class="badge badge-yellow" style="margin-bottom:2px;">${t('badge_triage')}</span> `;
+    else if (u.in_active_mr) badgeParts += `<span class="badge badge-orange" style="margin-bottom:2px;">${t('badge_active')}</span> `;
+
+    const priLabel = lang === 'es' ? u.priority_es : u.priority_en;
+    const bnLabel  = lang === 'es' ? u.bottleneck_es : u.bottleneck_en;
+    const actLabel = lang === 'es' ? u.action_es : u.action_en;
+
+    return `<tr style="${rowStyle}">
+      <td style="font-weight:700; white-space:nowrap;">${hl(u.unit)}<br><span style="font-size:.68rem; color:#44546A; font-weight:400;">${badgeParts}</span></td>
+      <td style="font-size:.78rem; white-space:nowrap;">${hl(u.unit_type || '—')}</td>
+      <td style="font-weight:700; white-space:nowrap; color:${u.days_vacant>=150?'#991B1B':u.days_vacant>=90?'#92400E':u.days_vacant>=60?'#713F12':'#44546A'}">${u.days_vacant}</td>
+      <td style="font-size:.78rem; white-space:nowrap;">${hl(u.status)}</td>
+      <td><span class="badge ${badgeClass(u.in_mr_hecho?'green':u.priority_color)}">${hl(priLabel)}</span></td>
+      <td style="font-size:.78rem; max-width:220px;">${hl(bnLabel)}</td>
+      <td style="font-size:.78rem; max-width:180px;">${hl(actLabel)}</td>
+    </tr>`;
+  }).join('');
 }
 
-function updateCharts(){
-    chartPrewalk.data.labels=lang==='es'?C.pw_labels:C.pw_labels_en;
-    chartPrewalk.update();
+function renderFuture() {
+  document.getElementById('futureBadge').textContent = DATA.future.length;
+  document.getElementById('futureGrid').innerHTML = DATA.future.map(u => `
+    <div class="future-card">
+      <div style="font-size:1.15rem; font-weight:900; color:#0E1C37; margin-bottom:.25rem;">${u.unit}</div>
+      <div style="font-size:.75rem; color:#44546A;">${u.sq_ft && u.sq_ft!='nan' ? u.sq_ft+' '+t('sqft_label') : ''}</div>
+      <div style="font-size:.72rem; color:#44546A; margin-top:.4rem;">
+        <div><i class="fa-solid fa-arrow-right-from-bracket" style="color:#B5924C; width:14px;"></i> ${t('moveout_label')}: <strong>${u.move_out}</strong></div>
+        <div><i class="fa-solid fa-calendar-check" style="color:#22C55E; width:14px;"></i> ${t('available_label')}: <strong>${u.date_available}</strong></div>
+      </div>
+      <div style="margin-top:.5rem;"><span class="badge badge-purple">${u.status}</span></div>
+    </div>
+  `).join('');
 }
 
-// ===================== INIT =====================
-document.addEventListener('DOMContentLoaded',()=>{
-    renderTriage(); renderTable(); renderFuture(); buildCharts();
-});
+function renderCharts() {
+  const C = DATA.charts;
+  const pw = document.getElementById('chartPrewalk');
+  new Chart(pw, {
+    type: 'bar',
+    data: {
+      labels: lang==='es' ? C.prewalk_labels : C.prewalk_labels_en,
+      datasets: [{ label: lang==='es'?'Prewalks':'Prewalks', data: C.prewalk_data,
+        backgroundColor: '#0E1C37', borderRadius: 4 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} prewalks` } } },
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 10 } }, x: { grid: { display: false } } } }
+  });
+
+  const scores = C.finale_data;
+  const scoreColors = C.finale_labels.map(s => parseInt(s)>=9?'#22C55E':parseInt(s)>=7?'#B5924C':'#EF4444');
+  new Chart(document.getElementById('chartScore'), {
+    type: 'bar',
+    data: {
+      labels: C.finale_labels.map(s => 'Score '+s),
+      datasets: [{ label: lang==='es'?'Conteo':'Count', data: C.finale_data,
+        backgroundColor: scoreColors, borderRadius: 4 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { grid: { display: false } } } }
+  });
+
+  const vacLabels = lang==='es' ? C.vac_labels_es : C.vac_labels_en;
+  new Chart(document.getElementById('chartVac'), {
+    type: 'doughnut',
+    data: {
+      labels: vacLabels,
+      datasets: [{ data: C.vac_data,
+        backgroundColor: ['#22C55E','#84CC16','#EAB308','#F97316','#EF4444','#7F1D1D'],
+        borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'right', labels: { font: { size: 10 } } } } }
+  });
+}
+
+// Date display
+const genDate = DATA.generated;
+document.getElementById('genDate').textContent = genDate;
+document.getElementById('footerDate').textContent = genDate;
+
+// Initial render
+renderAll();
+renderCharts();
 </script>
 </body>
 </html>
