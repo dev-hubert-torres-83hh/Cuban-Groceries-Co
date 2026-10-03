@@ -1,505 +1,321 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aviva Plaza North - Make Ready Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style>
-:root{
-  --navy:#0f2540; --navy-light:#1c3d63; --gold:#c9a227; --gold-light:#e2c14f;
-  --slate:#54637a; --off-white:#f6f5f1; --border:#d8dbe0;
-  --red:#c0392b; --orange:#d9822b; --yellow:#c9a227; --blue:#3468a8; --green:#2f8f5b;
-}
-*{box-sizing:border-box;}
-body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--off-white);color:var(--navy);}
-.container{max-width:1320px;margin:0 auto;padding:0 20px;}
-nav.navbar{background:var(--navy);color:#fff;padding:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.15);}
-nav.navbar .container{display:flex;justify-content:space-between;align-items:center;}
-nav.navbar h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px;}
-nav.navbar h1 i{color:var(--gold);margin-right:10px;}
-nav.navbar .sub{font-size:12px;color:#c7d0dc;font-weight:400;margin-top:2px;}
-#langToggleBtn{background:var(--gold);color:var(--navy);border:none;padding:8px 18px;border-radius:4px;font-weight:700;font-size:13px;cursor:pointer;}
-#langToggleBtn:hover{background:var(--gold-light);}
-main{padding:28px 0 60px;}
-h2.section-title{font-size:17px;text-transform:uppercase;letter-spacing:.6px;color:var(--navy);border-left:4px solid var(--gold);padding-left:10px;margin:36px 0 16px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-@media(max-width:1000px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
-.kpi-card .val{font-size:28px;font-weight:800;color:var(--navy);}
-.kpi-card.green .val{color:var(--green);}
-.kpi-card .lbl{font-size:12px;color:var(--slate);text-transform:uppercase;letter-spacing:.4px;margin-top:4px;}
-.mr-banner{background:#e9f6ef;border:1px solid var(--green);border-radius:8px;padding:18px;margin-top:36px;}
-.mr-banner h3{margin:0 0 12px;color:var(--green);font-size:15px;text-transform:uppercase;}
-.mr-banner .chips{display:flex;flex-wrap:wrap;gap:10px;}
-.chip{background:#fff;border:1px solid var(--green);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--navy);}
-.chip b{color:var(--green);}
-.triage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-.triage-card{background:#fff;border:1px solid var(--border);border-left:5px solid var(--slate);border-radius:8px;padding:16px;}
-.triage-card.red{border-left-color:var(--red);}
-.triage-card.orange{border-left-color:var(--orange);}
-.triage-card.yellow{border-left-color:var(--yellow);}
-.triage-card.blue{border-left-color:var(--blue);}
-.triage-card .unit{font-size:18px;font-weight:800;color:var(--navy);}
-.triage-card .type{font-size:12px;color:var(--slate);margin-bottom:8px;}
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:12px;color:#fff;margin-bottom:8px;}
-.badge.red{background:var(--red);} .badge.orange{background:var(--orange);}
-.badge.yellow{background:var(--yellow);color:var(--navy);} .badge.blue{background:var(--blue);}
-.badge.green{background:var(--green);}
-.triage-card .row{font-size:13px;margin:4px 0;color:var(--navy);}
-.triage-card .row span.k{color:var(--slate);}
-.task-list{margin:8px 0;padding-left:0;list-style:none;font-size:12.5px;}
-.task-list li{padding:2px 0;}
-.task-list li i{color:var(--green);margin-right:6px;width:14px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot Style Test - Máster IA Track 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-/* Estrategia */
-.strategy-block{background:var(--navy);border-radius:10px;padding:24px;margin-top:36px;color:#fff;
-  background-image:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);}
-.strategy-header{font-size:15px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;color:var(--gold-light);font-weight:700;}
-.strategy-panels{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-@media(max-width:1100px){.strategy-panels{grid-template-columns:repeat(2,1fr);}}
-.panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:14px;}
-.panel h4{margin:0 0 10px;font-size:13px;color:#fff;display:flex;align-items:center;gap:6px;}
-.panel ul{margin:0;padding-left:0;list-style:none;font-size:12.5px;max-height:180px;overflow-y:auto;}
-.panel li{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#e4e9f1;}
-.panel li b{color:var(--gold-light);}
-.panel .count{font-size:22px;font-weight:800;color:#fff;}
-.weekly-plan{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-@media(max-width:900px){.weekly-plan{grid-template-columns:1fr;}}
-.wp-col{border-radius:8px;padding:14px;background:rgba(255,255,255,.06);border-top:4px solid var(--slate);}
-.wp-col.urgent{border-top-color:var(--red);}
-.wp-col.week{border-top-color:var(--yellow);}
-.wp-col.twoweeks{border-top-color:var(--green);}
-.wp-col h5{margin:0 0 8px;font-size:12.5px;text-transform:uppercase;color:#fff;}
-.wp-col p{margin:4px 0;font-size:12.5px;color:#e4e9f1;}
+        .header {
+            background-color: #ffffff;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
 
-.controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
-.controls input{padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;flex:1;min-width:220px;}
-.filter-btns{display:flex;gap:6px;flex-wrap:wrap;}
-.fbtn{padding:7px 14px;border:1px solid var(--border);border-radius:20px;font-size:12.5px;background:#fff;color:var(--navy);cursor:pointer;font-weight:600;}
-.fbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
-table{width:100%;border-collapse:collapse;background:#fff;font-size:13px;}
-thead th{background:var(--navy);color:#fff;padding:10px 8px;text-align:left;font-weight:600;position:sticky;top:0;}
-tbody td{padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
-tbody tr:hover{background:#f5f7fa;}
-tbody tr.mr-row{background:#F0FDF4;}
-tbody tr.mr-row:hover{background:#e3f8ea;}
-.table-wrap{max-height:560px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
-.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;color:#fff;white-space:nowrap;}
-.pill.red{background:var(--red);} .pill.orange{background:var(--orange);}
-.pill.yellow{background:var(--yellow);color:var(--navy);} .pill.blue{background:var(--blue);}
-.pill.green{background:var(--green);}
-mark{background:var(--gold-light);color:var(--navy);padding:0 2px;border-radius:2px;}
-.charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-@media(max-width:1000px){.charts-grid{grid-template-columns:1fr;}}
-.chart-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;}
-.chart-card h4{margin:0 0 12px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;}
-.future-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
-.future-card{background:#fff;border:1px solid var(--border);border-left:5px solid var(--blue);border-radius:8px;padding:14px;}
-.future-card .unit{font-size:16px;font-weight:800;color:var(--navy);}
-.future-card .type{font-size:12px;color:var(--slate);margin-bottom:6px;}
-.future-card .row{font-size:12.5px;margin:3px 0;}
-.future-card .row span.k{color:var(--slate);}
-footer{background:var(--navy);color:#c7d0dc;text-align:center;padding:20px;font-size:12px;margin-top:40px;}
-footer b{color:var(--gold);}
-.empty{padding:20px;text-align:center;color:var(--slate);font-size:13px;}
-</style>
+        .timer {
+            background-color: #333;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 1.5rem;
+        }
+
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .question-box {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 15px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .answer-btn {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            padding: 30px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .answer-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.2);
+        }
+
+        .color-0 { background-color: #e21b3c; } /* Rojo */
+        .color-1 { background-color: #1368ce; } /* Azul */
+        .color-2 { background-color: #d89e00; } /* Amarillo */
+        .color-3 { background-color: #26890c; } /* Verde */
+
+        .screen { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; }
+        .active-screen { display: flex; }
+
+        .start-btn, .restart-btn {
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            background-color: #46178f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #321066;
+        }
+        
+        .start-btn:active, .restart-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0;
+        }
+
+        .progress {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .answers-grid { grid-template-columns: 1fr; }
+            .question-box { font-size: 1.5rem; padding: 20px; }
+            .answer-btn { font-size: 1.2rem; padding: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="container">
-    <div>
-      <h1><i class="fa-solid fa-building-circle-check"></i><span data-i18n="nav_title">Make Ready Analytics Dashboard</span></h1>
-      <div class="sub">Aviva Plaza North · ResProp Management</div>
-    </div>
-    <button id="langToggleBtn" onclick="toggleLanguage()">English</button>
-  </div>
-</nav>
-
-<main class="container">
-
-  <h2 class="section-title" data-i18n="kpi_section">Resumen General</h2>
-  <div class="kpi-grid" id="kpiGrid"></div>
-
-  <div class="mr-banner" id="mrBanner">
-    <h3><i class="fa-solid fa-circle-check"></i> <span data-i18n="mr_banner_title">Unidades MR-Hecho — Listas para Final Walk</span></h3>
-    <div class="chips" id="mrChips"></div>
-  </div>
-
-  <h2 class="section-title" data-i18n="triage_section">Triage de Producción (Top 7)</h2>
-  <div class="triage-grid" id="triageGrid"></div>
-
-  <h2 class="section-title" data-i18n="strategy_section">Análisis Estratégico y Plan de Acción</h2>
-  <div class="strategy-block">
-    <div class="strategy-header" data-i18n="strategy_header">Panorama de Producción</div>
-    <div class="strategy-panels">
-      <div class="panel">
-        <h4>🔴 <span data-i18n="panel_critical">Situación Crítica</span></h4>
-        <div class="count" id="countCritical"></div>
-        <ul id="panelCritical"></ul>
-      </div>
-      <div class="panel">
-        <h4>✅ <span data-i18n="panel_mrhecho">Logros MR-Hecho</span></h4>
-        <div class="count" id="countMrHecho"></div>
-        <ul id="panelMrHecho"></ul>
-      </div>
-      <div class="panel">
-        <h4>🚀 <span data-i18n="panel_triage">Oportunidad Triage</span></h4>
-        <div class="count" id="countTriage"></div>
-        <ul id="panelTriage"></ul>
-      </div>
-      <div class="panel">
-        <h4>📋 <span data-i18n="panel_checklist">Pipeline Checklist</span></h4>
-        <div class="count" id="countChecklistPipeline"></div>
-        <ul id="panelChecklistPipeline"></ul>
-      </div>
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen" class="screen active-screen">
+        <h1 style="font-size: 3rem; text-align:center;">Máster en IA Aplicada<br>Evaluación Track 1</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 40px;">20 Preguntas | Temporizador Total: 12 Minutos</p>
+        <button class="start-btn" onclick="startQuiz()">Comenzar Evaluación</button>
     </div>
 
-    <div class="weekly-plan">
-      <div class="wp-col urgent">
-        <h5 data-i18n="wp_today">Hoy / Urgente</h5>
-        <p id="wpUrgent"></p>
-      </div>
-      <div class="wp-col week">
-        <h5 data-i18n="wp_week">Esta Semana</h5>
-        <p id="wpWeek"></p>
-      </div>
-      <div class="wp-col twoweeks">
-        <h5 data-i18n="wp_twoweeks">Próximas 2 Semanas</h5>
-        <p id="wpTwoWeeks"></p>
-      </div>
+    <!-- Pantalla del Test -->
+    <div id="quiz-screen" class="screen">
+        <div class="header" style="width: 100%; box-sizing: border-box;">
+            <div>Puntuación: <span id="score">0</span></div>
+            <div class="timer" id="timer-display">12:00</div>
+        </div>
+        <div class="progress">Pregunta <span id="current-question-num">1</span> de 20</div>
+        
+        <div class="main-container">
+            <div class="question-box" id="question-text">Cargando pregunta...</div>
+            <div class="answers-grid" id="answers-container">
+                <!-- Botones generados dinámicamente -->
+            </div>
+        </div>
     </div>
-  </div>
 
-  <h2 class="section-title" data-i18n="table_section">Tabla de Prioridades — Todas las Unidades</h2>
-  <div class="controls">
-    <input type="text" id="searchInput" data-i18n-ph="search_ph" placeholder="Buscar por unidad, tipo, estado o cuello de botella...">
-  </div>
-  <div class="filter-btns" id="filterBtns">
-    <button class="fbtn active" data-filter="" data-i18n="filter_all">Todos</button>
-    <button class="fbtn" data-filter="1" data-i18n="filter_critical">Crítica</button>
-    <button class="fbtn" data-filter="2" data-i18n="filter_high">Alta</button>
-    <button class="fbtn" data-filter="3" data-i18n="filter_medium">Media</button>
-    <button class="fbtn" data-filter="5" data-i18n="filter_backlog">Backlog</button>
-    <button class="fbtn" data-filter="active_mr" data-i18n="filter_active_mr">En MR</button>
-    <button class="fbtn" data-filter="MR" data-i18n="filter_mrhecho">MR-Hecho</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th data-i18n="col_unit">Unidad</th>
-          <th data-i18n="col_type">Tipo</th>
-          <th data-i18n="col_days">Días Vacante</th>
-          <th data-i18n="col_status">Estado</th>
-          <th data-i18n="col_priority">Prioridad</th>
-          <th data-i18n="col_bottleneck">Cuello de Botella</th>
-          <th data-i18n="col_action">Acción Recomendada</th>
-        </tr>
-      </thead>
-      <tbody id="unitsTableBody"></tbody>
-    </table>
-  </div>
-
-  <h2 class="section-title" data-i18n="charts_section">Gráficas</h2>
-  <div class="charts-grid">
-    <div class="chart-card">
-      <h4 data-i18n="chart_prewalk">Prewalks por Mes</h4>
-      <canvas id="prewalkChart"></canvas>
+    <!-- Pantalla Final -->
+    <div id="end-screen" class="screen">
+        <h1 style="font-size: 3rem; text-align: center;" id="final-message">¡Tiempo agotado!</h1>
+        <p style="font-size: 2rem; margin: 20px 0;">Tu Puntuación: <span id="final-score">0</span> / 20</p>
+        <button class="restart-btn" onclick="location.reload()">Volver a Jugar</button>
     </div>
-    <div class="chart-card">
-      <h4 data-i18n="chart_finale">Distribución Score Final Walk</h4>
-      <canvas id="finaleChart"></canvas>
-    </div>
-    <div class="chart-card">
-      <h4 data-i18n="chart_donut">Estado de Unidades Vacantes</h4>
-      <canvas id="donutChart"></canvas>
-    </div>
-  </div>
 
-  <h2 class="section-title" data-i18n="future_section">Unidades Futuras (Notice to Vacate)</h2>
-  <div class="future-grid" id="futureGrid"></div>
+    <script>
+        // Banco de preguntas (más de 30 para garantizar aleatoriedad en los intentos)
+        const questionBank = [
+            { q: "¿Cuál es la regla inquebrantable del Track 1 respecto a la tecnología?", options: ["Empezar por la herramienta", "La IA sustituye al juicio humano", "La decisión al principio, herramienta al final, juicio humano", "Automatizar procesos sin analizarlos"], correct: 2 },
+            { q: "¿Qué porcentaje del día del profesional medio se va en 'busy work'?", options: ["25%", "53%", "80%", "15%"], correct: 1 },
+            { q: "¿Cuáles son las tres paradas o submódulos del Track 1?", options: ["Bases, Outputs, RAG", "Módulo 1, 2 y 3", "Tu Jornada, Tus Datos, Tus Proyectos", "Fundamentos, Copilot, Agentes"], correct: 2 },
+            { q: "El framework metodológico principal del Track 1 se divide en tres pasos:", options: ["Ver, Decidir, Construir", "Leer, Escribir, Probar", "Comprar, Instalar, Usar", "Pensar, Programar, Desplegar"], correct: 0 },
+            { q: "¿Qué es el 'Test de Oro' al definir un objetivo analítico?", options: ["Medir cuántos datos tenemos", "¿Qué haré diferente si la respuesta es A en lugar de B?", "Saber si el modelo es rápido", "Validar si los datos están en Excel"], correct: 1 },
+            { q: "Según el Track 1, un agente de IA no está listo cuando funciona, sino cuando...", options: ["Pasa el testing automático", "Lo aprueba IT", "No falla ante casos reales", "Está subido a producción"], correct: 2 },
+            { q: "¿Cuáles son las 4 posibles salidas (o destinos) al clasificar una tarea?", options: ["Copiar, Pegar, Cortar, Borrar", "Eliminar, Delegar, Automatizar, Proteger", "Hacer, Pensar, Ignorar, Reenviar", "Aprobar, Rechazar, Pausar, Iniciar"], correct: 1 },
+            { q: "¿Cuáles son los tres tipos de casos de prueba para validar un agente?", options: ["Normales, Límite, Trampa", "Básicos, Medios, Altos", "Rápidos, Lentos, Fallidos", "Alfa, Beta, Omega"], correct: 0 },
+            { q: "¿Qué significa la acción 'Estirar' en el trabajo con datos?", options: ["Hacer el reporte más largo", "Aumentar el número de filas falsas", "Transformar formato ancho a largo", "Duplicar columnas"], correct: 2 },
+            { q: "¿Qué busca evitar la técnica de 'grounding' en los agentes?", options: ["Que consuman mucha memoria", "Que el sistema se bloquee", "Que el agente invente información (alucinaciones)", "Que responda demasiado rápido"], correct: 2 },
+            { q: "¿Cuáles son las 4 fases del proceso de creación de agentes (Submódulo 3)?", options: ["Definición, Diseño, Implementación, Pruebas", "Idea, Código, Venta, Uso", "Ver, Pensar, Decidir, Borrar", "Análisis, Desarrollo, Despliegue, Soporte"], correct: 0 },
+            { q: "¿Cuál es el nombre del profesor técnico que imparte los Laboratorios de construcción?", options: ["David Villaverde", "Fer Berdugo", "Luis Javier", "Fernando Alonso"], correct: 1 },
+            { q: "En la exploración de datos, la acción 'Derivar' consiste en:", options: ["Borrar columnas", "Copiar datos de otra empresa", "Fabricar columnas nuevas a partir de datos existentes", "Enviar el reporte a otra área"], correct: 2 },
+            { q: "En la exploración de datos, 'Agrupar' se refiere a:", options: ["Cambiar el nivel de zoom de los datos", "Juntar varios excels en uno", "Hacer equipos de trabajo", "Ordenar alfabéticamente"], correct: 0 },
+            { q: "¿Qué porcentaje del día laboral se puede llegar a perder en coordinación (emails, reuniones)?", options: ["10%", "30%", "Hasta un 60%", "90%"], correct: 2 },
+            { q: "¿Qué es un 'falso positivo' en el ámbito de los datos y automatización?", options: ["Una tarea que parece automatizable pero no lo es (basura entra-sale)", "Un error del compilador", "Un resultado matemático positivo incorrecto", "Un agente que funciona demasiado rápido"], correct: 0 },
+            { q: "¿A qué se refiere la 'trampa de la demo' en la fase de pruebas?", options: ["Usar PowerPoint en lugar de código", "Un agente que funciona en un caso simple pero falla en situaciones reales", "Cobrar por un prototipo", "Hacer demos muy largas"], correct: 1 },
+            { q: "¿Cómo se conoce al proyecto de IA que fracasa por intentar automatizarlo todo sin foco?", options: ["Proyecto Quick Win", "Proyecto Faraónico", "Proyecto Ágil", "Proyecto Piloto"], correct: 1 },
+            { q: "¿Qué significa definir el 'MVP' de un agente de IA?", options: ["Minimum Value Person", "Acotar el alcance: qué SÍ y qué NO va en la versión 1", "Hacer el modelo más complejo posible", "Medir la Velocidad de Procesamiento"], correct: 1 },
+            { q: "La frontera última en cualquier proceso analítico o automatizado con IA siempre es:", options: ["La capacidad del servidor", "El juicio y la responsabilidad humana", "El costo de la licencia", "La cantidad de datos"], correct: 1 },
+            { q: "¿Qué instrumento se usa para evaluar la calidad de un agente sin subjetividad?", options: ["Votación popular", "Rúbrica de calidad con cuatro criterios", "Medir las líneas de código", "Preguntar al cliente si le gusta"], correct: 1 },
+            { q: "El proceso repetitivo de probar, ajustar y repetir en el agente se denomina:", options: ["Bucle de mejora", "Efecto dominó", "Reingeniería", "Círculo vicioso"], correct: 0 },
+            { q: "¿Cuáles son los tres niveles de acceso de la IA a los datos?", options: ["Bajo, Medio, Alto", "Público, Privado, Secreto", "Simple, Avanzado, Empresa", "Local, Nube, Híbrido"], correct: 2 },
+            { q: "¿Qué acción corresponde a 'Separar' en el dataset?", options: ["Romper el archivo", "Desglosar variables compuestas", "Poner espacios en blanco", "Eliminar a los outliers"], correct: 1 },
+            { q: "¿Qué herramienta práctica de evaluación se entrega en el Submódulo 2 (Tus Datos)?", options: ["Matriz de Riesgos", "Canvas de objetivos analíticos", "Plantilla de PowerPoint", "Manual de Python"], correct: 1 },
+            { q: "¿Qué conceptos forman la 'Memoria' en el asistente de IA del Lab?", options: ["RAM y ROM", "Disco duro y Caché", "Cuatro Bloques Permanentes y el Encargo Diario", "Historial de chat y Cookies"], correct: 2 },
+            { q: "¿Qué son Prompting, Meta-prompting y Chain of Thought?", options: ["Marcas de software", "Lenguajes de programación", "Técnicas avanzadas de prompting (Lab 1.5)", "Tipos de bases de datos"], correct: 2 },
+            { q: "¿Qué documento finaliza y consolida el flujo operativo de la jornada rediseñada?", options: ["Mi semana operativa", "Balance general", "Inventario anual", "Reporte de recursos humanos"], correct: 0 },
+            { q: "Para priorizar qué tareas automatizar, ¿qué criterios cruza la matriz de priorización?", options: ["Tiempo x Dinero", "Valor x Factibilidad", "Urgencia x Importancia", "Dificultad x Riesgo"], correct: 1 },
+            { q: "Antes de aplicar la IA a cualquier ámbito empresarial, el Track 1 exige aplicarla a:", options: ["Los clientes", "La competencia", "Uno mismo (tu propia jornada)", "El departamento financiero"], correct: 2 },
+            { q: "¿Qué rol asume David Villaverde en la impartición del Track?", options: ["Instructor de programación", "Coordinador de análisis, método y reflexión estratégica", "Especialista en hardware", "Soporte técnico"], correct: 1 }
+        ];
 
-</main>
+        let selectedQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let totalQuestions = 20;
+        let timeLeft = 720; // 12 minutos en segundos
+        let timerInterval;
+        let isAnswering = false;
 
-<footer>
-  <div><b>ResProp Management</b> · Aviva Plaza North Make Ready Dashboard</div>
-  <div data-i18n="footer_note">Generado automáticamente a partir de datos operativos de Make Ready</div>
-</footer>
+        // Función para mezclar un array (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
-<script>
-const DATA = {"kpis": {"total_vacant": 63, "in_progress": 5, "checklist_done": 37, "mr_hecho": 2, "triage": 1, "avg_days": 52, "avg_score": 7.8, "future_units": 14}, "triage": [{"unit": "2815", "unit_type": "A1-1B1B-U", "days_vacant": 162, "status": "Vacant Pre-Leased", "tasks_n": 5, "defined_tasks": ["Trash out", "Pintura", "Alfombra/Shampoo", "Esmaltado baño", "Esmaltado cocina"], "pending_tasks": [], "notes_es": [], "notes_en": [], "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "priority_order": 1, "cost": "$310"}], "units": [{"unit": "2417", "unit_type": "A1-1B1B-U", "days_vacant": 104, "status": "Vacant", "priority_es": "MR-HECHO", "priority_en": "MR-DONE", "priority_color": "green", "bottleneck_es": "Make Ready completado — Listo para Final Walk / Arrendamiento", "bottleneck_en": "Make Ready complete — Ready for Final Walk / Leasing", "action_es": "Programar Final Walk y publicar para arrendamiento", "action_en": "Schedule Final Walk and list for leasing", "in_mr_hecho": true, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "2805", "unit_type": "A1-1B1B-U", "days_vacant": 93, "status": "Vacant", "priority_es": "MR-HECHO", "priority_en": "MR-DONE", "priority_color": "green", "bottleneck_es": "Make Ready completado — Listo para Final Walk / Arrendamiento", "bottleneck_en": "Make Ready complete — Ready for Final Walk / Leasing", "action_es": "Programar Final Walk y publicar para arrendamiento", "action_en": "Schedule Final Walk and list for leasing", "in_mr_hecho": true, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "3207", "unit_type": "A3-1B1.5B-U", "days_vacant": 356, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3006", "unit_type": "A1-1B1B-C", "days_vacant": 210, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2302", "unit_type": "A4-1B1B-C", "days_vacant": 166, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2706", "unit_type": "2706", "days_vacant": 156, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "4/5 tareas con x. Falta: Trash out", "bottleneck_en": "4/5 tasks with x. Missing: Trash out", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2708", "unit_type": "B2-2B2B-C", "days_vacant": 139, "status": "Vacant", "priority_es": "2 - ALTA (VENCIDA)", "priority_en": "2 - HIGH (OVERDUE)", "priority_color": "orange", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3307", "unit_type": "A2-1B1B-U", "days_vacant": 64, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "2/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo", "bottleneck_en": "2/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1713", "unit_type": "A1-1B1B-U", "days_vacant": 46, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2005", "unit_type": "A1-1B1B-C", "days_vacant": 37, "status": "Vacant Pre-Leased", "priority_es": "2 - ALTA (PRE-LEASED)", "priority_en": "2 - HIGH (PRE-LEASED)", "priority_color": "orange", "bottleneck_es": "5/5 tareas con x. Falta: ---", "bottleneck_en": "5/5 tasks with x. Missing: ---", "action_es": "Completar 0 tareas físicas restantes", "action_en": "Complete 0 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "2815", "unit_type": "A1-1B1B-U", "days_vacant": 162, "status": "Vacant Pre-Leased", "priority_es": "3 - MEDIA (TRIAGE LISTO)", "priority_en": "3 - MEDIUM (TRIAGE READY)", "priority_color": "yellow", "bottleneck_es": "5/5 tareas con x. Pendiente: ---", "bottleneck_en": "5/5 tasks with x. Pending: ---", "action_es": "Iniciar Make Ready (lista para MR)", "action_en": "Start Make Ready (MR ready)", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": true}, {"unit": "3406", "unit_type": "A3-1B1.5B-U", "days_vacant": 77, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "705", "unit_type": "—", "days_vacant": 72, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2406", "unit_type": "A1-1B1B-C", "days_vacant": 71, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "3/5 tareas con x. Falta: Pintura, Esmaltado baño", "bottleneck_en": "3/5 tasks with x. Missing: Pintura, Esmaltado baño", "action_es": "Completar 2 tareas físicas restantes", "action_en": "Complete 2 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3009", "unit_type": "A1-1B1B-U", "days_vacant": 69, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1908", "unit_type": "A4-1B1B-U", "days_vacant": 68, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "3/5 tareas con x. Falta: Pintura, Alfombra/Shampoo", "bottleneck_en": "3/5 tasks with x. Missing: Pintura, Alfombra/Shampoo", "action_es": "Completar 2 tareas físicas restantes", "action_en": "Complete 2 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1116", "unit_type": "A2-1B1B-C", "days_vacant": 68, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "712", "unit_type": "A2-1B1B-C", "days_vacant": 64, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2608", "unit_type": "A1-1B1B-C", "days_vacant": 64, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1811", "unit_type": "A2-1B1B-U", "days_vacant": 62, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3212", "unit_type": "A3-1B1.5B-U", "days_vacant": 61, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2911", "unit_type": "A2-1B1B-U", "days_vacant": 60, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "604", "unit_type": "A1-1B1B-C", "days_vacant": 56, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1514", "unit_type": "A1-1B1B-C", "days_vacant": 49, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2108", "unit_type": "B2-2B2B-U", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "4/5 tareas con x. Falta: Alfombra/Shampoo", "bottleneck_en": "4/5 tasks with x. Missing: Alfombra/Shampoo", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": true, "is_triage": false}, {"unit": "503", "unit_type": "A1-1B1B-U", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1002", "unit_type": "A1-1B1B-C", "days_vacant": 47, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3106", "unit_type": "A1-1B1B-S", "days_vacant": 46, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2612", "unit_type": "A1-1B1B-S", "days_vacant": 46, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2814", "unit_type": "A1-1B1B-C", "days_vacant": 42, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1809", "unit_type": "A1-1B1B-U", "days_vacant": 41, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "708", "unit_type": "A1-1B1B-C", "days_vacant": 40, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1516", "unit_type": "A1-1B1B-C", "days_vacant": 40, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Trash out, Pintura, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Trash out, Pintura, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3303", "unit_type": "A1-1B1B-U", "days_vacant": 37, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2910", "unit_type": "A1-1B1B-C", "days_vacant": 37, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2903", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2105", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1711", "unit_type": "A1-1B1B-U", "days_vacant": 35, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2812", "unit_type": "A1-1B1B-C", "days_vacant": 32, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3011", "unit_type": "A1-1B1B-S", "days_vacant": 30, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2702", "unit_type": "—", "days_vacant": 26, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "909", "unit_type": "—", "days_vacant": 20, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "101", "unit_type": "—", "days_vacant": 19, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "707", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2605", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2520", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2515", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "2/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño", "bottleneck_en": "2/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño", "action_es": "Completar 3 tareas físicas restantes", "action_en": "Complete 3 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1810", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1509", "unit_type": "—", "days_vacant": 16, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "901", "unit_type": "—", "days_vacant": 14, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2405", "unit_type": "—", "days_vacant": 13, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1603", "unit_type": "—", "days_vacant": 13, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1106", "unit_type": "—", "days_vacant": 12, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "504", "unit_type": "—", "days_vacant": 9, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1709", "unit_type": "—", "days_vacant": 9, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "1401", "unit_type": "—", "days_vacant": 9, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2701", "unit_type": "—", "days_vacant": 8, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2901", "unit_type": "—", "days_vacant": 7, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2518", "unit_type": "—", "days_vacant": 7, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "1101", "unit_type": "—", "days_vacant": 7, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "3211", "unit_type": "—", "days_vacant": 2, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2503", "unit_type": "—", "days_vacant": 2, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "913", "unit_type": "—", "days_vacant": 1, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}], "mr_hecho_list": [{"unit": "2417", "unit_type": "A1-1B1B-U", "days_vacant": 104}, {"unit": "2805", "unit_type": "A1-1B1B-U", "days_vacant": 93}], "future_list": [{"unit": "1206", "unit_type": "—", "sq_ft": "921.0", "move_out": "07/15", "move_in": "—", "date_available": "06/22", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "3401", "unit_type": "—", "sq_ft": "748.0", "move_out": "06/17", "move_in": "—", "date_available": "06/24", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "2807", "unit_type": "—", "sq_ft": "574.0", "move_out": "06/17", "move_in": "—", "date_available": "06/24", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "2603", "unit_type": "—", "sq_ft": "574.0", "move_out": "06/29", "move_in": "—", "date_available": "07/06", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "2506", "unit_type": "—", "sq_ft": "705.0", "move_out": "7/12", "move_in": "—", "date_available": "07/19", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "713", "unit_type": "—", "sq_ft": "705.0", "move_out": "07/16", "move_in": "—", "date_available": "07/23", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "2402", "unit_type": "—", "sq_ft": "574.0", "move_out": "7/29", "move_in": "—", "date_available": "08/05", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1008", "unit_type": "—", "sq_ft": "574.0", "move_out": "7/29", "move_in": "—", "date_available": "08/05", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1608", "unit_type": "—", "sq_ft": "748.0", "move_out": "7/31", "move_in": "—", "date_available": "08/07", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "3407", "unit_type": "—", "sq_ft": "748.0", "move_out": "8/3", "move_in": "—", "date_available": "08/10", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1715", "unit_type": "—", "sq_ft": "574.0", "move_out": "08/03", "move_in": "—", "date_available": "08/10", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1602", "unit_type": "—", "sq_ft": "748.0", "move_out": "08/03", "move_in": "—", "date_available": "08/10", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1701", "unit_type": "—", "sq_ft": "574.0", "move_out": "08/09", "move_in": "—", "date_available": "08/16", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}, {"unit": "1712", "unit_type": "—", "sq_ft": "574.0", "move_out": "09/16", "move_in": "—", "date_available": "09/23", "days_vacant": 0, "status": "Notice to Vacate", "progress": "0 of 1 tasks completed"}], "panels": {"critical": [{"unit": "3207", "unit_type": "A3-1B1.5B-U", "days_vacant": 356, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "3006", "unit_type": "A1-1B1B-C", "days_vacant": 210, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "1/5 tareas con x. Falta: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "bottleneck_en": "1/5 tasks with x. Missing: Pintura, Alfombra/Shampoo, Esmaltado baño, Esmaltado cocina", "action_es": "Completar 4 tareas físicas restantes", "action_en": "Complete 4 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2302", "unit_type": "A4-1B1B-C", "days_vacant": 166, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "Sin tareas con x definidas", "bottleneck_en": "No tasks with x defined", "action_es": "Programar Prewalk y definir tareas", "action_en": "Schedule Prewalk and define tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}, {"unit": "2706", "unit_type": "2706", "days_vacant": 156, "status": "Vacant", "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "bottleneck_es": "4/5 tareas con x. Falta: Trash out", "bottleneck_en": "4/5 tasks with x. Missing: Trash out", "action_es": "Completar 1 tareas físicas restantes", "action_en": "Complete 1 remaining physical tasks", "in_mr_hecho": false, "in_checklist": false, "in_active_mr": false, "is_triage": false}], "mr_hecho": [{"unit": "2417", "unit_type": "A1-1B1B-U", "days_vacant": 104}, {"unit": "2805", "unit_type": "A1-1B1B-U", "days_vacant": 93}], "triage_opportunity": [{"unit": "2815", "unit_type": "A1-1B1B-U", "days_vacant": 162, "status": "Vacant Pre-Leased", "tasks_n": 5, "defined_tasks": ["Trash out", "Pintura", "Alfombra/Shampoo", "Esmaltado baño", "Esmaltado cocina"], "pending_tasks": [], "notes_es": [], "notes_en": [], "priority_es": "1 - CRÍTICA (MUY VENCIDA)", "priority_en": "1 - CRITICAL (VERY OVERDUE)", "priority_color": "red", "priority_order": 1, "cost": "$310"}], "checklist_pipeline": [{"unit": "3406", "unit_type": "A3-1B1.5B-U", "days_vacant": 77, "status": "Vacant", "priority_es": "3 - MEDIA (PROX)", "priority_en": "3 - MEDIUM (UPCOMING)", "priority_color": "yellow", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "1709", "unit_type": "—", "days_vacant": 9, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}, {"unit": "1101", "unit_type": "—", "days_vacant": 7, "status": "Vacant", "priority_es": "5 - BACKLOG", "priority_en": "5 - BACKLOG", "priority_color": "blue", "bottleneck_es": "Checklist iniciado — Make Ready en proceso final", "bottleneck_en": "Checklist started — Make Ready in final process", "action_es": "Verificar completado y programar Final Walk", "action_en": "Verify completion and schedule Final Walk", "in_mr_hecho": false, "in_checklist": true, "in_active_mr": false, "is_triage": false}]}, "counts": {"critical": 4, "high": 4, "medium": 12, "mr_hecho": 2, "triage": 1, "checklist_pipeline": 3}, "charts": {"prewalk_labels_es": ["Ene", "Feb", "Mar", "Abr", "May", "Jun"], "prewalk_labels_en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], "prewalk_data": [29, 46, 34, 26, 27, 24], "finale_labels": ["7", "8", "9"], "finale_data": [5, 5, 2], "donut_labels": ["Vacant", "Vacant Pre-Leased"], "donut_data": [59, 4]}, "generated": true};
-let lang = 'es';
-let currentSearch = '';
-let currentFilter = '';
+        function startQuiz() {
+            // Seleccionar 20 preguntas aleatorias
+            shuffleArray(questionBank);
+            selectedQuestions = questionBank.slice(0, totalQuestions);
+            
+            // Mezclar también las opciones de cada pregunta para que no siempre sea la misma posición
+            selectedQuestions.forEach(q => {
+                let optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.correct }));
+                shuffleArray(optionsWithIndex);
+                q.shuffledOptions = optionsWithIndex;
+            });
 
-const translations = {
-  nav_title: {es:'Make Ready Analytics Dashboard', en:'Make Ready Analytics Dashboard'},
-  kpi_section: {es:'Resumen General', en:'Overview'},
-  mr_banner_title: {es:'Unidades MR-Hecho — Listas para Final Walk', en:'MR-Done Units — Ready for Final Walk'},
-  triage_section: {es:'Triage de Producción (Top 7)', en:'Production Triage (Top 7)'},
-  strategy_section: {es:'Análisis Estratégico y Plan de Acción', en:'Strategic Analysis & Action Plan'},
-  strategy_header: {es:'Panorama de Producción', en:'Production Overview'},
-  panel_critical: {es:'Situación Crítica', en:'Critical Situation'},
-  panel_mrhecho: {es:'Logros MR-Hecho', en:'MR-Done Wins'},
-  panel_triage: {es:'Oportunidad Triage', en:'Triage Opportunity'},
-  panel_checklist: {es:'Pipeline Checklist', en:'Checklist Pipeline'},
-  wp_today: {es:'Hoy / Urgente', en:'Today / Urgent'},
-  wp_week: {es:'Esta Semana', en:'This Week'},
-  wp_twoweeks: {es:'Próximas 2 Semanas', en:'Next 2 Weeks'},
-  table_section: {es:'Tabla de Prioridades — Todas las Unidades', en:'Priority Table — All Units'},
-  charts_section: {es:'Gráficas', en:'Charts'},
-  future_section: {es:'Unidades Futuras (Notice to Vacate)', en:'Future Units (Notice to Vacate)'},
-  search_ph: {es:'Buscar por unidad, tipo, estado o cuello de botella...', en:'Search by unit, type, status or bottleneck...'},
-  filter_all: {es:'Todos', en:'All'},
-  filter_critical: {es:'Crítica', en:'Critical'},
-  filter_high: {es:'Alta', en:'High'},
-  filter_medium: {es:'Media', en:'Medium'},
-  filter_backlog: {es:'Backlog', en:'Backlog'},
-  filter_active_mr: {es:'En MR', en:'In MR'},
-  filter_mrhecho: {es:'MR-Hecho', en:'MR-Done'},
-  col_unit: {es:'Unidad', en:'Unit'},
-  col_type: {es:'Tipo', en:'Type'},
-  col_days: {es:'Días Vacante', en:'Days Vacant'},
-  col_status: {es:'Estado', en:'Status'},
-  col_priority: {es:'Prioridad', en:'Priority'},
-  col_bottleneck: {es:'Cuello de Botella', en:'Bottleneck'},
-  col_action: {es:'Acción Recomendada', en:'Recommended Action'},
-  chart_prewalk: {es:'Prewalks por Mes', en:'Prewalks per Month'},
-  chart_finale: {es:'Distribución Score Final Walk', en:'Final Walk Score Distribution'},
-  chart_donut: {es:'Estado de Unidades Vacantes', en:'Vacant Unit Status'},
-  footer_note: {es:'Generado automáticamente a partir de datos operativos de Make Ready', en:'Automatically generated from Make Ready operations data'},
-  kpi_total_vacant: {es:'Total Vacantes', en:'Total Vacant'},
-  kpi_in_progress: {es:'En Proceso', en:'In Progress'},
-  kpi_checklist: {es:'Checklist Iniciados', en:'Checklist Started'},
-  kpi_mr_hecho: {es:'MR-Hecho', en:'MR-Done'},
-  kpi_triage: {es:'Triage Listo', en:'Triage Ready'},
-  kpi_avg_days: {es:'Promedio Días', en:'Avg Days'},
-  kpi_avg_score: {es:'Promedio Score', en:'Avg Score'},
-  kpi_future: {es:'Unidades Futuras', en:'Future Units'},
-  pending_label: {es:'Pendiente', en:'Pending'},
-  cost_label: {es:'Costo Est.', en:'Est. Cost'},
-  days_label: {es:'días vacante', en:'days vacant'},
-  no_results: {es:'No se encontraron unidades', en:'No units found'},
-  mr_done_badge: {es:'✅ MR-HECHO', en:'✅ MR-DONE'},
-  move_out_label: {es:'Move Out', en:'Move Out'},
-  date_avail_label: {es:'Disponible', en:'Available'},
-  progress_label: {es:'Progreso', en:'Progress'},
-  wp_urgent_text: {es:'unidades críticas requieren escalada inmediata con el equipo de mantenimiento.', en:'critical units require immediate escalation with the maintenance team.'},
-  wp_week_text: {es:'unidades de alta prioridad y triage listas — programar Checklist y Final Walk.', en:'high-priority and triage-ready units — schedule Checklist and Final Walk.'},
-  wp_twoweeks_text: {es:'unidades de prioridad media en proceso — continuar tareas físicas pendientes.', en:'medium-priority units in process — continue pending physical tasks.'},
-};
+            document.getElementById('start-screen').classList.remove('active-screen');
+            document.getElementById('quiz-screen').classList.add('active-screen');
+            
+            startTimer();
+            loadQuestion();
+        }
 
-function t(key){ return translations[key] ? translations[key][lang] : key; }
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    endQuiz("¡Se agotó el tiempo!");
+                }
+            }, 1000);
+        }
 
-function esc(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('timer-display').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
 
-function highlight(text){
-  if(!currentSearch) return esc(text);
-  const s = esc(text);
-  const idx = s.toLowerCase().indexOf(currentSearch.toLowerCase());
-  if(idx === -1) return s;
-  return s.slice(0, idx) + '<mark>' + s.slice(idx, idx + currentSearch.length) + '</mark>' + s.slice(idx + currentSearch.length);
-}
+        function loadQuestion() {
+            isAnswering = false;
+            let q = selectedQuestions[currentQuestionIndex];
+            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const container = document.getElementById('answers-container');
+            container.innerHTML = ''; // Limpiar botones
 
-function renderKPIs(){
-  const k = DATA.kpis;
-  const cards = [
-    {val:k.total_vacant, key:'kpi_total_vacant', cls:''},
-    {val:k.in_progress, key:'kpi_in_progress', cls:''},
-    {val:k.checklist_done, key:'kpi_checklist', cls:''},
-    {val:k.mr_hecho, key:'kpi_mr_hecho', cls:'green'},
-    {val:k.triage, key:'kpi_triage', cls:''},
-    {val:k.avg_days, key:'kpi_avg_days', cls:''},
-    {val:k.avg_score, key:'kpi_avg_score', cls:''},
-    {val:k.future_units, key:'kpi_future', cls:''},
-  ];
-  document.getElementById('kpiGrid').innerHTML = cards.map(c=>`
-    <div class="kpi-card ${c.cls}">
-      <div class="val">${c.val}</div>
-      <div class="lbl">${t(c.key)}</div>
-    </div>`).join('');
-}
+            q.shuffledOptions.forEach((opt, idx) => {
+                let btn = document.createElement('button');
+                btn.className = `answer-btn color-${idx}`;
+                btn.innerText = opt.text;
+                btn.onclick = () => checkAnswer(opt.isCorrect, btn);
+                container.appendChild(btn);
+            });
+        }
 
-function renderMRBanner(){
-  const list = DATA.mr_hecho_list;
-  const el = document.getElementById('mrChips');
-  if(!list.length){ el.innerHTML = `<div class="empty">${t('no_results')}</div>`; return; }
-  el.innerHTML = list.map(m=>`<div class="chip">Unit <b>${m.unit}</b> — ${m.unit_type} — ${m.days_vacant} ${t('days_label')}</div>`).join('');
-}
+        function checkAnswer(isCorrect, btnElement) {
+            if (isAnswering) return;
+            isAnswering = true;
 
-function renderTriage(){
-  const list = DATA.triage;
-  const el = document.getElementById('triageGrid');
-  if(!list.length){ el.innerHTML = `<div class="empty">${t('no_results')}</div>`; return; }
-  el.innerHTML = list.map(u=>{
-    const pri = lang==='es' ? u.priority_es : u.priority_en;
-    const tasks = u.defined_tasks.map(x=>`<li><i class="fa-solid fa-check"></i>${x}</li>`).join('');
-    const pending = u.pending_tasks.length ? `<div class="row"><span class="k">${t('pending_label')}:</span> ${u.pending_tasks.join(', ')}</div>` : '';
-    return `<div class="triage-card ${u.priority_color}">
-      <div class="unit">Unit ${u.unit}</div>
-      <div class="type">${u.unit_type}</div>
-      <span class="badge ${u.priority_color}">${pri}</span>
-      <div class="row"><span class="k">${t('days_label')}:</span> ${u.days_vacant}</div>
-      <div class="row"><span class="k">${t('cost_label')}:</span> ${u.cost}</div>
-      <ul class="task-list">${tasks}</ul>
-      ${pending}
-    </div>`;
-  }).join('');
-}
+            const allBtns = document.querySelectorAll('.answer-btn');
+            
+            if (isCorrect) {
+                score++;
+                document.getElementById('score').innerText = score;
+                // Marcar como correcto visualmente
+                btnElement.style.backgroundColor = '#26890c'; // Verde éxito
+            } else {
+                btnElement.style.backgroundColor = '#e21b3c'; // Rojo error
+                // Mostrar cuál era la correcta
+                allBtns.forEach(b => {
+                    let text = b.innerText;
+                    let correctText = selectedQuestions[currentQuestionIndex].shuffledOptions.find(o => o.isCorrect).text;
+                    if(text === correctText) {
+                        b.style.border = "4px solid #fff";
+                        b.style.backgroundColor = '#26890c';
+                    }
+                });
+            }
 
-function renderPanels(){
-  document.getElementById('countCritical').textContent = DATA.counts.critical;
-  document.getElementById('countMrHecho').textContent = DATA.counts.mr_hecho;
-  document.getElementById('countTriage').textContent = DATA.counts.triage;
-  document.getElementById('countChecklistPipeline').textContent = DATA.counts.checklist_pipeline;
+            // Opacar los demás
+            allBtns.forEach(b => {
+                if(b !== btnElement && !b.style.border) {
+                    b.style.opacity = '0.5';
+                }
+            });
 
-  const critEl = document.getElementById('panelCritical');
-  critEl.innerHTML = DATA.panels.critical.length ? DATA.panels.critical.map(u=>
-    `<li><b>${u.unit}</b> — ${u.unit_type} — ${u.days_vacant} ${t('days_label')}</li>`).join('') : `<li>${t('no_results')}</li>`;
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < totalQuestions) {
+                    loadQuestion();
+                } else {
+                    endQuiz("¡Prueba Completada!");
+                }
+            }, 1500); // 1.5 segundos para ver el resultado antes de pasar
+        }
 
-  const mrEl = document.getElementById('panelMrHecho');
-  mrEl.innerHTML = DATA.panels.mr_hecho.length ? DATA.panels.mr_hecho.map(u=>
-    `<li><b>${u.unit}</b> — ${u.unit_type} — ${u.days_vacant} ${t('days_label')}</li>`).join('') : `<li>${t('no_results')}</li>`;
-
-  const triEl = document.getElementById('panelTriage');
-  triEl.innerHTML = DATA.panels.triage_opportunity.length ? DATA.panels.triage_opportunity.map(u=>
-    `<li><b>${u.unit}</b> — ${u.unit_type} — ${u.tasks_n}/5 tareas</li>`).join('') : `<li>${t('no_results')}</li>`;
-
-  const cpEl = document.getElementById('panelChecklistPipeline');
-  cpEl.innerHTML = DATA.panels.checklist_pipeline.length ? DATA.panels.checklist_pipeline.map(u=>
-    `<li><b>${u.unit}</b> — ${u.unit_type} — ${u.days_vacant} ${t('days_label')}</li>`).join('') : `<li>${t('no_results')}</li>`;
-
-  document.getElementById('wpUrgent').textContent = `${DATA.counts.critical} ${t('wp_urgent_text')}`;
-  document.getElementById('wpWeek').textContent = `${DATA.counts.high + DATA.counts.triage} ${t('wp_week_text')}`;
-  document.getElementById('wpTwoWeeks').textContent = `${DATA.counts.medium} ${t('wp_twoweeks_text')}`;
-}
-
-function matchesFilter(u){
-  if(!currentFilter) return true;
-  if(currentFilter === 'MR') return u.in_mr_hecho;
-  if(currentFilter === 'active_mr') return u.in_active_mr;
-  return String(u.priority_order) === currentFilter || u.priority_es.startsWith(currentFilter) || u.priority_en.startsWith(currentFilter);
-}
-
-function matchesSearch(u){
-  if(!currentSearch) return true;
-  const s = currentSearch.toLowerCase();
-  return u.unit.toLowerCase().includes(s) ||
-         u.unit_type.toLowerCase().includes(s) ||
-         u.status.toLowerCase().includes(s) ||
-         u.bottleneck_es.toLowerCase().includes(s) ||
-         u.bottleneck_en.toLowerCase().includes(s);
-}
-
-function renderTable(){
-  const tbody = document.getElementById('unitsTableBody');
-  let rows = DATA.units.filter(u => matchesSearch(u) && matchesFilter(u));
-  if(!rows.length){ tbody.innerHTML = `<tr><td colspan="7" class="empty">${t('no_results')}</td></tr>`; return; }
-  tbody.innerHTML = rows.map(u=>{
-    const pri = u.in_mr_hecho ? t('mr_done_badge') : (lang==='es' ? u.priority_es : u.priority_en);
-    const bn = lang==='es' ? u.bottleneck_es : u.bottleneck_en;
-    const act = lang==='es' ? u.action_es : u.action_en;
-    const rowCls = u.in_mr_hecho ? 'mr-row' : '';
-    return `<tr class="${rowCls}">
-      <td><b>${highlight(u.unit)}</b></td>
-      <td>${highlight(u.unit_type)}</td>
-      <td>${u.days_vacant}</td>
-      <td>${highlight(u.status)}</td>
-      <td><span class="pill ${u.priority_color}">${esc(pri)}</span></td>
-      <td>${highlight(bn)}</td>
-      <td>${esc(act)}</td>
-    </tr>`;
-  }).join('');
-}
-
-function renderFuture(){
-  const el = document.getElementById('futureGrid');
-  if(!DATA.future_list.length){ el.innerHTML = `<div class="empty">${t('no_results')}</div>`; return; }
-  el.innerHTML = DATA.future_list.map(u=>`
-    <div class="future-card">
-      <div class="unit">Unit ${u.unit}</div>
-      <div class="type">${u.unit_type} · ${u.sq_ft} sqft</div>
-      <div class="row"><span class="k">${t('move_out_label')}:</span> ${u.move_out}</div>
-      <div class="row"><span class="k">${t('date_avail_label')}:</span> ${u.date_available}</div>
-      <div class="row"><span class="k">${t('progress_label')}:</span> ${u.progress}</div>
-    </div>`).join('');
-}
-
-let charts = {};
-function renderCharts(){
-  const pwLabels = lang==='es' ? DATA.charts.prewalk_labels_es : DATA.charts.prewalk_labels_en;
-  const ctx1 = document.getElementById('prewalkChart').getContext('2d');
-  if(charts.pw) charts.pw.destroy();
-  charts.pw = new Chart(ctx1, {
-    type:'bar',
-    data:{labels: pwLabels, datasets:[{label: t('chart_prewalk'), data: DATA.charts.prewalk_data, backgroundColor:'#1c3d63'}]},
-    options:{plugins:{legend:{display:false}}, responsive:true}
-  });
-
-  const ctx2 = document.getElementById('finaleChart').getContext('2d');
-  if(charts.fn) charts.fn.destroy();
-  charts.fn = new Chart(ctx2, {
-    type:'bar',
-    data:{labels: DATA.charts.finale_labels, datasets:[{label: t('chart_finale'), data: DATA.charts.finale_data, backgroundColor:'#c9a227'}]},
-    options:{plugins:{legend:{display:false}}, responsive:true}
-  });
-
-  const ctx3 = document.getElementById('donutChart').getContext('2d');
-  if(charts.dn) charts.dn.destroy();
-  charts.dn = new Chart(ctx3, {
-    type:'doughnut',
-    data:{labels: DATA.charts.donut_labels, datasets:[{data: DATA.charts.donut_data, backgroundColor:['#3468a8','#d9822b','#2f8f5b','#c0392b']}]},
-    options:{responsive:true}
-  });
-}
-
-function applyStaticTranslations(){
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    el.textContent = t(el.getAttribute('data-i18n'));
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
-  });
-}
-
-function renderAll(){
-  applyStaticTranslations();
-  renderKPIs();
-  renderMRBanner();
-  renderTriage();
-  renderPanels();
-  renderTable();
-  renderCharts();
-  renderFuture();
-}
-
-function toggleLanguage(){
-  lang = lang === 'es' ? 'en' : 'es';
-  document.getElementById('langToggleBtn').textContent = lang === 'es' ? 'English' : 'Español';
-  document.documentElement.lang = lang;
-  renderAll();
-}
-
-document.getElementById('searchInput').addEventListener('input', e=>{
-  currentSearch = e.target.value;
-  renderTable();
-});
-
-document.getElementById('filterBtns').addEventListener('click', e=>{
-  const btn = e.target.closest('.fbtn');
-  if(!btn) return;
-  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentFilter = btn.getAttribute('data-filter');
-  renderTable();
-});
-
-renderAll();
-</script>
+        function endQuiz(message) {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.remove('active-screen');
+            document.getElementById('end-screen').classList.add('active-screen');
+            document.getElementById('final-message').innerText = message;
+            document.getElementById('final-score').innerText = score;
+        }
+    </script>
 </body>
 </html>
