@@ -2,319 +2,654 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahoot Style Test - Máster IA Track 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Evaluación Track 2 - IA Aplicada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
-        
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #f2f2f2;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .header {
-            background-color: #ffffff;
-            height: 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .timer {
-            background-color: #333;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-family: monospace;
-            font-size: 1.5rem;
-        }
-
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .question-box {
-            background-color: white;
-            width: 90%;
-            max-width: 800px;
-            padding: 40px 20px;
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-        }
-
-        .answers-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 15px;
-            width: 90%;
-            max-width: 1000px;
-        }
-
-        .answer-btn {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            border: none;
-            border-radius: 4px;
-            padding: 30px 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-            transition: transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            word-break: break-word;
-        }
-
-        .answer-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.2);
-        }
-
-        .color-0 { background-color: #e21b3c; } /* Rojo */
-        .color-1 { background-color: #1368ce; } /* Azul */
-        .color-2 { background-color: #d89e00; } /* Amarillo */
-        .color-3 { background-color: #26890c; } /* Verde */
-
-        .screen { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; }
-        .active-screen { display: flex; }
-
-        .start-btn, .restart-btn {
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            background-color: #46178f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 0 #321066;
+            overflow-x: hidden;
+            touch-action: manipulation;
         }
         
-        .start-btn:active, .restart-btn:active {
+        .kahoot-bg {
+            background: linear-gradient(135deg, #46178f 0%, #250b4d 100%);
+        }
+
+        .btn-answer {
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+        }
+        
+        .btn-answer:active {
             transform: translateY(4px);
-            box-shadow: 0 0 0;
+            box-shadow: 0 0px 0px rgba(0,0,0,0.2);
         }
 
-        .progress {
-            margin-top: 10px;
-            font-size: 1rem;
-            color: #666;
-        }
+        .color-triangle { background-color: #e21b3c; border-bottom: 4px solid #b0102b; }
+        .color-diamond { background-color: #1368ce; border-bottom: 4px solid #0a4994; }
+        .color-circle { background-color: #d89e00; border-bottom: 4px solid #a67900; }
+        .color-square { background-color: #26890c; border-bottom: 4px solid #1a6008; }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .answers-grid { grid-template-columns: 1fr; }
-            .question-box { font-size: 1.5rem; padding: 20px; }
-            .answer-btn { font-size: 1.2rem; padding: 20px; }
+        .shape-icon {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+        }
+        
+        /* Animaciones para feedback */
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        /* Timer bar */
+        #timer-bar {
+            transition: width 1s linear, background-color 0.3s;
         }
     </style>
 </head>
-<body>
+<body class="kahoot-bg text-white h-screen flex flex-col items-center justify-center relative select-none">
 
-    <!-- Pantalla de Inicio -->
-    <div id="start-screen" class="screen active-screen">
-        <h1 style="font-size: 3rem; text-align:center;">Máster en IA Aplicada<br>Evaluación Track 1</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 40px;">20 Preguntas | Temporizador Total: 12 Minutos</p>
-        <button class="start-btn" onclick="startQuiz()">Comenzar Evaluación</button>
+    <div id="start-screen" class="w-full max-w-md p-6 text-center animate-pop">
+        <div class="bg-white rounded-2xl p-8 shadow-2xl text-gray-800">
+            <div class="flex justify-center mb-4">
+                <span class="text-5xl">🧠</span>
+            </div>
+            <h1 class="text-3xl font-extrabold mb-2 text-[#46178f]">Track 2: Máster IA</h1>
+            <p class="text-gray-600 font-semibold mb-6">Creación de Contenido Multimedia</p>
+            
+            <div class="bg-gray-100 rounded-lg p-4 mb-6 text-sm text-gray-700 text-left">
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><b>20 Preguntas</b> aleatorias.</li>
+                    <li><b>12 Minutos</b> de tiempo límite global.</li>
+                    <li><b>Puntuación:</b> Responde rápido para ganar más puntos (Máx. 1000 por pregunta).</li>
+                    <li>Sistema anti-repetición activado para múltiples reintentos.</li>
+                </ul>
+            </div>
+
+            <button onclick="startGame()" class="w-full py-4 bg-black text-white font-bold text-xl rounded-xl btn-answer hover:bg-gray-800">
+                COMENZAR TEST
+            </button>
+        </div>
+        <p class="mt-4 text-sm text-purple-200">Sesiones completadas: <span id="sessions-count">0</span></p>
     </div>
 
-    <!-- Pantalla del Test -->
-    <div id="quiz-screen" class="screen">
-        <div class="header" style="width: 100%; box-sizing: border-box;">
-            <div>Puntuación: <span id="score">0</span></div>
-            <div class="timer" id="timer-display">12:00</div>
-        </div>
-        <div class="progress">Pregunta <span id="current-question-num">1</span> de 20</div>
-        
-        <div class="main-container">
-            <div class="question-box" id="question-text">Cargando pregunta...</div>
-            <div class="answers-grid" id="answers-container">
-                <!-- Botones generados dinámicamente -->
+    <div id="quiz-screen" class="hidden w-full h-full flex-col max-w-4xl mx-auto p-4 md:p-6">
+        <!-- Cabecera: Temporizador, Contador y Puntuación -->
+        <div class="flex justify-between items-center bg-white/10 rounded-xl p-3 mb-4 backdrop-blur-sm">
+            <div class="flex flex-col text-center w-1/3">
+                <span class="text-xs uppercase font-bold text-purple-200">Pregunta</span>
+                <span id="question-counter" class="text-xl md:text-2xl font-bold">1/20</span>
+            </div>
+            <div class="flex flex-col text-center w-1/3 border-l border-r border-white/20">
+                <span class="text-xs uppercase font-bold text-purple-200">Tiempo Restante</span>
+                <span id="global-timer" class="text-2xl md:text-3xl font-extrabold">12:00</span>
+            </div>
+            <div class="flex flex-col text-center w-1/3">
+                <span class="text-xs uppercase font-bold text-purple-200">Puntos</span>
+                <span id="score-display" class="text-xl md:text-2xl font-bold">0</span>
             </div>
         </div>
+
+        <!-- Barra de progreso de tiempo general -->
+        <div class="w-full bg-gray-200/20 rounded-full h-2 mb-6">
+            <div id="timer-bar" class="bg-green-400 h-2 rounded-full" style="width: 100%"></div>
+        </div>
+
+        <!-- Contenedor de la Pregunta -->
+        <div class="bg-white text-gray-900 rounded-2xl p-6 md:p-10 mb-6 flex-grow flex items-center justify-center text-center shadow-xl">
+            <h2 id="question-text" class="text-xl md:text-3xl font-bold leading-tight">Cargando pregunta...</h2>
+        </div>
+
+        <!-- Opciones de Respuesta -->
+        <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-4">
+            <!-- Los botones se generarán con JS -->
+        </div>
     </div>
 
-    <!-- Pantalla Final -->
-    <div id="end-screen" class="screen">
-        <h1 style="font-size: 3rem; text-align: center;" id="final-message">¡Tiempo agotado!</h1>
-        <p style="font-size: 2rem; margin: 20px 0;">Tu Puntuación: <span id="final-score">0</span> / 20</p>
-        <button class="restart-btn" onclick="location.reload()">Volver a Jugar</button>
+    <div id="feedback-screen" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center animate-pop">
+        <div id="feedback-bg" class="absolute inset-0 bg-opacity-95"></div>
+        <div class="relative z-10 text-center">
+            <h2 id="feedback-title" class="text-5xl font-extrabold mb-4 drop-shadow-lg">¡Correcto!</h2>
+            <div id="feedback-points" class="text-2xl font-bold bg-black/30 px-6 py-2 rounded-full inline-block">+850 puntos</div>
+        </div>
+    </div>
+
+    <div id="end-screen" class="hidden w-full max-w-md p-6 text-center animate-pop">
+        <div class="bg-white rounded-2xl p-8 shadow-2xl text-gray-800">
+            <h2 class="text-3xl font-extrabold text-[#46178f] mb-2">¡Evaluación Completada!</h2>
+            <p id="end-message" class="text-gray-500 font-semibold mb-6">Veamos cómo te fue...</p>
+            
+            <div class="bg-gray-100 rounded-xl p-6 mb-6">
+                <span class="block text-sm font-bold text-gray-500 uppercase">Puntuación Final</span>
+                <span id="final-score" class="text-5xl font-extrabold text-black block my-2">0</span>
+                <div class="flex justify-around mt-4 pt-4 border-t border-gray-300">
+                    <div>
+                        <span class="block text-xs text-gray-500">Correctas</span>
+                        <span id="final-correct" class="text-xl font-bold text-green-600">0</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500">Incorrectas</span>
+                        <span id="final-incorrect" class="text-xl font-bold text-red-600">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="location.reload()" class="w-full py-4 bg-black text-white font-bold text-xl rounded-xl btn-answer hover:bg-gray-800">
+                VOLVER A JUGAR
+            </button>
+        </div>
     </div>
 
     <script>
-        // Banco de preguntas (más de 30 para garantizar aleatoriedad en los intentos)
-        const questionBank = [
-            { q: "¿Cuál es la regla inquebrantable del Track 1 respecto a la tecnología?", options: ["Empezar por la herramienta", "La IA sustituye al juicio humano", "La decisión al principio, herramienta al final, juicio humano", "Automatizar procesos sin analizarlos"], correct: 2 },
-            { q: "¿Qué porcentaje del día del profesional medio se va en 'busy work'?", options: ["25%", "53%", "80%", "15%"], correct: 1 },
-            { q: "¿Cuáles son las tres paradas o submódulos del Track 1?", options: ["Bases, Outputs, RAG", "Módulo 1, 2 y 3", "Tu Jornada, Tus Datos, Tus Proyectos", "Fundamentos, Copilot, Agentes"], correct: 2 },
-            { q: "El framework metodológico principal del Track 1 se divide en tres pasos:", options: ["Ver, Decidir, Construir", "Leer, Escribir, Probar", "Comprar, Instalar, Usar", "Pensar, Programar, Desplegar"], correct: 0 },
-            { q: "¿Qué es el 'Test de Oro' al definir un objetivo analítico?", options: ["Medir cuántos datos tenemos", "¿Qué haré diferente si la respuesta es A en lugar de B?", "Saber si el modelo es rápido", "Validar si los datos están en Excel"], correct: 1 },
-            { q: "Según el Track 1, un agente de IA no está listo cuando funciona, sino cuando...", options: ["Pasa el testing automático", "Lo aprueba IT", "No falla ante casos reales", "Está subido a producción"], correct: 2 },
-            { q: "¿Cuáles son las 4 posibles salidas (o destinos) al clasificar una tarea?", options: ["Copiar, Pegar, Cortar, Borrar", "Eliminar, Delegar, Automatizar, Proteger", "Hacer, Pensar, Ignorar, Reenviar", "Aprobar, Rechazar, Pausar, Iniciar"], correct: 1 },
-            { q: "¿Cuáles son los tres tipos de casos de prueba para validar un agente?", options: ["Normales, Límite, Trampa", "Básicos, Medios, Altos", "Rápidos, Lentos, Fallidos", "Alfa, Beta, Omega"], correct: 0 },
-            { q: "¿Qué significa la acción 'Estirar' en el trabajo con datos?", options: ["Hacer el reporte más largo", "Aumentar el número de filas falsas", "Transformar formato ancho a largo", "Duplicar columnas"], correct: 2 },
-            { q: "¿Qué busca evitar la técnica de 'grounding' en los agentes?", options: ["Que consuman mucha memoria", "Que el sistema se bloquee", "Que el agente invente información (alucinaciones)", "Que responda demasiado rápido"], correct: 2 },
-            { q: "¿Cuáles son las 4 fases del proceso de creación de agentes (Submódulo 3)?", options: ["Definición, Diseño, Implementación, Pruebas", "Idea, Código, Venta, Uso", "Ver, Pensar, Decidir, Borrar", "Análisis, Desarrollo, Despliegue, Soporte"], correct: 0 },
-            { q: "¿Cuál es el nombre del profesor técnico que imparte los Laboratorios de construcción?", options: ["David Villaverde", "Fer Berdugo", "Luis Javier", "Fernando Alonso"], correct: 1 },
-            { q: "En la exploración de datos, la acción 'Derivar' consiste en:", options: ["Borrar columnas", "Copiar datos de otra empresa", "Fabricar columnas nuevas a partir de datos existentes", "Enviar el reporte a otra área"], correct: 2 },
-            { q: "En la exploración de datos, 'Agrupar' se refiere a:", options: ["Cambiar el nivel de zoom de los datos", "Juntar varios excels en uno", "Hacer equipos de trabajo", "Ordenar alfabéticamente"], correct: 0 },
-            { q: "¿Qué porcentaje del día laboral se puede llegar a perder en coordinación (emails, reuniones)?", options: ["10%", "30%", "Hasta un 60%", "90%"], correct: 2 },
-            { q: "¿Qué es un 'falso positivo' en el ámbito de los datos y automatización?", options: ["Una tarea que parece automatizable pero no lo es (basura entra-sale)", "Un error del compilador", "Un resultado matemático positivo incorrecto", "Un agente que funciona demasiado rápido"], correct: 0 },
-            { q: "¿A qué se refiere la 'trampa de la demo' en la fase de pruebas?", options: ["Usar PowerPoint en lugar de código", "Un agente que funciona en un caso simple pero falla en situaciones reales", "Cobrar por un prototipo", "Hacer demos muy largas"], correct: 1 },
-            { q: "¿Cómo se conoce al proyecto de IA que fracasa por intentar automatizarlo todo sin foco?", options: ["Proyecto Quick Win", "Proyecto Faraónico", "Proyecto Ágil", "Proyecto Piloto"], correct: 1 },
-            { q: "¿Qué significa definir el 'MVP' de un agente de IA?", options: ["Minimum Value Person", "Acotar el alcance: qué SÍ y qué NO va en la versión 1", "Hacer el modelo más complejo posible", "Medir la Velocidad de Procesamiento"], correct: 1 },
-            { q: "La frontera última en cualquier proceso analítico o automatizado con IA siempre es:", options: ["La capacidad del servidor", "El juicio y la responsabilidad humana", "El costo de la licencia", "La cantidad de datos"], correct: 1 },
-            { q: "¿Qué instrumento se usa para evaluar la calidad de un agente sin subjetividad?", options: ["Votación popular", "Rúbrica de calidad con cuatro criterios", "Medir las líneas de código", "Preguntar al cliente si le gusta"], correct: 1 },
-            { q: "El proceso repetitivo de probar, ajustar y repetir en el agente se denomina:", options: ["Bucle de mejora", "Efecto dominó", "Reingeniería", "Círculo vicioso"], correct: 0 },
-            { q: "¿Cuáles son los tres niveles de acceso de la IA a los datos?", options: ["Bajo, Medio, Alto", "Público, Privado, Secreto", "Simple, Avanzado, Empresa", "Local, Nube, Híbrido"], correct: 2 },
-            { q: "¿Qué acción corresponde a 'Separar' en el dataset?", options: ["Romper el archivo", "Desglosar variables compuestas", "Poner espacios en blanco", "Eliminar a los outliers"], correct: 1 },
-            { q: "¿Qué herramienta práctica de evaluación se entrega en el Submódulo 2 (Tus Datos)?", options: ["Matriz de Riesgos", "Canvas de objetivos analíticos", "Plantilla de PowerPoint", "Manual de Python"], correct: 1 },
-            { q: "¿Qué conceptos forman la 'Memoria' en el asistente de IA del Lab?", options: ["RAM y ROM", "Disco duro y Caché", "Cuatro Bloques Permanentes y el Encargo Diario", "Historial de chat y Cookies"], correct: 2 },
-            { q: "¿Qué son Prompting, Meta-prompting y Chain of Thought?", options: ["Marcas de software", "Lenguajes de programación", "Técnicas avanzadas de prompting (Lab 1.5)", "Tipos de bases de datos"], correct: 2 },
-            { q: "¿Qué documento finaliza y consolida el flujo operativo de la jornada rediseñada?", options: ["Mi semana operativa", "Balance general", "Inventario anual", "Reporte de recursos humanos"], correct: 0 },
-            { q: "Para priorizar qué tareas automatizar, ¿qué criterios cruza la matriz de priorización?", options: ["Tiempo x Dinero", "Valor x Factibilidad", "Urgencia x Importancia", "Dificultad x Riesgo"], correct: 1 },
-            { q: "Antes de aplicar la IA a cualquier ámbito empresarial, el Track 1 exige aplicarla a:", options: ["Los clientes", "La competencia", "Uno mismo (tu propia jornada)", "El departamento financiero"], correct: 2 },
-            { q: "¿Qué rol asume David Villaverde en la impartición del Track?", options: ["Instructor de programación", "Coordinador de análisis, método y reflexión estratégica", "Especialista en hardware", "Soporte técnico"], correct: 1 }
+        // Banco de conocimiento extraído del syllabus Track 2
+        const allQuestions = [
+            {
+                q: "¿Cuál es la principal diferencia entre contenido líquido y sólido?",
+                options: [
+                    "Líquido se adapta a cualquier formato; sólido se diseña para un solo canal.",
+                    "Líquido es solo para redes; sólido es para webs corporativas.",
+                    "Líquido es escrito por IA; sólido es escrito por humanos.",
+                    "Líquido caduca rápido; sólido tiene validez permanente (Evergreen)."
+                ],
+                correct: 0
+            },
+            {
+                q: "Según el Track 2, ¿qué es un 'Asset Maestro'?",
+                options: [
+                    "Una idea con estructura clara diseñada para verterse en múltiples formatos.",
+                    "Un video de alta calidad producido exclusivamente para YouTube.",
+                    "Una herramienta de IA que gestiona el calendario editorial.",
+                    "Un documento legal requerido para el uso de IA en Europa."
+                ],
+                correct: 0
+            },
+            {
+                q: "En el Método de Cuatro Pasos, ¿cuál es el objetivo del Paso 1: ESCUCHAR?",
+                options: [
+                    "Identificar keywords y titulares que resuenan con la audiencia real.",
+                    "Grabar notas de voz para transcribirlas con IA.",
+                    "Generar imágenes que acompañen al texto.",
+                    "Programar las publicaciones en redes sociales."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué herramienta se recomienda especialmente para búsquedas que requieren conexión a internet en tiempo real?",
+                options: ["Perplexity", "ChatGPT 3.5", "Midjourney", "ElevenLabs"],
+                correct: 0
+            },
+            {
+                q: "El caso 'Olistic Science' pertenece a un sector delicado que requiere alta confiabilidad. ¿Cómo se llama este tipo de sector en SEO?",
+                options: ["YMYL (Your Money or Your Life)", "TOFU (Top of the Funnel)", "B2C (Business to Consumer)", "SaaS (Software as a Service)"],
+                correct: 0
+            },
+            {
+                q: "¿Qué métrica es crucial para combatir la 'fuga silenciosa' en motores de IA generativa?",
+                options: ["Share of Model", "Click-Through Rate (CTR)", "Coste por Clic (CPC)", "Bounce Rate"],
+                correct: 0
+            },
+            {
+                q: "Al usar Google Trends, ¿qué indica una consulta 'breakout' (en ascenso)?",
+                options: [
+                    "Un crecimiento puntual superior al 500% respecto al periodo anterior.",
+                    "Una caída drástica en el volumen de búsquedas.",
+                    "Una búsqueda exclusiva de dispositivos móviles.",
+                    "Un término penalizado por el algoritmo de Google."
+                ],
+                correct: 0
+            },
+            {
+                q: "Según el análisis de tendencias, ¿dónde suelen nacer las consultas 'breakout' en entornos B2B?",
+                options: [
+                    "En cambios legislativos o regulaciones nuevas (ej. BOE).",
+                    "En trends virales de TikTok.",
+                    "En campañas de influencers.",
+                    "En anuncios de la Super Bowl."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Para qué se utiliza principalmente la herramienta AnswerThePublic (ATP) o AlsoAsked?",
+                options: [
+                    "Para mapear dudas y clasificar la intención conversacional del usuario.",
+                    "Para generar voces sintéticas de alta calidad.",
+                    "Para crear storyboards automáticos.",
+                    "Para auditar la velocidad de carga de una web."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿A qué fase del embudo de conversión (Funnel) corresponden las dudas iniciales de un usuario que aún no sabe qué comprar?",
+                options: ["TOFU (Top of the Funnel)", "MOFU (Middle of the Funnel)", "BOFU (Bottom of the Funnel)", "GEO (Generative Engine)"],
+                correct: 0
+            },
+            {
+                q: "En el ecosistema híbrido, ¿qué significa la 'co-creación' humano-máquina?",
+                options: [
+                    "El humano aporta intención y estrategia, la IA genera variantes iterativas.",
+                    "La IA diseña la estrategia y el humano simplemente la publica.",
+                    "Consiste en dividir el código 50% humano y 50% IA.",
+                    "Es reemplazar al equipo creativo completamente por prompts."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué es 'BuzzAbout' según los apuntes del máster?",
+                options: [
+                    "Una herramienta de escucha social que integra IA con APIs de redes.",
+                    "Un generador de música sintética para podcasts.",
+                    "Un modelo de lenguaje entrenado exclusivamente en español.",
+                    "Una métrica para medir interacciones en Instagram."
+                ],
+                correct: 0
+            },
+            {
+                q: "Las tres fases de la herramienta BuzzAbout son:",
+                options: [
+                    "Escuchar, Interpretar y Activar.",
+                    "Prompting, Generación y Publicación.",
+                    "Análisis, Diseño y Desarrollo.",
+                    "Atracción, Conversión y Fidelización."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué implica el 'Disclaimer IA' requerido por la legislación europea?",
+                options: [
+                    "La obligación de revelar que el contenido ha sido generado usando IA.",
+                    "El pago de impuestos específicos por usar servidores de IA.",
+                    "La prohibición de usar voces sintéticas en anuncios políticos.",
+                    "La necesidad de anonimizar los datos de entrenamiento."
+                ],
+                correct: 0
+            },
+            {
+                q: "En la clase 2.5, se presenta un caso práctico para aplicar todos los conceptos. ¿Cuál es?",
+                options: ["La Taberna de Moe (inspirado en Los Simpson)", "Joselito.com (Jamón Ibérico)", "Olistic Science", "Dior (Campaña StoneGen)"],
+                correct: 0
+            },
+            {
+                q: "¿Qué plataforma se recomienda en el curso para configuración avanzada de síntesis y clonación de voz?",
+                options: ["ElevenLabs", "Midjourney", "ComfyUI", "Suno AI"],
+                correct: 0
+            },
+            {
+                q: "¿Para qué tareas de producción se menciona el uso de Suno AI y NotebookLM?",
+                options: [
+                    "Producción de audio profesional y podcasts generativos.",
+                    "Generación de vídeos en 4K.",
+                    "Optimización de código fuente web.",
+                    "Análisis de hojas de cálculo de contabilidad."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué herramientas se destacan para lograr una consistencia visual avanzada y dirección de arte profesional?",
+                options: ["ComfyUI y SeaArt", "ChatGPT y Perplexity", "Google Trends y ATP", "Frame Origin y Storyboard"],
+                correct: 0
+            },
+            {
+                q: "El modelo 'Jobs to be Done' aplicado a búsquedas asume que:",
+                options: [
+                    "El cliente no compra un producto, 'contrata' una solución a un problema.",
+                    "Es mejor buscar por volumen general que por intención.",
+                    "Las palabras clave genéricas son siempre más baratas.",
+                    "El usuario siempre sabe exactamente la marca que quiere."
+                ],
+                correct: 0
+            },
+            {
+                q: "En la auditoría SEO/GEO (Caso Olistic), ¿cuál de los siguientes es un factor clave E-E-A-T que buscan los modelos de lenguaje?",
+                options: [
+                    "Autoría de médicos colegiados y cifras de estudios clínicos.",
+                    "Uso excesivo de palabras clave ocultas en el texto.",
+                    "Imágenes en formato GIF animado en la cabecera.",
+                    "Tener perfiles en todas las redes sociales existentes."
+                ],
+                correct: 0
+            },
+            {
+                q: "Al optimizar para GEO (Generative Engine Optimization), ¿cuál es el objetivo principal a diferencia del SEO tradicional?",
+                options: [
+                    "Aparecer en las respuestas directas generadas por modelos de IA.",
+                    "Conseguir clics mediante titulares estilo clickbait.",
+                    "Pagar menos por cada clic en Google Ads.",
+                    "Aumentar el número de enlaces (backlinks) tóxicos."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué problema común intenta evitar la validación de keywords en la Fase 2 con Google Trends?",
+                options: [
+                    "Invertir tiempo en contenido sobre preguntas que ya nadie hace.",
+                    "Escribir textos demasiado largos para móviles.",
+                    "Usar imágenes con derechos de autor.",
+                    "Crear contenido que solo consumen inteligencias artificiales."
+                ],
+                correct: 0
+            },
+            {
+                q: "Según el caso de la marca Joselito, el análisis de keywords debe enfocarse no solo en búsquedas genéricas, sino también en:",
+                options: [
+                    "Objeciones del usuario que pueden afectar la tasa de rebote.",
+                    "El código fuente de los competidores directos.",
+                    "Los nombres de los directivos de la competencia.",
+                    "Los colores utilizados en la web de la competencia."
+                ],
+                correct: 0
+            },
+            {
+                q: "En el contexto de B2B vs B2C, la estructura web dual (Caso Factorial HR) busca evitar:",
+                options: [
+                    "El rebote por desalineación de la intención del usuario.",
+                    "Que la web cargue lento en dispositivos móviles.",
+                    "Problemas legales de privacidad de datos.",
+                    "El agotamiento de la cuota de la API de IA."
+                ],
+                correct: 0
+            },
+            {
+                q: "El profesor Ignacio Estrella Varela menciona el concepto de 'Messy Middle'. ¿A qué se refiere?",
+                options: [
+                    "El complejo comportamiento del consumidor digital entre el trigger y la compra.",
+                    "Un error común al estructurar prompts muy largos.",
+                    "La etapa intermedia de entrenamiento de un modelo de IA.",
+                    "Un estilo de diseño visual desordenado intencionalmente."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué implica la metodología 'Watch and Build' mencionada en la Clase 1.2?",
+                options: [
+                    "Observar tendencias y construir en base a ellas en tiempo real.",
+                    "Mirar tutoriales antes de programar una web.",
+                    "Delegar la estrategia a una agencia externa.",
+                    "Esperar a que la competencia actúe para luego copiarles."
+                ],
+                correct: 0
+            },
+            {
+                q: "El Track 2 advierte sobre el peligro de crear múltiples piezas aisladas desde cero. ¿Cuál es el resultado negativo de esta práctica?",
+                options: [
+                    "Se produce mucho pero se construye poca coherencia de marca.",
+                    "Los videos resultan demasiado cortos para Instagram.",
+                    "Las herramientas de IA bloquean la cuenta por sobreuso.",
+                    "El coste de los servidores web se dispara."
+                ],
+                correct: 0
+            },
+            {
+                q: "¿Qué herramienta usarías para realizar el test de Rich Results (Resultados Enriquecidos) según los links de la clase 2.5?",
+                options: [
+                    "Google Search Console",
+                    "Ahrefs",
+                    "Semrush",
+                    "Midjourney"
+                ],
+                correct: 0
+            },
+            {
+                q: "En el ecosistema de IA generativa, ¿a qué se refiere la 'Inteligencia Agéntica'?",
+                options: [
+                    "IAs que pueden ejecutar secuencias de tareas complejas de forma autónoma.",
+                    "Agencias de publicidad compuestas 100% por avatares digitales.",
+                    "IAs especializadas en gestión de talento humano.",
+                    "La inteligencia requerida para escribir contratos de confidencialidad."
+                ],
+                correct: 0
+            },
+            {
+                q: "La prueba de validación de una idea líquida bien estructurada es:",
+                options: [
+                    "Puede adaptarse a cualquier formato sin reinventar su esencia.",
+                    "Logra 1 millón de visualizaciones en 24 horas.",
+                    "Es aprobada por el departamento legal sin cambios.",
+                    "Es generada en menos de 5 segundos por ChatGPT."
+                ],
+                correct: 0
+            }
         ];
 
-        let selectedQuestions = [];
-        let currentQuestionIndex = 0;
+        const TOTAL_QUESTIONS = 20;
+        const TIME_LIMIT_SECONDS = 12 * 60; // 12 minutos
+        
+        let currentQuiz = [];
+        let currentIndex = 0;
         let score = 0;
-        let totalQuestions = 20;
-        let timeLeft = 720; // 12 minutos en segundos
-        let timerInterval;
-        let isAnswering = false;
+        let correctAnswers = 0;
+        let globalTimeRemaining = TIME_LIMIT_SECONDS;
+        let globalTimerInterval;
+        let questionStartTime;
 
-        // Función para mezclar un array (Fisher-Yates)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+        // Elementos del DOM
+        const screens = {
+            start: document.getElementById('start-screen'),
+            quiz: document.getElementById('quiz-screen'),
+            feedback: document.getElementById('feedback-screen'),
+            end: document.getElementById('end-screen')
+        };
+
+        const shapes = [
+            '<div class="shape-icon color-triangle bg-white" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>',
+            '<div class="shape-icon color-diamond bg-white" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>',
+            '<div class="shape-icon color-circle bg-white" style="border-radius: 50%;"></div>',
+            '<div class="shape-icon color-square bg-white"></div>'
+        ];
+
+        const btnColors = ['color-triangle', 'color-diamond', 'color-circle', 'color-square'];
+
+        // Sistema anti-repetición usando localStorage
+        function getPreviouslyAsked() {
+            return JSON.parse(localStorage.getItem('track2_asked_questions') || '[]');
         }
 
-        function startQuiz() {
-            // Seleccionar 20 preguntas aleatorias
-            shuffleArray(questionBank);
-            selectedQuestions = questionBank.slice(0, totalQuestions);
-            
-            // Mezclar también las opciones de cada pregunta para que no siempre sea la misma posición
-            selectedQuestions.forEach(q => {
-                let optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.correct }));
-                shuffleArray(optionsWithIndex);
-                q.shuffledOptions = optionsWithIndex;
-            });
+        function setPreviouslyAsked(askedArray) {
+            localStorage.setItem('track2_asked_questions', JSON.stringify(askedArray));
+        }
 
-            document.getElementById('start-screen').classList.remove('active-screen');
-            document.getElementById('quiz-screen').classList.add('active-screen');
+        function getSessionCount() {
+            return parseInt(localStorage.getItem('track2_sessions') || '0');
+        }
+
+        function updateSessionCount() {
+            let count = getSessionCount() + 1;
+            localStorage.setItem('track2_sessions', count);
+            return count;
+        }
+
+        // Inicializar interfaz
+        document.getElementById('sessions-count').innerText = getSessionCount();
+
+        function startGame() {
+            // Lógica para no repetir preguntas si es posible
+            let previouslyAsked = getPreviouslyAsked();
+            let pool = [...allQuestions];
             
-            startTimer();
+            // Si ya preguntamos casi todas, reiniciamos el historial para permitir jugar infinitamente
+            if (previouslyAsked.length >= allQuestions.length - (TOTAL_QUESTIONS / 2)) {
+                previouslyAsked = []; 
+            }
+
+            // Separar preguntas en "nuevas" y "vistas"
+            let unseen = pool.filter((q, i) => !previouslyAsked.includes(i));
+            let seen = pool.filter((q, i) => previouslyAsked.includes(i));
+
+            // Mezclar ambos arrays
+            unseen.sort(() => Math.random() - 0.5);
+            seen.sort(() => Math.random() - 0.5);
+
+            // Tomar primero las no vistas
+            currentQuiz = [];
+            let indicesToSave = [];
+
+            for(let i=0; i<unseen.length && currentQuiz.length < TOTAL_QUESTIONS; i++){
+                currentQuiz.push(unseen[i]);
+                indicesToSave.push(allQuestions.indexOf(unseen[i]));
+            }
+            // Completar con las ya vistas si es necesario
+            for(let i=0; i<seen.length && currentQuiz.length < TOTAL_QUESTIONS; i++){
+                currentQuiz.push(seen[i]);
+                indicesToSave.push(allQuestions.indexOf(seen[i]));
+            }
+
+            // Guardar el nuevo historial
+            setPreviouslyAsked([...previouslyAsked, ...indicesToSave]);
+
+            // Resetear variables de sesión
+            currentIndex = 0;
+            score = 0;
+            correctAnswers = 0;
+            globalTimeRemaining = TIME_LIMIT_SECONDS;
+            document.getElementById('score-display').innerText = score;
+
+            switchScreen('quiz');
+            startGlobalTimer();
             loadQuestion();
         }
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    endQuiz("¡Se agotó el tiempo!");
+        function switchScreen(screenName) {
+            Object.values(screens).forEach(s => s.classList.add('hidden'));
+            screens[screenName].classList.remove('hidden');
+        }
+
+        function loadQuestion() {
+            if (currentIndex >= TOTAL_QUESTIONS) {
+                return finishGame();
+            }
+
+            const qData = currentQuiz[currentIndex];
+            document.getElementById('question-counter').innerText = `${currentIndex + 1}/${TOTAL_QUESTIONS}`;
+            document.getElementById('question-text').innerText = qData.q;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            // Guardar opción correcta original
+            const correctText = qData.options[qData.correct];
+
+            // Mezclar opciones
+            let shuffledOptions = [...qData.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach((optText, index) => {
+                const isCorrect = (optText === correctText);
+                const btn = document.createElement('button');
+                btn.className = `${btnColors[index]} btn-answer text-white p-4 md:p-8 rounded-xl flex items-center justify-start text-left min-h-[100px]`;
+                
+                btn.innerHTML = `
+                    <div class="mr-4">${shapes[index]}</div>
+                    <span class="text-sm md:text-lg font-semibold drop-shadow-md leading-tight">${optText}</span>
+                `;
+                
+                btn.onclick = () => handleAnswer(isCorrect, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Registrar tiempo de inicio de la pregunta para cálculo de puntos
+            questionStartTime = Date.now();
+        }
+
+        function startGlobalTimer() {
+            const timeDisplay = document.getElementById('global-timer');
+            const timerBar = document.getElementById('timer-bar');
+
+            globalTimerInterval = setInterval(() => {
+                globalTimeRemaining--;
+                
+                let minutes = Math.floor(globalTimeRemaining / 60);
+                let seconds = globalTimeRemaining % 60;
+                timeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                // Update Progress Bar
+                let percentage = (globalTimeRemaining / TIME_LIMIT_SECONDS) * 100;
+                timerBar.style.width = `${percentage}%`;
+
+                if (percentage < 20) {
+                    timerBar.classList.replace('bg-green-400', 'bg-red-500');
+                    timeDisplay.classList.add('text-red-400', 'animate-pulse');
+                } else if (percentage < 50) {
+                    timerBar.classList.replace('bg-green-400', 'bg-yellow-400');
+                }
+
+                if (globalTimeRemaining <= 0) {
+                    clearInterval(globalTimerInterval);
+                    finishGame();
                 }
             }, 1000);
         }
 
-        function updateTimerDisplay() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById('timer-display').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
+        function handleAnswer(isCorrect, btnElement) {
+            // Deshabilitar todos los botones temporalmente
+            const buttons = document.querySelectorAll('.btn-answer');
+            buttons.forEach(b => b.disabled = true);
 
-        function loadQuestion() {
-            isAnswering = false;
-            let q = selectedQuestions[currentQuestionIndex];
-            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
-            document.getElementById('question-text').innerText = q.q;
-            
-            const container = document.getElementById('answers-container');
-            container.innerHTML = ''; // Limpiar botones
+            const feedbackScreen = document.getElementById('feedback-screen');
+            const feedbackBg = document.getElementById('feedback-bg');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackPoints = document.getElementById('feedback-points');
 
-            q.shuffledOptions.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = `answer-btn color-${idx}`;
-                btn.innerText = opt.text;
-                btn.onclick = () => checkAnswer(opt.isCorrect, btn);
-                container.appendChild(btn);
-            });
-        }
+            let pointsEarned = 0;
 
-        function checkAnswer(isCorrect, btnElement) {
-            if (isAnswering) return;
-            isAnswering = true;
-
-            const allBtns = document.querySelectorAll('.answer-btn');
-            
             if (isCorrect) {
-                score++;
-                document.getElementById('score').innerText = score;
-                // Marcar como correcto visualmente
-                btnElement.style.backgroundColor = '#26890c'; // Verde éxito
+                correctAnswers++;
+                // Cálculo de puntos: Max 1000. Baja según los segundos tardados en esta pregunta.
+                let secondsTaken = (Date.now() - questionStartTime) / 1000;
+                // Fórmula Kahoot simplificada: 1000 * ( 1 - (secondsTaken / 30) )
+                pointsEarned = Math.round(1000 * (1 - (Math.min(secondsTaken, 30) / 60))); 
+                if(pointsEarned < 500) pointsEarned = 500; // Mínimo por acertar
+                
+                score += pointsEarned;
+                document.getElementById('score-display').innerText = score;
+
+                feedbackBg.className = 'absolute inset-0 bg-green-500 bg-opacity-95';
+                feedbackTitle.innerText = '¡Correcto!';
+                feedbackPoints.innerText = `+${pointsEarned} puntos`;
+                feedbackPoints.classList.remove('hidden');
             } else {
-                btnElement.style.backgroundColor = '#e21b3c'; // Rojo error
-                // Mostrar cuál era la correcta
-                allBtns.forEach(b => {
-                    let text = b.innerText;
-                    let correctText = selectedQuestions[currentQuestionIndex].shuffledOptions.find(o => o.isCorrect).text;
-                    if(text === correctText) {
-                        b.style.border = "4px solid #fff";
-                        b.style.backgroundColor = '#26890c';
-                    }
-                });
+                feedbackBg.className = 'absolute inset-0 bg-red-600 bg-opacity-95';
+                feedbackTitle.innerText = 'Incorrecto';
+                feedbackPoints.classList.add('hidden');
             }
 
-            // Opacar los demás
-            allBtns.forEach(b => {
-                if(b !== btnElement && !b.style.border) {
-                    b.style.opacity = '0.5';
-                }
-            });
+            // Mostrar Feedback Overlay
+            feedbackScreen.classList.remove('hidden');
+            
+            // Re-animar
+            feedbackScreen.classList.remove('animate-pop');
+            void feedbackScreen.offsetWidth; // trigger reflow
+            feedbackScreen.classList.add('animate-pop');
 
             setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < totalQuestions) {
-                    loadQuestion();
-                } else {
-                    endQuiz("¡Prueba Completada!");
-                }
-            }, 1500); // 1.5 segundos para ver el resultado antes de pasar
+                feedbackScreen.classList.add('hidden');
+                currentIndex++;
+                loadQuestion();
+            }, 2000);
         }
 
-        function endQuiz(message) {
-            clearInterval(timerInterval);
-            document.getElementById('quiz-screen').classList.remove('active-screen');
-            document.getElementById('end-screen').classList.add('active-screen');
-            document.getElementById('final-message').innerText = message;
+        function finishGame() {
+            clearInterval(globalTimerInterval);
+            updateSessionCount();
+            
             document.getElementById('final-score').innerText = score;
+            document.getElementById('final-correct').innerText = correctAnswers;
+            document.getElementById('final-incorrect').innerText = TOTAL_QUESTIONS - correctAnswers;
+            
+            let message = "";
+            let percentage = correctAnswers / TOTAL_QUESTIONS;
+            
+            if (percentage === 1) message = "¡Perfección absoluta! Eres un maestro de la IA.";
+            else if (percentage >= 0.8) message = "¡Excelente desempeño! Dominas el Track 2.";
+            else if (percentage >= 0.5) message = "Buen trabajo, pero hay conceptos por repasar.";
+            else message = "Necesitas revisar los apuntes del Asset Maestro.";
+
+            document.getElementById('end-message').innerText = message;
+            
+            switchScreen('end');
         }
     </script>
 </body>
