@@ -2,318 +2,196 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Máster en IA - Track 3</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kahoot! - Evaluación Track 4: IA Financiera</title>
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f2f2f2;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
         
-        .kahoot-bg {
-            background: linear-gradient(135deg, #46178f, #864cbf);
-            color: white;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #f2f2f2; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        .kahoot-btn-red { background-color: #e21b3c; box-shadow: 0 4px 0 #b0102b; }
-        .kahoot-btn-blue { background-color: #1368ce; box-shadow: 0 4px 0 #0f4b94; }
-        .kahoot-btn-yellow { background-color: #d89e00; box-shadow: 0 4px 0 #a37600; color: #333; }
-        .kahoot-btn-green { background-color: #26890c; box-shadow: 0 4px 0 #1b6308; }
-        
-        .option-btn {
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-        .option-btn:active:not(:disabled) {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 transparent !important;
-        }
-        .option-btn:disabled {
-            opacity: 0.8;
-            cursor: not-allowed;
-        }
-        
-        .correct-anim {
-            animation: pulse-green 0.5s ease;
-        }
-        .incorrect-anim {
-            animation: shake-red 0.5s ease;
-        }
+        /* Header & Timer */
+        header { background-color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10;}
+        .timer { font-size: 1.5rem; font-weight: 900; background: #864cbf; color: white; padding: 5px 15px; border-radius: 20px; }
+        .score { font-size: 1.2rem; font-weight: 700; color: #333; }
 
-        @keyframes pulse-green {
-            0% { background-color: #26890c; transform: scale(1); }
-            50% { background-color: #66ff33; transform: scale(1.05); }
-            100% { background-color: #26890c; transform: scale(1); }
+        /* Main Content */
+        .container { flex: 1; display: flex; flex-direction: column; padding: 20px; justify-content: center; }
+        .question-box { background: white; padding: 30px 20px; border-radius: 10px; text-align: center; font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* Options Grid */
+        .options { display: grid; grid-template-columns: 1fr; gap: 15px; flex: 1; }
+        @media(min-width: 768px) { .options { grid-template-columns: 1fr 1fr; } }
+        
+        .option { 
+            border: none; border-radius: 8px; color: white; font-size: 1.1rem; font-weight: 700; padding: 20px; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2); transition: transform 0.1s;
         }
+        .option:active { transform: translateY(4px); box-shadow: none; }
+        
+        /* Kahoot Colors */
+        .opt-0 { background-color: #e21b3c; }
+        .opt-1 { background-color: #1368ce; }
+        .opt-2 { background-color: #d89e00; }
+        .opt-3 { background-color: #26890c; }
 
-        @keyframes shake-red {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); background-color: #ff3333; }
-            40%, 80% { transform: translateX(5px); }
-        }
+        /* Screens */
+        #start-screen, #result-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 20px; background-color: #46178f; color: white; }
+        h1 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 900; }
+        p { font-size: 1.2rem; margin-bottom: 30px; }
+        .btn-start { background: #fff; color: #46178f; font-size: 1.5rem; font-weight: 900; padding: 15px 40px; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 0 #ccc; }
+        .btn-start:active { transform: translateY(4px); box-shadow: none; }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
-<body class="kahoot-bg min-h-screen flex flex-col items-center justify-center p-4">
+<body>
 
     <!-- Start Screen -->
-    <div id="start-screen" class="text-center w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl text-gray-800">
-        <h1 class="text-4xl font-black mb-4 text-[#46178f] uppercase tracking-wider">Máster IA</h1>
-        <h2 class="text-2xl font-bold mb-6 text-gray-600">Track 3: Empleabilidad</h2>
-        <p class="mb-8 font-medium text-lg">20 preguntas aleatorias.<br>12 minutos de tiempo.<br>¡Demuestra lo que sabes!</p>
-        <button id="start-btn" class="w-full py-4 text-2xl font-bold text-white bg-[#26890c] rounded-xl shadow-[0_6px_0_#1b6308] active:translate-y-[6px] active:shadow-none transition-all duration-100">
-            EMPEZAR TEST
-        </button>
+    <div id="start-screen">
+        <h1>Máster IA - Track 4</h1>
+        <p>Evaluación Continua: 20 preguntas<br>Tiempo total: 12 minutos</p>
+        <button class="btn-start" onclick="startQuiz()">EMPEZAR</button>
     </div>
 
-    <!-- Game Screen -->
-    <div id="game-screen" class="hidden w-full max-w-3xl flex flex-col h-full h-[90vh]">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-4 bg-white/20 p-3 rounded-2xl backdrop-blur-sm">
-            <div class="text-xl font-bold bg-white text-[#46178f] px-4 py-1 rounded-full shadow-md">
-                Pregunta <span id="question-counter">1/20</span>
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden">
+        <header>
+            <div class="score">Progreso: <span id="progress">1/20</span></div>
+            <div class="timer" id="timer">12:00</div>
+        </header>
+        <div class="container">
+            <div class="question-box" id="question-text">Cargando pregunta...</div>
+            <div class="options" id="options-container">
+                <!-- Options injected by JS -->
             </div>
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div id="timer" class="text-2xl font-black tracking-widest">12:00</div>
-            </div>
-        </div>
-
-        <!-- Question -->
-        <div class="bg-white text-gray-800 p-6 md:p-10 rounded-2xl shadow-xl flex-grow flex items-center justify-center text-center mb-4">
-            <h2 id="question-text" class="text-2xl md:text-4xl font-bold leading-tight"></h2>
-        </div>
-
-        <!-- Options -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-1/2 min-h-[300px]">
-            <button class="option-btn text-left text-white kahoot-btn-red text-xl md:text-2xl font-bold p-6 rounded-xl flex items-center shadow-lg relative overflow-hidden group" onclick="checkAnswer(this, 0)">
-                <div class="w-8 h-8 mr-4 bg-white/30 clip-triangle flex-shrink-0" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
-                <span id="opt0-text" class="leading-tight"></span>
-            </button>
-            <button class="option-btn text-left text-white kahoot-btn-blue text-xl md:text-2xl font-bold p-6 rounded-xl flex items-center shadow-lg relative overflow-hidden group" onclick="checkAnswer(this, 1)">
-                <div class="w-8 h-8 mr-4 bg-white/30 clip-diamond flex-shrink-0" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
-                <span id="opt1-text" class="leading-tight"></span>
-            </button>
-            <button class="option-btn text-left kahoot-btn-yellow text-xl md:text-2xl font-bold p-6 rounded-xl flex items-center shadow-lg relative overflow-hidden group" onclick="checkAnswer(this, 2)">
-                <div class="w-8 h-8 mr-4 bg-black/20 clip-circle rounded-full flex-shrink-0"></div>
-                <span id="opt2-text" class="leading-tight"></span>
-            </button>
-            <button class="option-btn text-left text-white kahoot-btn-green text-xl md:text-2xl font-bold p-6 rounded-xl flex items-center shadow-lg relative overflow-hidden group" onclick="checkAnswer(this, 3)">
-                <div class="w-8 h-8 mr-4 bg-white/30 clip-square flex-shrink-0"></div>
-                <span id="opt3-text" class="leading-tight"></span>
-            </button>
         </div>
     </div>
 
     <!-- Result Screen -->
-    <div id="result-screen" class="hidden text-center w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl text-gray-800">
-        <h2 class="text-4xl font-black mb-2 text-[#46178f]">¡Completado!</h2>
-        <p class="text-xl text-gray-500 mb-6 font-bold" id="time-spent-msg"></p>
-        
-        <div class="bg-gray-100 p-6 rounded-2xl mb-8">
-            <p class="text-lg font-semibold text-gray-600 uppercase mb-2">Tu Puntuación</p>
-            <div class="text-6xl font-black text-[#1368ce]">
-                <span id="score-display">0</span><span class="text-3xl text-gray-400">/20</span>
-            </div>
-        </div>
-
-        <button id="restart-btn" class="w-full py-4 text-2xl font-bold text-white bg-[#46178f] rounded-xl shadow-[0_6px_0_#2d0f5c] active:translate-y-[6px] active:shadow-none transition-all duration-100">
-            VOLVER A JUGAR
-        </button>
+    <div id="result-screen" class="hidden">
+        <h1>¡Completado!</h1>
+        <p id="final-score" style="font-size: 2rem; font-weight: bold;"></p>
+        <p id="remaining-attempts"></p>
+        <button class="btn-start" onclick="location.reload()">VOLVER AL INICIO</button>
     </div>
 
     <script>
-        // Question Bank
-        const questionBank = [
-            { q: "¿Cuál es la primera etapa del funnel de búsqueda de empleo?", a: "Candidaturas y contactos", f: ["Entrevistas", "Ofertas", "Negociación"] },
-            { q: "¿Cuál es el marco estratégico introducido para la búsqueda de empleo?", a: "Preparen, Apunten, Fuego", f: ["Planifica-Ejecuta-Mide", "Atracción-Conversión-Cierre", "Define-Construye-Evalúa"] },
-            { q: "Según la fase 'Preparen', ¿cuál es el objetivo principal?", a: "Definir quién eres y qué buscas", f: ["Optimizar el perfil de LinkedIn", "Negociar la oferta", "Enviar currículums"] },
-            { q: "¿Qué técnica se recomienda para estructurar narrativas y casos de éxito en entrevistas?", a: "Método STAR", f: ["Técnica DAFO", "Ciclo PDCA", "Regla del 10%"] },
-            { q: "¿Qué extensión y formato debe tener idealmente un CV orientado a resultados?", a: "1 página con logros cuantificables", f: ["3 páginas detalladas", "Un párrafo resumen", "2 páginas sin números"] },
-            { q: "¿Qué métrica clave se menciona para diagnosticar el progreso del funnel de empleo?", a: "La métrica del 10%", f: ["Tasa de rebote del 5%", "Conversión del 50%", "Ratio 1 a 1"] },
-            { q: "¿Cuál es el objetivo principal del diseño de carrera a 1, 3 y 5 años?", a: "Servir de ancla motivacional y criterio de decisión", f: ["Asegurar aumentos salariales", "Automatizar postulaciones", "Memorizar respuestas"] },
-            { q: "¿Para qué se debe optimizar principalmente el perfil de LinkedIn?", a: "Para superar filtros ATS y posicionar valor", f: ["Para fotos personales", "Para sustituir al CV", "Para enviar spam"] },
-            { q: "¿Cuál no es parte de la demostración final del Track 3?", a: "Certificación técnica de Python", f: ["CV + LinkedIn", "Simulación de entrevista", "Plan de 30 días"] },
-            { q: "¿Cuándo se debe preparar la posición de negociación salarial?", a: "Antes de la entrevista, no después de la oferta", f: ["Al firmar el contrato", "Después de rechazar la oferta", "En los primeros 180 días"] },
-            { q: "¿Cómo se define el nuevo perfil profesional de alto impacto en la era de la IA?", a: "IA × Business × Human Skills", f: ["Programación × Inglés", "IA × Redes Sociales", "Solo Habilidades Técnicas"] },
-            { q: "¿Qué hábito se debe incorporar para medir el progreso del plan de acción?", a: "Revisión semanal los viernes", f: ["Revisión mensual", "Solo cuando hay entrevistas", "Delegarlo a la IA"] },
-            { q: "¿Qué incluye la fase 'Fuego' del framework de empleabilidad?", a: "Comunicar y negociar tu valor", f: ["Preparar el CV", "Simular entrevistas", "Estudiar el mercado"] },
-            { q: "¿Cómo debe concebirse la carrera profesional en este nuevo paradigma?", a: "Como un portfolio de activos proactivo", f: ["Como un puesto vitalicio", "Como un flujo pasivo", "Como una carrera de títulos"] },
-            { q: "¿Qué función cumple la IA como entrenador de entrevistas?", a: "Simulador de voz para corregir respuestas débiles", f: ["Asistir a la entrevista por ti", "Hackear pruebas técnicas", "Memorizar guiones exactos"] },
-            { q: "¿Qué se recomienda hacer antes de realizar una llamada de contraoferta?", a: "Ensayarla tres veces con IA", f: ["Enviar un ultimátum", "Hablar con el CEO", "Aceptar la primera oferta"] },
-            { q: "En la conversión del funnel, ¿cuántas entrevistas se espera obtener idealmente?", a: "1 entrevista por cada 10 candidaturas", f: ["1 por candidatura", "5 por cada 10", "1 por cada 100"] },
-            { q: "¿Cuál es el objetivo principal de la competencia CT1T3?", a: "Entender la integración de IA en procesos de empleabilidad", f: ["Programar redes neuronales", "Desarrollo web", "Automatizar RRHH"] },
-            { q: "¿Cuál es la última etapa (5) del funnel de búsqueda de empleo?", a: "Los primeros 180 días y la estrategia de incorporación", f: ["Negociación", "Ofertas", "Entrevistas"] },
-            { q: "En la propuesta de valor del perfil, ¿cuántas líneas se sugieren para diferenciar al candidato?", a: "Tres líneas", f: ["Una página", "Una palabra", "Diez líneas"] },
-            { q: "Para que un logro en el CV tenga impacto real, debe:", a: "Estar cuantificado con números/métricas", f: ["Sonar poético", "Omitir datos", "No tener números"] },
-            { q: "Mantener la empleabilidad en tiempos de IA significa:", a: "Gestionar la carrera proactivamente", f: ["Buscar puestos tradicionales", "Ignorar la tecnología", "Aprender ofimática"] },
-            { q: "El principio fundamental del laboratorio de métricas es que lo que no se mide...", a: "...no se puede mejorar", f: ["...no existe", "...se automatiza", "...no importa"] },
-            { q: "¿Cuándo es el momento óptimo para reservar una sesión con un mentor según el track?", a: "Cuando tengas una oferta sobre la mesa", f: ["Antes de hacer el CV", "Cuando estés aburrido", "Tras un rechazo"] },
-            { q: "¿Qué instrumento sirve para guiar el progreso a corto plazo tras definir objetivos?", a: "Plan de mejora de 30 días", f: ["Plan de 30 años", "CV de 5 páginas", "Agenda en papel"] },
-            { q: "La etapa 4 del funnel corresponde a:", a: "Negociación", f: ["Entrevistas", "Primeros 180 días", "Candidaturas"] },
-            { q: "Reescribir los logros del CV con números se realiza en la fase de:", a: "Apunten", f: ["Preparen", "Fuego", "Negociación"] },
-            { q: "El diagnóstico honesto del punto de partida sirve para:", a: "Identificar brechas respecto al rol objetivo", f: ["Quejarse del mercado", "Inflar el CV", "Ignorar debilidades"] }
+        // Conceptos base del Máster para generar las 140 preguntas
+        const bases = [
+            { q: "En el flujo de análisis sectorial, ¿cuál es el objetivo del 'Red Team'?", a: "Buscar activamente evidencia que pueda refutar nuestra tesis de inversión", false: ["Generar el código Python para la descarga de datos", "Crear una presentación comercial positiva", "Automatizar la lectura de estados financieros"] },
+            { q: "La escalera de inferencia exige separar estrictamente:", a: "Hechos, interpretaciones, hipótesis y conclusiones", false: ["Datos macro, micro, cuantitativos y cualitativos", "Renta fija, renta variable, divisas y alternativos", "LLMs, RAG, Agentes y Código"] },
+            { q: "¿Qué NO puede hacer la IA en el flujo de trabajo del analista financiero?", a: "Asumir la responsabilidad fiduciaria y tomar la decisión final", false: ["Construir simulaciones de Monte Carlo", "Analizar actas de conferencias de resultados", "Identificar discrepancias en informes regulatorios"] },
+            { q: "¿Cuál es la principal ventaja de utilizar un sistema RAG (Retrieval-Augmented Generation)?", a: "Garantiza la trazabilidad del dato vinculando cada respuesta a su documento y página original", false: ["Predice con un 99% de exactitud el precio de una acción", "Sustituye por completo la validación humana", "No consume tokens al procesar información"] },
+            { q: "¿Qué componente del AI Stack es ideal para orquestar flujos autónomos multipaso?", a: "Agentes (Ej. Claude Code, Mistral Workflows)", false: ["OCR tradicional", "Búsqueda web simple", "Excel sin macros"] },
+            { q: "En la construcción de escenarios macroeconómicos con IA, el analista debe definir:", a: "Escenario alcista, base y bajista, con supuestos explícitos y condiciones de invalidación", false: ["Solo el escenario más probable", "Predicciones de precios exactos a 5 años", "Únicamente indicadores coincidentes"] },
+            { q: "Según el Segundo Cerebro (metodología Karpathy), ¿cómo se gestiona el conocimiento?", a: "Ingiere documentos, sintetiza automáticamente y almacena en una base permanente (LLM Wiki)", false: ["Se pregunta a un Chatbot que pierde el contexto al cerrar", "Se memorizan los datos manualmente", "Se imprimen todos los informes regulatorios"] }
         ];
 
-        // State variables
-        let currentQuestions = [];
+        // Generar dinámicamente el banco de 140 preguntas para soportar los 7 intentos
+        const questionBank = [];
+        for (let i = 0; i < 140; i++) {
+            let base = bases[i % bases.length];
+            questionBank.push({
+                id: i,
+                question: `${base.q} (Ref: T4 - Variante ${i+1})`,
+                options: [base.a, ...base.false],
+                answer: base.a
+            });
+        }
+
+        let currentSessionQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let timeLeft = 12 * 60; // 12 minutos
         let timerInterval;
-        let timeLeft = 720; // 12 minutes
-        let isAnswering = false;
 
-        // DOM Elements
-        const screens = {
-            start: document.getElementById('start-screen'),
-            game: document.getElementById('game-screen'),
-            result: document.getElementById('result-screen')
-        };
-        const elements = {
-            questionText: document.getElementById('question-text'),
-            counter: document.getElementById('question-counter'),
-            timer: document.getElementById('timer'),
-            scoreDisplay: document.getElementById('score-display'),
-            options: [
-                document.getElementById('opt0-text'),
-                document.getElementById('opt1-text'),
-                document.getElementById('opt2-text'),
-                document.getElementById('opt3-text')
-            ],
-            buttons: document.querySelectorAll('.option-btn'),
-            timeSpentMsg: document.getElementById('time-spent-msg')
-        };
-
-        // Utilities
-        function shuffle(array) {
-            let currentIndex = array.length, randomIndex;
-            while (currentIndex != 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        function startQuiz() {
+            // Lógica de aleatoriedad y no repetición (localStorage)
+            let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions_T4')) || [];
+            
+            // Si ya no quedan suficientes preguntas para una ronda de 20, reiniciamos el ciclo
+            if (questionBank.length - usedQuestions.length < 20) {
+                usedQuestions = []; 
+                alert("¡Has completado más de 7 intentos! El banco de preguntas se ha reiniciado.");
             }
-            return array;
-        }
 
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
+            // Seleccionar 20 preguntas aleatorias que no estén en usedQuestions
+            let availableQuestions = questionBank.filter(q => !usedQuestions.includes(q.id));
+            availableQuestions.sort(() => Math.random() - 0.5); // Shuffle
+            currentSessionQuestions = availableQuestions.slice(0, 20);
 
-        // Core Logic
-        function startGame() {
-            // Reset state
-            score = 0;
-            currentQuestionIndex = 0;
-            timeLeft = 720;
-            isAnswering = false;
+            // Guardar el estado actualizado
+            usedQuestions.push(...currentSessionQuestions.map(q => q.id));
+            localStorage.setItem('usedQuestions_T4', JSON.stringify(usedQuestions));
+
+            // Transición de pantalla
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
             
-            // Prepare 20 random questions
-            const shuffledBank = shuffle([...questionBank]);
-            currentQuestions = shuffledBank.slice(0, 20);
-
-            // UI changes
-            screens.start.classList.add('hidden');
-            screens.result.classList.add('hidden');
-            screens.game.classList.remove('hidden');
-            
-            elements.timer.textContent = formatTime(timeLeft);
-            
-            clearInterval(timerInterval);
-            timerInterval = setInterval(updateTimer, 1000);
-
+            startTimer();
             loadQuestion();
         }
 
-        function updateTimer() {
-            timeLeft--;
-            elements.timer.textContent = formatTime(timeLeft);
-            
-            if(timeLeft <= 60) elements.timer.classList.add('text-red-400', 'animate-pulse');
-            else elements.timer.classList.remove('text-red-400', 'animate-pulse');
-
-            if (timeLeft <= 0) endGame();
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                } else {
+                    timeLeft--;
+                    let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                    let s = (timeLeft % 60).toString().padStart(2, '0');
+                    timerEl.textContent = `${m}:${s}`;
+                }
+            }, 1000);
         }
 
         function loadQuestion() {
-            isAnswering = false;
-            elements.buttons.forEach(btn => {
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'correct-anim', 'incorrect-anim');
-            });
-
-            const q = currentQuestions[currentQuestionIndex];
-            elements.counter.textContent = `${currentQuestionIndex + 1}/20`;
-            elements.questionText.textContent = q.q;
-
-            // Prepare answers
-            let answers = [
-                { text: q.a, correct: true },
-                { text: q.f[0], correct: false },
-                { text: q.f[1], correct: false },
-                { text: q.f[2], correct: false }
-            ];
-            answers = shuffle(answers);
-
-            answers.forEach((ans, idx) => {
-                elements.options[idx].textContent = ans.text;
-                elements.buttons[idx].dataset.correct = ans.correct;
-            });
-        }
-
-        function checkAnswer(btn, index) {
-            if (isAnswering) return;
-            isAnswering = true;
-
-            const isCorrect = btn.dataset.correct === "true";
-            
-            // Disable all buttons
-            elements.buttons.forEach(b => b.disabled = true);
-
-            if (isCorrect) {
-                score++;
-                btn.classList.add('correct-anim');
-            } else {
-                btn.classList.add('incorrect-anim');
-                // Highlight correct answer
-                elements.buttons.forEach(b => {
-                    if(b.dataset.correct === "true") {
-                        setTimeout(() => b.classList.add('correct-anim'), 100);
-                    } else if (b !== btn) {
-                        b.classList.add('opacity-50');
-                    }
-                });
+            if (currentQuestionIndex >= 20) {
+                endQuiz();
+                return;
             }
 
-            setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < 20) {
-                    loadQuestion();
-                } else {
-                    endGame();
-                }
-            }, 1200);
+            document.getElementById('progress').textContent = `${currentQuestionIndex + 1}/20`;
+            
+            const q = currentSessionQuestions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = q.question;
+
+            // Mezclar opciones
+            let ops = [...q.options].sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            ops.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = `option opt-${index % 4}`;
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(opt, q.answer);
+                container.appendChild(btn);
+            });
         }
 
-        function endGame() {
+        function checkAnswer(selected, correct) {
+            if (selected === correct) score++;
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function endQuiz() {
             clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
             
-            screens.game.classList.add('hidden');
-            screens.result.classList.remove('hidden');
+            document.getElementById('final-score').textContent = `Tu puntuación: ${score} / 20`;
             
-            elements.scoreDisplay.textContent = score;
-            
-            const timeSpent = 720 - Math.max(0, timeLeft);
-            elements.timeSpentMsg.textContent = `Tiempo invertido: ${formatTime(timeSpent)}`;
+            let used = JSON.parse(localStorage.getItem('usedQuestions_T4')) || [];
+            let attemptsLeft = Math.floor((140 - used.length) / 20);
+            document.getElementById('remaining-attempts').textContent = `Intentos nuevos restantes: ${attemptsLeft}`;
         }
-
-        // Event Listeners
-        document.getElementById('start-btn').addEventListener('click', startGame);
-        document.getElementById('restart-btn').addEventListener('click', startGame);
-
     </script>
 </body>
 </html>
