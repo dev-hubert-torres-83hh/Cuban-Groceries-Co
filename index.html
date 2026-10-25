@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kahoot! - Evaluación Track 4: IA Aplicada al Análisis Financiero</title>
+    <title>Kahoot! - Evaluación Oficial Track 4: IA en Análisis Financiero</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
         
@@ -45,7 +45,7 @@
 
     <div id="start-screen">
         <h1>Máster IA - Track 4</h1>
-        <p>Evaluación Oficial: 20 preguntas aleatorias<br>Temporizador estricto: 12 minutos<br><small>Banco optimizado sin repetición (Soporta 7+ intentos)</small></p>
+        <p>Evaluación Oficial Actualizada: 20 preguntas aleatorias<br>Temporizador estricto: 12 minutos<br><small>Banco basado en apuntes, glosarios y clases de repaso</small></p>
         <button class="btn-start" onclick="startQuiz()">EMPEZAR TEST</button>
     </div>
 
@@ -68,115 +68,113 @@
     </div>
 
     <script>
-        // Banco de preguntas rigurosamente estructurado con opciones equilibradas
         const rawPool = [
             {
-                q: "Según el Track 4[cite: 3], ¿cuál es el objetivo primordial de incorporar IA al análisis financiero tradicional?",
-                a: "Aumentar la capacidad cuantitativa y cualitativa manteniendo la responsabilidad analítica humana",
+                q: "Según la primera idea clave de la sesión de repaso, ¿por qué se afirma que 'lo convincente no es correcto' al usar IA en finanzas?",
+                a: "Porque los LLMs generan argumentaciones coherentes pero sus cifras pueden ser imprecisas y requieren doble verificación",
                 opts: [
-                    "Sustituir por completo el criterio del analista en la toma de decisiones finales",
-                    "Eliminar la necesidad de consultar memorias y fuentes financieras oficiales",
-                    "Automatizar la operativa bursátil sin requerir supervisión de riesgos"
+                    "Porque los algoritmos de IA carecen de acceso a internet para buscar precios en tiempo real",
+                    "Porque las plataformas de IA omiten deliberadamente los datos macroeconómicos publicados",
+                    "Porque los modelos de lenguaje prefieren responder en formato narrativo en lugar de tabular"
                 ]
             },
             {
-                q: "En el flujo de análisis sectorial, ¿qué función cumple principal y específicamente el 'Red Team'?",
-                a: "Buscar activamente debilidades, sesgos o contradicciones que puedan refutar la tesis",
+                q: "¿Qué principio financiero y de IA resume el concepto de que 'los datos valen más que el modelo' ('garbage in, garbage out')?",
+                a: "Información obsoleta o de dudosa procedencia genera resultados deficientes independientemente del algoritmo",
                 opts: [
-                    "Generar presentaciones comerciales atractivas para los inversores institucionales",
-                    "Optimizar el código de Python para acelerar el cálculo de los ratios contables",
-                    "Validar formalmente el cumplimiento normativo de las cuentas anuales auditadas"
+                    "Que la capacidad de procesamiento de Python sustituye la necesidad de contar con estados auditados",
+                    "Que los LLMs avanzados pueden corregir automáticamente errores contables graves en las memorias",
+                    "Que las comisiones de los intermediarios financieros anulan por completo el interés compuesto"
                 ]
             },
             {
-                q: "Al estructurar un sistema RAG (Retrieval-Augmented Generation)[cite: 18] para investigación financiera, ¿qué es crítico?",
-                a: "Garantizar la trazabilidad absoluta vinculando cada dato a su documento y página original",
+                q: "Dentro del flujo de trabajo del analista en diez pasos, ¿cuáles son los elementos sustantivos donde el criterio humano es insustituible?",
+                a: "Pregunta inicial, formulación de hipótesis, validación crítica y decisión final de inversión",
                 opts: [
-                    "Evitar el uso de documentos PDF en favor de síntesis automáticas de redes sociales",
-                    "Permitir que el modelo complete los huecos vacíos con estimaciones plausibles",
-                    "Prescindir de las fuentes primarias para agilizar la redacción del memorando"
+                    "Procesamiento de volúmenes masivos de información, cálculos complejos y búsqueda de patrones",
+                    "Generación de código en Python, descarga automatizada de series temporales y filtrado de CSVs",
+                    "Redacción de borradores del memorando, estructuración de tablas y formateo de gráficos base 100"
                 ]
             },
             {
-                q: "En la jerarquía de fuentes de información financiera[cite: 12], ¿cómo deben considerarse los informes Tier 1?",
-                a: "Como la base documental primaria y oficial indispensable para cualquier análisis riguroso",
+                q: "¿Qué objetivo persigue la técnica de 'Red Team' aplicada al análisis sectorial o macroeconómico?",
+                a: "Buscar activamente debilidades, supuestos frágiles y evidencia contraria para refutar la tesis de inversión",
                 opts: [
-                    "Como referencias secundarias útiles únicamente para extraer ideas iniciales rápidas",
-                    "Como material prescindible si se dispone de suficiente opinión de analistas externos",
-                    "Como documentos obsoletos que deben sustituirse por agregadores de noticias"
+                    "Diseñar la presentación comercial más atractiva y optimista para convencer al comité de riesgos",
+                    "Acelerar la redacción del memorando ejecutivo para cumplir con los plazos límite del mercado",
+                    "Automatizar la ejecución de órdenes de compraventa en el broker sin supervisión humana"
                 ]
             },
             {
-                q: "Cuando se elabora un diagnóstico macroeconómico con IA[cite: 32], ¿cuál constituye un error metodológico grave?",
-                a: "Confundir un diagnóstico coherente y bien redactado con un dato correcto y verificado",
+                q: "En relación con la jerarquía de fuentes de información financiera, ¿cómo se clasifican los documentos de nivel Tier 1?",
+                a: "Informes auditados, cuentas anuales y comunicados regulatorios oficiales de obligada prioridad",
                 opts: [
-                    "Utilizar múltiples bloques analíticos para examinar crecimiento, empleo e inflación",
-                    "Definir de antemano los indicadores observables que invalidarían la hipótesis",
-                    "Separar estrictamente los hechos observados de las interpretaciones subjetivas"
+                    "Plataformas de bases de datos financieras profesionales y agregadores privados de mercado",
+                    "Foros de discusión públicos, redes sociales (X, Reddit) y blogs especializados de inversores",
+                    "Artículos de prensa generalista y notas de opinión emitidas por agencias de calificación"
                 ]
             },
             {
-                q: "¿Qué ventaja principal aporta la Ruta B (partir de un CSV estructurado)[cite: 24] frente a la Ruta A?",
-                a: "Mayor control sobre métricas, escenarios y checks de reconciliación evitando errores de extracción",
+                q: "Según el glosario oficial, ¿qué define el concepto de 'Falsabilidad' en una tesis de inversión?",
+                a: "La propiedad de especificar explícitamente qué eventos, métricas o umbrales numéricos invalidarían la tesis",
                 opts: [
-                    "Capacidad automática para predecir cotizaciones bursátiles a cinco años vista",
-                    "Eliminación total del esfuerzo humano en la interpretación cualitativa de los drivers",
-                    "Reducción de costes mediante la supresión de los estados financieros auditados"
+                    "La capacidad de la IA para detectar fraudes contables ocultos en las notas de los estados financieros",
+                    "La probabilidad matemática de que una cartera pierda más del 50% de su valor en un año bajista",
+                    "El margen de error permitido al extraer datos automatizados desde los archivos PDF originales"
                 ]
             },
             {
-                q: "En la metodología de escenarios (alcista, base y bajista), ¿qué elemento es imprescindible incluir?",
-                a: "Supuestos explícitos, cadenas causales y condiciones numéricas de invalidación",
+                q: "¿Qué principio matemático ilustra la Tabla de Asimetría entre Pérdidas y Ganancias en finanzas personales?",
+                a: "Una caída del 50% en el valor de un activo exige una subida del 100% posterior para poder recuperarse",
                 opts: [
-                    "Una única proyección probabilística basada exclusivamente en el consenso de mercado",
-                    "Estimaciones de precios objetivos mensuales sin restricciones de horizonte",
-                    "Narrativas optimistas diseñadas para respaldar cualquier recomendación de compra"
+                    "Que las comisiones de gestión superiores al 1.5% anual destruyen el interés compuesto en 5 años",
+                    "Que la diversificación geométrica elimina por completo la volatilidad en horizontes temporales largos",
+                    "Que el colchón de efectivo de 3 a 6 meses reduce la rentabilidad acumulada de la cartera principal"
                 ]
             },
             {
-                q: "Respecto a los sesgos cognitivos en inversión (confirmación, anclaje y enamoramiento)[cite: 36], la IA ayuda a combatirlos si:",
-                a: "Se le instruye explícitamente para generar argumentos contrarios y cuestionar los supuestos",
+                q: "De acuerdo con el inventario de reglas para la construcción de prompts, ¿qué exige la Regla 6 (Cálculo)?",
+                a: "Que el LLM interprete y desglose la fórmula, pero que los cálculos cuantitativos se ejecuten con código o herramienta",
                 opts: [
-                    "Se le pide que confirme la validez de nuestra tesis inicial con datos favorables",
-                    "Se utiliza su capacidad para recordar precios históricos de compra como referencia",
-                    "Se acepta su recomendación de inversión sin someterla a revisiones posteriores"
+                    "Que el modelo complete los huecos numéricos faltantes utilizando estimaciones del consenso",
+                    "Que todas las operaciones aritméticas complejas se resuelvan de memoria dentro del chat",
+                    "Que se eliminen los decimales en todas las tablas comparativas para simplificar la lectura"
                 ]
             },
             {
-                q: "¿Qué diferencia fundamental existe entre un HECHO y una HIPÓTESIS dentro del análisis estructurado[cite: 29]?",
-                a: "El hecho cuenta con trazabilidad y respaldo documental directo; la hipótesis requiere evidencia",
+                q: "¿Cuál es una de las 'Cuatro Cosas que NO Deben Hacerse con la IA en Finanzas' según el material didáctico?",
+                a: "Proporcionar datos sensibles como IBAN, contraseñas, DNI o información privada a servicios públicos",
                 opts: [
-                    "El hecho es una proyección futura del mercado; la hipótesis es un dato contable cerrado",
-                    "El hecho carece de fuentes verificables; la hipótesis se apoya en estadísticas oficiales",
-                    "No existe distinción práctica, ya que ambos términos se usan de forma indistinta"
+                    "Utilizar hojas de cálculo en Excel que contengan fórmulas referenciadas y celdas enlazadas",
+                    "Consultar documentos regulatorios oficiales en formato PDF dentro de proyectos cerrados",
+                    "Aplicar la metodología de los diez pasos en análisis corporativos complejos de grandes empresas"
                 ]
             },
             {
-                q: "En la evaluación de carteras y riesgos financieros con herramientas de IA[cite: 16], ¿dónde reside el valor clave?",
-                a: "En la capacidad de simulación rápida y en el juicio crítico humano para validar supuestos",
+                q: "¿Qué caracteriza al método de etiquetado de afirmaciones recomendado para garantizar trazabilidad absoluta?",
+                a: "Clasificar la información en [HECHO] con cita verificable, [INFERENCIA] lógica y [ANÁLISIS] subjetivo",
                 opts: [
-                    "En la delegación completa de la toma de decisiones fiduciarias en algoritmos autónomos",
-                    "En la supresión de los controles de estrés exigidos por los reguladores bancarios",
-                    "En la suposición de que los rendimientos pasados garantizan la rentabilidad futura"
+                    "Marcar todas las celdas del modelo financiero en color azul para indicar que provienen de internet",
+                    "Etiquetar los gráficos de evolución en base 100 con la fecha exacta de la última actualización del broker",
+                    "Diferenciar los costes operativos de los gastos financieros mediante marcas de agua en el PDF"
                 ]
             }
         ];
 
-        // Ampliar procedimentalmente a 140 preguntas únicas y equilibradas
         const questionBank = [];
         let idCounter = 0;
         const prefixes = [
-            "Según los estándares del Track 4,",
-            "En el contexto del análisis financiero avanzado,",
-            "Dentro de las buenas prácticas metodológicas,",
-            "De acuerdo con los módulos de IA aplicada,",
-            "En los procesos de investigación institucional,"
+            "De acuerdo con los materiales del Máster Track 4,",
+            "Según los apuntes y guías metodológicas oficiales,",
+            "En el contexto de la aplicación práctica de IA financiera,",
+            "Conforme a los estándares de auditoría y rigor analítico,",
+            "Dentro del marco conceptual de las sesiones del máster,"
         ];
 
         for (let i = 0; i < 140; i++) {
             let base = rawPool[i % rawPool.length];
             let prefix = prefixes[i % prefixes.length];
-            let uniqueQ = `${prefix} ${base.q.charAt(0).toLowerCase() + base.q.slice(1)} (Ref. T4-${i+1})`;
+            let uniqueQ = `${prefix} ${base.q.charAt(0).toLowerCase() + base.q.slice(1)} (Ref. T4-MOD-${i+1})`;
             
             questionBank.push({
                 id: idCounter++,
@@ -193,7 +191,7 @@
         let timerInterval;
 
         function startQuiz() {
-            let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions_T4_v3')) || [];
+            let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions_T4_v4')) || [];
             
             if (questionBank.length - usedQuestions.length < 20) {
                 usedQuestions = [];
@@ -205,7 +203,7 @@
             currentSessionQuestions = available.slice(0, 20);
 
             usedQuestions.push(...currentSessionQuestions.map(q => q.id));
-            localStorage.setItem('usedQuestions_T4_v3', JSON.stringify(usedQuestions));
+            localStorage.setItem('usedQuestions_T4_v4', JSON.stringify(usedQuestions));
 
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
@@ -245,7 +243,6 @@
             const q = currentSessionQuestions[currentQuestionIndex];
             document.getElementById('question-text').textContent = q.question;
 
-            // Mezclar opciones aleatoriamente
             let shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
             
             const container = document.getElementById('options-container');
@@ -275,7 +272,7 @@
             
             document.getElementById('final-score').textContent = `Tu puntuación: ${score} / 20`;
             
-            let used = JSON.parse(localStorage.getItem('usedQuestions_T4_v3')) || [];
+            let used = JSON.parse(localStorage.getItem('usedQuestions_T4_v4')) || [];
             let attemptsLeft = Math.floor((140 - used.length) / 20);
             document.getElementById('remaining-attempts').textContent = `Intentos nuevos restantes sin repetición: ${attemptsLeft}`;
         }
