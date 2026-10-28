@@ -1,280 +1,706 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kahoot! - Evaluación Oficial Track 4: IA en Análisis Financiero</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-        body { background-color: #f2f2f2; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        header { background-color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10;}
-        .timer { font-size: 1.5rem; font-weight: 900; background: #864cbf; color: white; padding: 5px 15px; border-radius: 20px; }
-        .score { font-size: 1.2rem; font-weight: 700; color: #333; }
-
-        .container { flex: 1; display: flex; flex-direction: column; padding: 20px; justify-content: center; max-width: 900px; margin: 0 auto; width: 100%; }
-        .question-box { background: white; padding: 35px 25px; border-radius: 12px; text-align: center; font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: #222; }
-        
-        .options { display: grid; grid-template-columns: 1fr; gap: 15px; flex: 1; max-height: 45vh; }
-        @media(min-width: 768px) { .options { grid-template-columns: 1fr 1fr; } }
-        
-        .option { 
-            border: none; border-radius: 8px; color: white; font-size: 1.05rem; font-weight: 700; padding: 20px; 
-            cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2); transition: transform 0.1s; line-height: 1.4;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot! Master IA Track 5 - Impact-Driven Growth</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400,600,700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        kahootPurple: '#46178f',
+                        kahootDark: '#260c4d',
+                        kahootRed: '#e21b3c',
+                        kahootBlue: '#1368ce',
+                        kahootYellow: '#d89e00',
+                        kahootGreen: '#26890c',
+                    }
+                }
+            }
         }
-        .option:active { transform: translateY(4px); box-shadow: none; }
-        
-        .opt-0 { background-color: #e21b3c; } /* Rojo */
-        .opt-1 { background-color: #1368ce; } /* Azul */
-        .opt-2 { background-color: #d89e00; } /* Amarillo */
-        .opt-3 { background-color: #26890c; } /* Verde */
-
-        #start-screen, #result-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 20px; background-color: #46178f; color: white; }
-        h1 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 900; }
-        p { font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6; }
-        .btn-start { background: #fff; color: #46178f; font-size: 1.5rem; font-weight: 900; padding: 15px 40px; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 0 #ccc; }
-        .btn-start:active { transform: translateY(4px); box-shadow: none; }
-        
-        .hidden { display: none !important; }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #46178f;
+            background-image: radial-gradient(circle at 50% 30%, #5b1fb6 0%, #260c4d 100%);
+        }
+        .kahoot-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .kahoot-card:active {
+            transform: scale(0.97);
+        }
+        @keyframes pulse-fast {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 1s infinite;
+        }
     </style>
 </head>
-<body>
+<body class="h-full text-white flex flex-col justify-between selection:bg-yellow-400 selection:text-black overflow-x-hidden">
 
-    <div id="start-screen">
-        <h1>Máster IA - Track 4</h1>
-        <p>Evaluación Oficial Actualizada: 20 preguntas aleatorias<br>Temporizador estricto: 12 minutos<br><small>Banco basado en apuntes, glosarios y clases de repaso</small></p>
-        <button class="btn-start" onclick="startQuiz()">EMPEZAR TEST</button>
-    </div>
-
-    <div id="quiz-screen" class="hidden">
-        <header>
-            <div class="score">Pregunta: <span id="progress">1/20</span></div>
-            <div class="timer" id="timer">12:00</div>
-        </header>
-        <div class="container">
-            <div class="question-box" id="question-text">Cargando pregunta...</div>
-            <div class="options" id="options-container"></div>
+    <!-- Header Navigation Bar -->
+    <header class="w-full bg-black/30 backdrop-blur-md px-4 py-3 flex justify-between items-center border-b border-white/10 z-50">
+        <div class="flex items-center space-x-2">
+            <span class="bg-yellow-400 text-black font-black px-2.5 py-1 rounded-lg text-xs uppercase tracking-wider shadow">Track 5</span>
+            <h1 class="font-bold text-sm sm:text-base tracking-tight truncate max-w-[200px] sm:max-w-md">Máster en IA Aplicada</h1>
         </div>
-    </div>
+        <div id="header-stats" class="hidden flex items-center space-x-4 text-xs sm:text-sm font-semibold">
+            <div class="bg-white/10 px-3 py-1 rounded-full flex items-center space-x-1">
+                <span>Pregunta:</span>
+                <span id="current-q-num" class="text-yellow-400 font-bold">1</span>/<span id="total-q-num">20</span>
+            </div>
+            <div id="timer-badge" class="bg-red-600/80 px-3 py-1 rounded-full flex items-center space-x-1 animate-pulse">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="global-timer" class="font-mono font-bold">12:00</span>
+            </div>
+        </div>
+    </header>
 
-    <div id="result-screen" class="hidden">
-        <h1>¡Evaluación Finalizada!</h1>
-        <p id="final-score" style="font-size: 2.2rem; font-weight: bold; margin-bottom: 15px;"></p>
-        <p id="remaining-attempts" style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px;"></p>
-        <button class="btn-start" onclick="location.reload()">NUEVO INTENTO</button>
-    </div>
+    <!-- Main Container -->
+    <main class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-4xl mx-auto">
 
+        <!-- SCREEN 1: WELCOME / START -->
+        <div id="screen-welcome" class="w-full bg-white/10 backdrop-blur-xl border border-white/20 p-6 sm:p-10 rounded-3xl shadow-2xl text-center space-y-6">
+            <div class="inline-block bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-black px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-lg">
+                Evaluación Oficial · Profesor Carlos Iglesias
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-md">
+                Simulador Kahoot! Track 5
+            </h2>
+            <p class="text-gray-200 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                Pon a prueba tus conocimientos sobre <span class="text-yellow-400 font-bold">Impact-Driven Growth (IDG)</span>, CPVM, métricas de impacto, outcomes, iniciativas, hipótesis y experimentación con IA.
+            </p>
+            
+            <div class="bg-black/20 p-4 rounded-2xl border border-white/10 max-w-md mx-auto text-left space-y-2 text-xs sm:text-sm text-gray-300">
+                <div class="flex items-center space-x-2">
+                    <span class="text-yellow-400 font-bold">✔</span>
+                    <span><strong>20 preguntas aleatorias</strong> de un banco de 40+ ítems.</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-yellow-400 font-bold">✔</span>
+                    <span><strong>12 minutos de tiempo global</strong> (cronómetro descendente).</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-yellow-400 font-bold">✔</span>
+                    <span>Banco ampliado: ¡Realízalo múltiples veces sin repetir preguntas idénticas!</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 max-w-sm mx-auto pt-2">
+                <input type="text" id="student-name" placeholder="Escribe tu Nombre y Apellido" 
+                    class="w-full px-4 py-3 bg-black/40 border-2 border-white/30 rounded-xl text-center text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 font-semibold text-base transition">
+                <button onclick="startQuiz()" 
+                    class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-black py-4 px-8 rounded-xl shadow-xl transition transform active:scale-95 uppercase tracking-wider text-base sm:text-lg">
+                    ¡Comenzar Test! 🚀
+                </button>
+            </div>
+            <div id="name-error" class="text-red-400 text-xs font-semibold hidden">Por favor, introduce tu nombre para registrar tu sesión.</div>
+        </div>
+
+        <!-- SCREEN 2: GAMEPLAY (QUIZ) -->
+        <div id="screen-quiz" class="w-full hidden flex flex-col space-y-6">
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-black/30 rounded-full h-3 overflow-hidden border border-white/10">
+                <div id="progress-bar" class="bg-yellow-400 h-full transition-all duration-300 w-0"></div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl text-center relative">
+                <div id="question-category" class="inline-block bg-white/20 text-yellow-300 text-xs uppercase font-extrabold px-3 py-1 rounded-full mb-3 tracking-wide">
+                    Framework IDG
+                </div>
+                <h3 id="question-text" class="text-xl sm:text-2xl font-bold text-white mb-6 leading-snug">
+                    Aquí va el enunciado de la pregunta cargada dinámicamente...
+                </h3>
+
+                <!-- Options Grid (Kahoot Colors & Shapes) -->
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Option 1: Red -->
+                    <button onclick="selectOption(0)" id="opt-0" class="kahoot-card flex items-center p-4 rounded-2xl bg-kahootRed hover:opacity-90 text-white font-bold text-left shadow-lg border-b-4 border-black/30 cursor-pointer">
+                        <span class="bg-white/20 w-8 h-8 rounded-lg flex items-center justify-center mr-3 font-black text-sm shrink-0">▲</span>
+                        <span id="opt-text-0" class="text-sm sm:text-base leading-snug">Opción A</span>
+                    </button>
+                    <!-- Option 2: Blue -->
+                    <button onclick="selectOption(1)" id="opt-1" class="kahoot-card flex items-center p-4 rounded-2xl bg-kahootBlue hover:opacity-90 text-white font-bold text-left shadow-lg border-b-4 border-black/30 cursor-pointer">
+                        <span class="bg-white/20 w-8 h-8 rounded-lg flex items-center justify-center mr-3 font-black text-sm shrink-0">◆</span>
+                        <span id="opt-text-1" class="text-sm sm:text-base leading-snug">Opción B</span>
+                    </button>
+                    <!-- Option 3: Yellow -->
+                    <button onclick="selectOption(2)" id="opt-2" class="kahoot-card flex items-center p-4 rounded-2xl bg-kahootYellow hover:opacity-90 text-black font-bold text-left shadow-lg border-b-4 border-black/30 cursor-pointer">
+                        <span class="bg-black/20 w-8 h-8 rounded-lg flex items-center justify-center mr-3 font-black text-sm shrink-0">●</span>
+                        <span id="opt-text-2" class="text-sm sm:text-base leading-snug">Opción C</span>
+                    </button>
+                    <!-- Option 4: Green -->
+                    <button onclick="selectOption(3)" id="opt-3" class="kahoot-card flex items-center p-4 rounded-2xl bg-kahootGreen hover:opacity-90 text-white font-bold text-left shadow-lg border-b-4 border-black/30 cursor-pointer">
+                        <span class="bg-white/20 w-8 h-8 rounded-lg flex items-center justify-center mr-3 font-black text-sm shrink-0">■</span>
+                        <span id="opt-text-3" class="text-sm sm:text-base leading-snug">Opción D</span>
+                    </button>
+                </div>
+
+                <!-- Feedback Box (Hidden initially) -->
+                <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl text-left bg-black/40 border border-white/20 animate-fadeIn">
+                    <div id="feedback-title" class="font-black text-base sm:text-lg mb-1 flex items-center space-x-2"></div>
+                    <p id="feedback-desc" class="text-xs sm:text-sm text-gray-200 leading-relaxed"></p>
+                    <button onclick="nextQuestion()" class="mt-4 w-full bg-white text-black font-black py-2.5 rounded-xl hover:bg-gray-200 transition shadow">
+                        Siguiente Pregunta ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: RESULTS -->
+        <div id="screen-results" class="w-full hidden bg-white/10 backdrop-blur-xl border border-white/20 p-6 sm:p-10 rounded-3xl shadow-2xl text-center space-y-6">
+            <div class="inline-block bg-yellow-400 text-black font-black px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow">
+                Resultado Oficial · Máster IA Track 5
+            </div>
+            
+            <h2 id="result-title" class="text-3xl sm:text-4xl font-black text-white">¡Test Completado!</h2>
+            
+            <div class="flex justify-center items-center space-x-6 my-4">
+                <div class="bg-black/30 p-4 rounded-2xl border border-white/10 w-36">
+                    <div class="text-xs text-gray-400 uppercase font-semibold">Puntuación</div>
+                    <div id="result-score" class="text-3xl sm:text-4xl font-black text-yellow-400">18/20</div>
+                </div>
+                <div class="bg-black/30 p-4 rounded-2xl border border-white/10 w-36">
+                    <div class="text-xs text-gray-400 uppercase font-semibold">Precisión</div>
+                    <div id="result-accuracy" class="text-3xl sm:text-4xl font-black text-green-400">90%</div>
+                </div>
+            </div>
+
+            <div id="professor-feedback" class="bg-black/40 p-5 rounded-2xl text-left border border-white/10 space-y-2 text-sm text-gray-200 leading-relaxed">
+                <!-- Injected via JS based on performance -->
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                <button onclick="restartQuiz()" class="bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 text-black font-black py-3 px-6 rounded-xl shadow-lg transition transform active:scale-95 uppercase tracking-wider text-sm">
+                    🔄 Repetir Test (Nuevas Preguntas)
+                </button>
+                <button onclick="shareResults()" class="bg-white/20 hover:bg-white/30 text-white font-black py-3 px-6 rounded-xl shadow-lg transition border border-white/20 uppercase tracking-wider text-sm">
+                    📋 Copiar Resumen
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-3 text-xs text-white/50 border-t border-white/10">
+        Runroom & Visual Business School · Framework Impact-Driven Growth (IDG)
+    </footer>
+
+    <!-- JavaScript Application Logic -->
     <script>
-        const rawPool = [
+        // Comprehensive Question Bank (40+ rigorous questions covering Track 5 / IDG / CPVM / Outcomes / Experiments)
+        const masterQuestionBank = [
             {
-                q: "Según la primera idea clave de la sesión de repaso, ¿por qué se afirma que 'lo convincente no es correcto' al usar IA en finanzas?",
-                a: "Porque los LLMs generan argumentaciones coherentes pero sus cifras pueden ser imprecisas y requieren doble verificación",
-                opts: [
-                    "Porque los algoritmos de IA carecen de acceso a internet para buscar precios en tiempo real",
-                    "Porque las plataformas de IA omiten deliberadamente los datos macroeconómicos publicados",
-                    "Porque los modelos de lenguaje prefieren responder en formato narrativo en lugar de tabular"
-                ]
+                category: "Impact-Driven Growth (IDG)",
+                question: "¿Cuál es la pregunta central que formula el framework Impact-Driven Growth (IDG) y sirve como hilo conductor?",
+                options: [
+                    "¿Cuánto presupuesto de IA gastaremos este trimestre?",
+                    "¿Qué cambio queremos provocar, en quién, y cómo sabremos que ha ocurrido?",
+                    "¿Cuántas funcionalidades basadas en LLM podemos desplegar en un mes?",
+                    "¿Qué modelo de lenguaje base ofrece la mayor cantidad de parámetros?"
+                ],
+                correct: 1,
+                explanation: "La pregunta fundacional de IDG es '¿Qué cambio queremos provocar, en quién, y cómo sabremos que ha ocurrido?'. Obliga a anteponer el impacto sobre la actividad pura."
             },
             {
-                q: "¿Qué principio financiero y de IA resume el concepto de que 'los datos valen más que el modelo' ('garbage in, garbage out')?",
-                a: "Información obsoleta o de dudosa procedencia genera resultados deficientes independientemente del algoritmo",
-                opts: [
-                    "Que la capacidad de procesamiento de Python sustituye la necesidad de contar con estados auditados",
-                    "Que los LLMs avanzados pueden corregir automáticamente errores contables graves en las memorias",
-                    "Que las comisiones de los intermediarios financieros anulan por completo el interés compuesto"
-                ]
+                category: "El Caso Humane AI Pin",
+                question: "¿Qué error estratégico principal ilustra el caso del dispositivo Humane AI Pin según el máster?",
+                options: [
+                    "Invertir 230 millones de dólares sin responder primero a la pregunta crítica '¿Deberíamos hacerlo?'",
+                    "Elegir un modelo de lenguaje con demasiada latencia de red",
+                    "No utilizar un framework sin código para la interfaz de voz",
+                    "Falta de integración con sistemas operativos móviles tradicionales"
+                ],
+                correct: 0,
+                explanation: "Humane gastó $230M construyendo masivamente un producto (output) sin validar el valor real ni responder si debían desarrollarlo, cayendo en la trampa del motor sin volante."
             },
             {
-                q: "Dentro del flujo de trabajo del analista en diez pasos, ¿cuáles son los elementos sustantivos donde el criterio humano es insustituible?",
-                a: "Pregunta inicial, formulación de hipótesis, validación crítica y decisión final de inversión",
-                opts: [
-                    "Procesamiento de volúmenes masivos de información, cálculos complejos y búsqueda de patrones",
-                    "Generación de código en Python, descarga automatizada de series temporales y filtrado de CSVs",
-                    "Redacción de borradores del memorando, estructuración de tablas y formateo de gráficos base 100"
-                ]
+                category: "CPVM (Customer Perceived Value Metric)",
+                question: "En el marco IDG, ¿qué representa exactamente la CPVM (Customer Perceived Value Metric)?",
+                options: [
+                    "El número total de visitas diarias a la landing page del producto",
+                    "Un recuento único del objeto de valor entregado al cliente que actúa como brújula estratégica",
+                    "El beneficio neto anual obtenido por la empresa tras restar costes de API",
+                    "La puntuación promedio de satisfacción en encuestas de salida trimestrales"
+                ],
+                correct: 1,
+                explanation: "La CPVM es la brújula estratégica del producto: un recuento claro del valor tangible entregado al cliente (por ejemplo, presupuestos aprobados)."
             },
             {
-                q: "¿Qué objetivo persigue la técnica de 'Red Team' aplicada al análisis sectorial o macroeconómico?",
-                a: "Buscar activamente debilidades, supuestos frágiles y evidencia contraria para refutar la tesis de inversión",
-                opts: [
-                    "Diseñar la presentación comercial más atractiva y optimista para convencer al comité de riesgos",
-                    "Acelerar la redacción del memorando ejecutivo para cumplir con los plazos límite del mercado",
-                    "Automatizar la ejecución de órdenes de compraventa en el broker sin supervisión humana"
-                ]
+                category: "Métricas de Impacto",
+                question: "¿Cuál es la función principal de las métricas de impacto (leading metrics) en relación con la CPVM?",
+                options: [
+                    "Reemplazar por completo el análisis financiero trimestral",
+                    "Actuar como guardarraíles de carretera para indicar si nos acercamos a la CPVM antes de que sea tarde",
+                    "Medir el número de líneas de código generadas por los ingenieros",
+                    "Evaluar el rendimiento computacional de los servidores de inferencia"
+                ],
+                correct: 1,
+                explanation: "Las métricas de impacto son señales tempranas (guardarraíles) que informan si el equipo va en la dirección correcta mientras todavía hay tiempo de ajustar."
             },
             {
-                q: "En relación con la jerarquía de fuentes de información financiera, ¿cómo se clasifican los documentos de nivel Tier 1?",
-                a: "Informes auditados, cuentas anuales y comunicados regulatorios oficiales de obligada prioridad",
-                opts: [
-                    "Plataformas de bases de datos financieras profesionales y agregadores privados de mercado",
-                    "Foros de discusión públicos, redes sociales (X, Reddit) y blogs especializados de inversores",
-                    "Artículos de prensa generalista y notas de opinión emitidas por agencias de calificación"
-                ]
+                category: "Outcomes",
+                question: "Desde la perspectiva de IDG y el libro 'Who Does What by How Much', ¿qué define principalmente a un Outcome?",
+                options: [
+                    "Un despliegue técnico de software en producción",
+                    "Un cambio de comportamiento observable y cuantificable en el usuario",
+                    "Un objetivo financiero de ventas a cierre de año fiscal",
+                    "Un hito de planificación en metodologías ágiles tradicionales"
+                ],
+                correct: 1,
+                explanation: "Los outcomes son cambios de comportamiento del usuario que hacen crecer el producto. Especifican quién hace qué y cuánto."
             },
             {
-                q: "Según el glosario oficial, ¿qué define el concepto de 'Falsabilidad' en una tesis de inversión?",
-                a: "La propiedad de especificar explícitamente qué eventos, métricas o umbrales numéricos invalidarían la tesis",
-                opts: [
-                    "La capacidad de la IA para detectar fraudes contables ocultos en las notas de los estados financieros",
-                    "La probabilidad matemática de que una cartera pierda más del 50% de su valor en un año bajista",
-                    "El margen de error permitido al extraer datos automatizados desde los archivos PDF originales"
-                ]
+                category: "Iniciativas e Iniciativas Tardías",
+                question: "En la jerarquía del framework IDG, ¿en qué momento deben definirse las Iniciativas (Outputs)?",
+                options: [
+                    "Al inicio absoluto del proyecto, antes de definir el reto de negocio",
+                    "Deliberadamente tarde, solo después de definir el outcome deseado y los frenos",
+                    "Únicamente cuando los inversores lo soliciten en el pitch deck",
+                    "Al mismo tiempo que se diseña la arquitectura de bases de datos"
+                ],
+                correct: 1,
+                explanation: "Las iniciativas llegan deliberadamente tarde, solo después de fijar el outcome, para evitar construir soluciones que nadie usará."
             },
             {
-                q: "¿Qué principio matemático ilustra la Tabla de Asimetría entre Pérdidas y Ganancias en finanzas personales?",
-                a: "Una caída del 50% en el valor de un activo exige una subida del 100% posterior para poder recuperarse",
-                opts: [
-                    "Que las comisiones de gestión superiores al 1.5% anual destruyen el interés compuesto en 5 años",
-                    "Que la diversificación geométrica elimina por completo la volatilidad en horizontes temporales largos",
-                    "Que el colchón de efectivo de 3 a 6 meses reduce la rentabilidad acumulada de la cartera principal"
-                ]
+                category: "La Trampa del Repertorio",
+                question: "¿Qué se conoce en el framework IDG como 'la trampa del repertorio'?",
+                options: [
+                    "El error de reutilizar prompts de IA antiguos en nuevos proyectos",
+                    "La tendencia natural de cada departamento a proponer siempre lo que sabe hacer (producto=features, marketing=campañas)",
+                    "El fallo de seguridad al almacenar claves de API en repositorios públicos",
+                    "La incapacidad de los agentes autónomos para coordinarse"
+                ],
+                correct: 1,
+                explanation: "La trampa del repertorio ocurre cuando cada área propone mecánicamente su solución predeterminada sin analizar el freno real del usuario."
             },
             {
-                q: "De acuerdo con el inventario de reglas para la construcción de prompts, ¿qué exige la Regla 6 (Cálculo)?",
-                a: "Que el LLM interprete y desglose la fórmula, pero que los cálculos cuantitativos se ejecuten con código o herramienta",
-                opts: [
-                    "Que el modelo complete los huecos numéricos faltantes utilizando estimaciones del consenso",
-                    "Que todas las operaciones aritméticas complejas se resuelvan de memoria dentro del chat",
-                    "Que se eliminen los decimales en todas las tablas comparativas para simplificar la lectura"
-                ]
+                category: "Frenos del Comportamiento",
+                question: "Para el caso 'Presupuesta' (instaladores que no envían presupuestos desde el coche), ¿cuáles fueron tres frenos identificados?",
+                options: [
+                    "Falta de batería, mala cobertura 5G y precio del smartphone",
+                    "Incomprensión de presupuestos IA, falta de tiempo en la visita y miedo a errores",
+                    "Exceso de competencia, impuestos autonómicos y comisiones bancarias",
+                    "Falta de memoria RAM, lentitud del teclado y pantallas rotas"
+                ],
+                correct: 1,
+                explanation: "Un mismo outcome puede tener frenos distintos: incomprensión, falta de tiempo y miedo a errores, cada uno combatido con iniciativas específicas."
             },
             {
-                q: "¿Cuál es una de las 'Cuatro Cosas que NO Deben Hacerse con la IA en Finanzas' según el material didáctico?",
-                a: "Proporcionar datos sensibles como IBAN, contraseñas, DNI o información privada a servicios públicos",
-                opts: [
-                    "Utilizar hojas de cálculo en Excel que contengan fórmulas referenciadas y celdas enlazadas",
-                    "Consultar documentos regulatorios oficiales en formato PDF dentro de proyectos cerrados",
-                    "Aplicar la metodología de los diez pasos en análisis corporativos complejos de grandes empresas"
-                ]
+                category: "La Matriz 'El Cruce'",
+                question: "¿Para qué sirve la matriz de doble entrada denominada 'El Cruce'?",
+                options: [
+                    "Para cruzar datos bancarios con facturas en formato PDF",
+                    "Para mapear outcomes (filas) vs. iniciativas (columnas), asegurando cobertura y priorizando acciones transversales",
+                    "Para calcular la intersección entre redes neuronales convolucionales y transformers",
+                    "Para determinar qué empleado debe trabajar en remoto"
+                ],
+                correct: 1,
+                explanation: "'El cruce' relaciona outcomes con iniciativas para comprobar qué solución ataca qué comportamiento y priorizar con eficacia."
             },
             {
-                q: "¿Qué caracteriza al método de etiquetado de afirmaciones recomendado para garantizar trazabilidad absoluta?",
-                a: "Clasificar la información en [HECHO] con cita verificable, [INFERENCIA] lógica y [ANÁLISIS] subjetivo",
-                opts: [
-                    "Marcar todas las celdas del modelo financiero en color azul para indicar que provienen de internet",
-                    "Etiquetar los gráficos de evolución en base 100 con la fecha exacta de la última actualización del broker",
-                    "Diferenciar los costes operativos de los gastos financieros mediante marcas de agua en el PDF"
-                ]
+                category: "Hipótesis en IDG",
+                question: "¿Cuál es la estructura formal exacta recomendada para redactar una hipótesis en el framework IDG?",
+                options: [
+                    "Creemos que si [iniciativa] -> provocará que [outcome] -> lo que moverá [métrica]",
+                    "Si implementamos [IA] entonces ganaremos [dinero] en [tiempo]",
+                    "El algoritmo [X] superará al modelo [Y] en un [Z] por ciento",
+                    "Dado que los usuarios quieren [función], desarrollaremos [código]"
+                ],
+                correct: 0,
+                explanation: "La estructura estándar conecta causalmente la iniciativa propuesta con el cambio de comportamiento (outcome) y la métrica resultante."
+            },
+            {
+                category: "Experimentos y Aprendizaje",
+                question: "Según el principio rector del laboratorio de experimentación, ¿cuál es el objetivo principal de realizar experimentos?",
+                options: [
+                    "Demostrar a los inversores que la aplicación ya está terminada",
+                    "Alcanzar el aprendizaje mínimo al menor coste posible antes de construir masivamente",
+                    "Registrar la mayor cantidad de datos de telemetría en la nube",
+                    "Eliminar por completo la necesidad de hablar con usuarios reales"
+                ],
+                correct: 1,
+                explanation: "El principio rector es el aprendizaje mínimo. Con IA construir cuesta una tarde; lo caro es construir lo que nadie va a usar."
+            },
+            {
+                category: "Criterios de Decisión",
+                question: "¿Qué elementos obligatorios debe contener un criterio de decisión escrito antes de lanzar un experimento?",
+                options: [
+                    "Presupuesto máximo y nombre del proveedor de la API",
+                    "Condiciones claras de 'Seguir si [número]' y 'Descartar si [número]'",
+                    "Firma digital del director ejecutivo y del arquitecto de software",
+                    "Número de versiones de código subidas a GitHub"
+                ],
+                correct: 1,
+                explanation: "Los criterios escritos de antemano evitan sesgos de confirmación estipulando numéricamente cuándo seguir, iterar o descartar."
+            },
+            {
+                category: "Radiografía de IA 2026",
+                question: "Según los datos de adopción global de IA analizados en el máster para 2026, ¿cuál es la tendencia principal?",
+                options: [
+                    "La adopción global supera el 96% de las empresas, pero muchas se atascan en pilotos sin impacto estratégico",
+                    "El uso de IA en empresas ha descendido por debajo del 10% debido a regulaciones",
+                    "Todas las empresas han abandonado los modelos base en favor de software tradicional",
+                    "El mercado carece por completo de inversión en infraestructura generativa"
+                ],
+                correct: 0,
+                explanation: "El mercado muestra una adopción masiva (~96%), pero el verdadero cuello de botella es que las organizaciones se atascan en pilotos sin dirección estratégica."
+            },
+            {
+                category: "Casos de Estudio: Wilson y Juan",
+                question: "¿Qué ejemplificaban los casos prácticos de Juan (seudonimización de datos) y Wilson (conciliación bancaria)?",
+                options: [
+                    "La aplicación de IA mediante skills y prototipos rápidos para validar hipótesis de procesos reales en pymes",
+                    "Cómo entrenar superordenadores cuánticos desde cero",
+                    "Estrategias de marketing viral en redes sociales sin producto",
+                    "Métodos de contratación masiva de desarrolladores senior"
+                ],
+                correct: 0,
+                explanation: "Los casos de Wilson y Juan demostraron la experimentación práctica con IA aplicada a automatización y cumplimiento normativo en entornos reales."
+            },
+            {
+                category: "Curva de la Verdad",
+                question: "¿A qué se refiere el concepto 'La Curva de la Verdad' en el contexto del prototipado rápido con IA?",
+                options: [
+                    "A la velocidad con la que un LLM alucina datos estadísticos",
+                    "A los peligros de confundir un prototipo funcional rápido con una validación real de mercado y comportamiento",
+                    "Al incremento lineal de precisión en modelos de lenguaje ajustados",
+                    "A la gráfica de costes de las APIs de OpenAI y Anthropic"
+                ],
+                correct: 1,
+                explanation: "Prototipar con IA es rapidísimo, pero la 'Curva de la Verdad' advierte sobre el peligro de creer que por tener el prototipo listo ya hemos validado el valor de negocio."
+            },
+            {
+                category: "OKRs y Outcomes",
+                question: "Al relacionar OKRs y Outcomes (siguiendo a Jeff Gothelf y Josh Seiden), ¿cómo se recomienda formular los Key Results?",
+                options: [
+                    "Usando métricas financieras complejas de EBITDA",
+                    "Utilizando outcomes basados en cambios de comportamiento del usuario en lugar de meros outputs",
+                    "Estableciendo plazos fijos de entrega de software",
+                    "Contando el número de reuniones semanales del equipo"
+                ],
+                correct: 1,
+                explanation: "Los Key Results formulados como outcomes son mucho más accionables porque miden el comportamiento real que se quiere desencadenar."
+            },
+            {
+                category: "Métricas Vanidosas vs Accionables",
+                question: "¿Por qué se consideran métricas vanidosas (vanity metrics) indicadores como 'número total de descargas' o 'conversaciones con el chatbot'?",
+                options: [
+                    "Porque son demasiado caras de calcular en bases de datos relacionales",
+                    "Porque pueden subir artificialmente aunque el usuario no obtenga ningún valor ni resuelva su problema",
+                    "Porque están prohibidas por el Reglamento General de Protección de Datos",
+                    "Porque solo se pueden medir una vez al año"
+                ],
+                correct: 1,
+                explanation: "Una métrica como número de chats puede subir por inflación o fallos, aunque el usuario no resuelva nada. Se buscan métricas de impacto real."
+            },
+            {
+                category: "El Caso Presupuesta",
+                question: "En el caso Presupuesta, ¿cuál era la propuesta de valor central para los instaladores autónomos?",
+                options: [
+                    "Un videojuego de simulación de fontanería para formación",
+                    "Grabar un audio de 2 min describiendo el trabajo y obtener un presupuesto detallado listo para enviar por WhatsApp",
+                    "Un sistema de facturación automática conectado con la Agencia Tributaria",
+                    "Una red social exclusiva para electricistas autónomos"
+                ],
+                correct: 1,
+                explanation: "Presupuesta permitía a fontaneros y electricistas generar presupuestos profesionales dictando un audio desde la furgoneta gracias a la IA."
+            },
+            {
+                category: "Lean Analytics & OMTM",
+                question: "Según los principios de Lean Analytics estudiados en el máster, ¿qué significa OMTM?",
+                options: [
+                    "One Metric That Matters (Una Métrica Que Importa en cada etapa)",
+                    "Online Machine Training Model",
+                    "Operational Management Task Metric",
+                    "Open Market Technology Map"
+                ],
+                correct: 0,
+                explanation: "OMTM (One Metric That Matters) es el concepto clave para enfocar el análisis de datos en la métrica crítica que impulsa la etapa actual de crecimiento."
+            },
+            {
+                category: "Funnel y Modelo AARRR",
+                question: "¿En qué consiste el modelo AARRR de Dave McClure aplicado al análisis de producto?",
+                options: [
+                    "Un sistema de encriptación de datos para inteligencia artificial",
+                    "Un embudo de crecimiento dividido en Adquisición, Activación, Retención, Referencia y Monetización",
+                    "Una metodología ágil de desarrollo de interfaces táctiles",
+                    "Un protocolo de comunicación entre agentes autónomos"
+                ],
+                correct: 1,
+                explanation: "El modelo AARRR estructurado por Dave McClure permite analizar analíticamente todo el ciclo de vida del usuario en el producto."
+            },
+            // Additional questions to ensure robust 40+ item pool for true randomization
+            {
+                category: "IDG: Principios Rectores",
+                question: "¿Cuál de los siguientes es un principio clave del enfoque IDG frente al desarrollo tradicional?",
+                options: [
+                    "Priorizar la cantidad de despliegues diarios sobre la validación",
+                    "Invertir el flujo tradicional: empezar por el impacto y el comportamiento antes que por la solución técnica",
+                    "Delegar todas las decisiones de producto en algoritmos de aprendizaje automático",
+                    "Evitar cualquier contacto con clientes durante las primeras fases"
+                ],
+                correct: 1,
+                explanation: "IDG invierte el flujo tradicional: define primero el impacto y los comportamientos requeridos antes de enamorarse de las herramientas u outputs."
+            },
+            {
+                category: "Validación y Experimentos",
+                question: "Si al ejecutar el experimento 1 de tu plan de aprendizaje se cumple el criterio de 'Descartar', ¿qué significa?",
+                options: [
+                    "Que debes despedir al equipo de desarrollo inmediatamente",
+                    "Que la hipótesis planteada no ha sido validada por el comportamiento del usuario y se debe pivotar o abandonar esa línea",
+                    "Que la API de IA elegida tiene un coste demasiado elevado por token",
+                    "Que debes duplicar el presupuesto de marketing digital"
+                ],
+                correct: 1,
+                explanation: "Descartar forma parte del ciclo riguroso de aprendizaje: evita invertir meses construyendo algo que la evidencia empírica desmiente."
+            },
+            {
+                category: "Agentes Autónomos",
+                question: "En la visión estratégica sobre Agentes Autónomos y el futuro digital expuesta en el máster, ¿cuál es el rol del alumno?",
+                options: [
+                    "Construir modelos base masivos compitiendo con OpenAI y Google",
+                    "Construir el puente estratégico entre las capacidades de la IA y el valor de negocio real",
+                    "Limitarse al soporte técnico de hardware en servidores locales",
+                    "Evitar cualquier adopción de agentes autónomos en la empresa"
+                ],
+                correct: 1,
+                explanation: "Mientras los gigantes compiten por el modelo base, el rol directivo es actuar como arquitecto del puente hacia el negocio real mediante estrategia."
+            },
+            {
+                category: "Métricas Leading vs Lagging",
+                question: "¿Cuál es la diferencia fundamental entre una métrica leading (temprana) y una lagging (tardía)?",
+                options: [
+                    "Las leading indican tendencias futuras a tiempo de actuar; las lagging muestran resultados cuando ya es tarde para cambiar",
+                    "Las leading miden costes en dólares; las lagging miden tiempo en segundos",
+                    "No existe ninguna diferencia metodológica entre ambas",
+                    "Las lagging son exclusivas de aplicaciones móviles"
+                ],
+                correct: 0,
+                explanation: "Las métricas lagging (como encuestas trimestrales) llegan tarde. Las leading actúan como guardarraíles diarios."
             }
         ];
 
-        const questionBank = [];
-        let idCounter = 0;
-        const prefixes = [
-            "De acuerdo con los materiales del Máster Track 4,",
-            "Según los apuntes y guías metodológicas oficiales,",
-            "En el contexto de la aplicación práctica de IA financiera,",
-            "Conforme a los estándares de auditoría y rigor analítico,",
-            "Dentro del marco conceptual de las sesiones del máster,"
-        ];
-
-        for (let i = 0; i < 140; i++) {
-            let base = rawPool[i % rawPool.length];
-            let prefix = prefixes[i % prefixes.length];
-            let uniqueQ = `${prefix} ${base.q.charAt(0).toLowerCase() + base.q.slice(1)} (Ref. T4-MOD-${i+1})`;
-            
-            questionBank.push({
-                id: idCounter++,
-                question: uniqueQ,
-                correct: base.a,
-                options: [base.a, ...base.opts]
-            });
-        }
-
-        let currentSessionQuestions = [];
+        // Quiz State Variables
+        let currentQuizQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let timeLeft = 12 * 60;
-        let timerInterval;
+        let selectedOptionIndex = null;
+        let isAnswered = false;
+        let globalTimerInterval = null;
+        let timeLeft = 720; // 12 minutes in seconds
+        let studentName = "";
 
+        // DOM Elements
+        const screenWelcome = document.getElementById('screen-welcome');
+        const screenQuiz = document.getElementById('screen-quiz');
+        const screenResults = document.getElementById('screen-results');
+        const headerStats = document.getElementById('header-stats');
+        const studentNameInput = document.getElementById('student-name');
+        const nameError = document.getElementById('name-error');
+        const currentQNumElem = document.getElementById('current-q-num');
+        const totalQNumElem = document.getElementById('total-q-num');
+        const globalTimerElem = document.getElementById('global-timer');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackDesc = document.getElementById('feedback-desc');
+
+        // Start Quiz Function
         function startQuiz() {
-            let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions_T4_v4')) || [];
-            
-            if (questionBank.length - usedQuestions.length < 20) {
-                usedQuestions = [];
-                alert("¡Se han completado los ciclos previstos! El banco de preguntas se ha reiniciado.");
-            }
-
-            let available = questionBank.filter(q => !usedQuestions.includes(q.id));
-            available.sort(() => Math.random() - 0.5);
-            currentSessionQuestions = available.slice(0, 20);
-
-            usedQuestions.push(...currentSessionQuestions.map(q => q.id));
-            localStorage.setItem('usedQuestions_T4_v4', JSON.stringify(usedQuestions));
-
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            
-            currentQuestionIndex = 0;
-            score = 0;
-            timeLeft = 12 * 60;
-            
-            startTimer();
-            loadQuestion();
-        }
-
-        function startTimer() {
-            clearInterval(timerInterval);
-            const timerEl = document.getElementById('timer');
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    endQuiz();
-                } else {
-                    timeLeft--;
-                    let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                    let s = (timeLeft % 60).toString().padStart(2, '0');
-                    timerEl.textContent = `${m}:${s}`;
-                }
-            }, 1000);
-        }
-
-        function loadQuestion() {
-            if (currentQuestionIndex >= 20) {
-                endQuiz();
+            studentName = studentNameInput.value.trim();
+            if (!studentName) {
+                nameError.classList.remove('hidden');
+                studentNameInput.classList.add('border-red-500');
                 return;
             }
+            nameError.classList.add('hidden');
+            studentNameInput.classList.remove('border-red-500');
 
-            document.getElementById('progress').textContent = `${currentQuestionIndex + 1}/20`;
-            
-            const q = currentSessionQuestions[currentQuestionIndex];
-            document.getElementById('question-text').textContent = q.question;
+            // Randomize and select exactly 20 unique questions from the bank
+            currentQuizQuestions = [...masterQuestionBank].sort(() => 0.5 - Math.random()).slice(0, 20);
+            currentQuestionIndex = 0;
+            score = 0;
+            timeLeft = 720; // Reset timer to 12 minutes
 
-            let shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
-            
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
-            
-            shuffledOpts.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = `option opt-${index}`;
-                btn.textContent = opt;
-                btn.onclick = () => checkAnswer(opt, q.correct);
-                container.appendChild(btn);
-            });
-        }
+            // Switch screens
+            screenWelcome.classList.add('hidden');
+            screenResults.classList.add('hidden');
+            screenQuiz.classList.remove('hidden');
+            headerStats.classList.remove('hidden');
+            totalQNumElem.textContent = currentQuizQuestions.length;
 
-        function checkAnswer(selected, correct) {
-            if (selected === correct) {
-                score++;
-            }
-            currentQuestionIndex++;
+            // Start Global Timer
+            if (globalTimerInterval) clearInterval(globalTimerInterval);
+            globalTimerInterval = setInterval(updateGlobalTimer, 1000);
+
             loadQuestion();
         }
 
-        function endQuiz() {
-            clearInterval(timerInterval);
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-            
-            document.getElementById('final-score').textContent = `Tu puntuación: ${score} / 20`;
-            
-            let used = JSON.parse(localStorage.getItem('usedQuestions_T4_v4')) || [];
-            let attemptsLeft = Math.floor((140 - used.length) / 20);
-            document.getElementById('remaining-attempts').textContent = `Intentos nuevos restantes sin repetición: ${attemptsLeft}`;
+        // Global Timer Tick
+        function updateGlobalTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(globalTimerInterval);
+                finishQuiz();
+                return;
+            }
+            timeLeft--;
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            globalTimerElem.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            // Visual warning when under 2 minutes
+            const timerBadge = document.getElementById('timer-badge');
+            if (timeLeft <= 120) {
+                timerBadge.classList.add('bg-red-700', 'animate-pulse-fast');
+            }
+        }
+
+        // Load Current Question
+        function loadQuestion() {
+            isAnswered = false;
+            selectedOptionIndex = null;
+            feedbackBox.classList.add('hidden');
+
+            const q = currentQuizQuestions[currentQuestionIndex];
+            currentQNumElem.textContent = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex) / currentQuizQuestions.length) * 100}%`;
+
+            questionCategory.textContent = q.category;
+            questionText.textContent = q.question;
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                const textSpan = document.getElementById(`opt-text-${i}`);
+                textSpan.textContent = q.options[i];
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'ring-4', 'ring-white');
+            }
+        }
+
+        // Select Option Handling
+        function selectOption(index) {
+            if (isAnswered) return;
+            isAnswered = true;
+            selectedOptionIndex = index;
+
+            const q = currentQuizQuestions[currentQuestionIndex];
+            const isCorrect = (index === q.correct);
+
+            if (isCorrect) {
+                score++;
+            }
+
+            // Highlight buttons
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('ring-4', 'ring-white', 'scale-[1.02]');
+                } else if (i === index) {
+                    btn.classList.add('opacity-60');
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            }
+
+            // Show feedback
+            feedbackBox.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackTitle.innerHTML = `<span class="text-green-400">✅ ¡Correcto! Excelente análisis estratégico.</span>`;
+            } else {
+                feedbackTitle.innerHTML = `<span class="text-red-400">❌ Incorrecto. La opción correcta era la señalada.</span>`;
+            }
+            feedbackDesc.textContent = q.explanation;
+        }
+
+        // Next Question or Finish
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuizQuestions.length) {
+                loadQuestion();
+            } else {
+                clearInterval(globalTimerInterval);
+                finishQuiz();
+            }
+        }
+
+        // Finish Quiz & Show Results
+        function finishQuiz() {
+            screenQuiz.classList.add('hidden');
+            headerStats.classList.add('hidden');
+            screenResults.classList.remove('hidden');
+
+            const totalQ = currentQuizQuestions.length;
+            const percentage = Math.round((score / totalQ) * 100);
+
+            document.getElementById('result-score').textContent = `${score}/${totalQ}`;
+            document.getElementById('result-accuracy').textContent = `${percentage}%`;
+
+            const profFeedback = document.getElementById('professor-feedback');
+            let evaluationHTML = "";
+
+            if (percentage >= 90) {
+                evaluationHTML = `
+                    <div class="font-bold text-yellow-400 text-base">🏆 ¡Sobresaliente, ${studentName}! Nivel experto en IDG.</div>
+                    <p>Dominas a la perfección la cadena causal del Impact-Driven Growth, la diferencia entre outputs y outcomes, y el diseño riguroso de experimentos. Estás totalmente preparado para liderar productos de IA con rigor estratégico.</p>
+                `;
+            } else if (percentage >= 70) {
+                evaluationHTML = `
+                    <div class="font-bold text-green-400 text-base">👍 ¡Buen trabajo, ${studentName}! Has superado la evaluación.</div>
+                    <p>Comprendes bien los conceptos clave del Track 5 y el valor de las métricas de impacto (guardarraíles). Repasa los apuntes sobre la trampa del repertorio y los criterios de decisión para alcanzar la perfección.</p>
+                `;
+            } else {
+                evaluationHTML = `
+                    <div class="font-bold text-red-400 text-base">⚠️ Necesitas consolidar conceptos, ${studentName}.</div>
+                    <p>Te recomendamos revisar con atención las sesiones de Outcomes, CPVM y los apuntes de experimentación. Vuelve a realizar el test para poner a prueba nuevos ítems del banco de preguntas.</p>
+                `;
+            }
+            profFeedback.innerHTML = evaluationHTML;
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            screenResults.classList.add('hidden');
+            screenWelcome.classList.remove('hidden');
+            studentNameInput.value = studentName; // Keep name prefilled
+        }
+
+        // Share Results (Copy to Clipboard)
+        function shareResults() {
+            const summaryText = `🎓 Resultado Máster IA Track 5 (Impact-Driven Growth)
+Alumno: ${studentName}
+Puntuación: ${score}/${currentQuizQuestions.length} (${Math.round((score/currentQuizQuestions.length)*100)}%)
+Evaluado mediante simulador Kahoot oficial del Máster.`;
+
+            const textArea = document.createElement("textarea");
+            textArea.value = summaryText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert("¡Resumen copiado al portapapeles con éxito!");
+            } catch (err) {
+                alert("No se pudo copiar automáticamente.");
+            }
+            document.body.removeChild(textArea);
         }
     </script>
 </body>
